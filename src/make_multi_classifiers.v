@@ -1,0 +1,27 @@
+module vhammll2
+
+// make_multi_classifiers takes a dataset, an array of classifier settings, and
+// a list of classifier indices. It outputs an array of trained classifiers,
+// one for each entry in the list of indices. If the list of indices is empty,
+// classifiers will be generated for all the entries in the settings array.
+fn make_multi_classifiers(mut ds Dataset, settings_list []ClassifierSettings, classifier_indices []int) []Classifier {
+	mut cll := []Classifier{}
+	mut idx := classifier_indices.clone()
+	if idx.len == 0 {
+		idx = settings_list.map(it.classifier_id)
+	}
+	for i in idx {
+		matching := settings_list.filter(it.classifier_id == i)
+		if matching.len == 0 {
+			continue
+		}
+		opts := Options{
+			Parameters:    matching[0].Parameters
+			LoadOptions:   matching[0].LoadOptions
+			datafile_path: matching[0].datafile_path
+		}
+		cl := make_classifier_using_ds(mut ds, opts)
+		cll << cl
+	}
+	return cll
+}

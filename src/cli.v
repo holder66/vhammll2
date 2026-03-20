@@ -1,0 +1,471 @@
+module vhammll2
+
+import os
+import os.cmdline as oscmdline
+import time
+import math
+
+const vhammll_help = "
+
+    Description:
+    vhamml.v is a command line interface app to make use of the functionality
+    of the holder66.vhamml Machine Learning library (vhammll2 - simplified fork).
+
+    help, -h, --help to display this usage information.
+
+    For help with any of the commands below, enter the command followed by
+      -h or --help, eg v run main.v make --help, or just enter the command,
+      eg v run main.v explore
+
+    Usage:
+    Specify the file's path as the last command line argument,
+      eg, v run main.v analyze -s datasets/iris.tab
+
+    Commands:
+    analyze:   generates information about a dataset, for printing to the
+               console;
+    append:    takes a classifier and extends it by adding labeled instances;
+    cross:     performs a cross-validation on a dataset;
+    display:   loads a previously saved result and displays it on the console.
+               Applies to commands `analyze, append, cross, explore, make,
+               rank, validate, and verify` when those commands are run with
+               -o --output and the path to a file.
+    examples:  runs a file that displays brief information and a usage example
+               for running each command, prompts the user to continue, and then
+               executes the example, displaying results on the console;
+    explore:   carry out a series of cross-validation or verification
+               experiments over a range of parameter settings, in order to find
+               optimal values for classifier parameters;
+    make:      create a classifier from a dataset;
+    optimals:  determines which classifiers provide the best balanced accuracy,
+               highest total for correct inferences, and highest correct inferences
+               per class, for multiple classifiers whose settings are stored
+               in a settings file specified by the last command line argument;
+    orange:    print an explanation of Orange file formats to the console;
+    partition: breaks a datafile into two or more partitions and saves each
+               partition into a separate datafile;
+    query:     using a classifier, create an instance using an interactive
+               dialogue and then classify that instance;
+    rank:      rank order the dataset's attributes in terms of their
+               power in separating classes;
+    validate:  as for verify, but using an unlabeled second dataset. Outputs
+               inferred classes for the second dataset;
+    verify:    use a classifier and a second labeled dataset to verify how well
+               the classifier performs in classifying the second dataset's
+               instances;
+
+    Notes (vhammll2 differences from vhammll):
+    - Balance prevalences is always active when imbalance is detected
+    - Multiclass datasets automatically use one-vs-rest approach
+    - No concurrent processing
+    - No purge
+    - For cross-validation with folds > 1, random selection is always used
+
+    Options:
+    Note - only the options which apply in general are shown here. Use
+    v run main.v <command> -h to show options specific to that command.
+
+    Results are displayed in full by default. Use -s --short for a brief summary.
+
+    -g --graph:      generates plots that show in your default web browser;
+    -h --help:
+    -o --output:     followed by the path to a file in which a classifier, a
+                     result, instances used for validation, or a query instance
+                     is to be stored;
+    -s --short:      show a brief summary instead of the full results display;
+    -t --test:       followed by the path to the datafile to be verified or
+                     validated;
+  "
+
+const orange_help = "
+Description:
+How to format files as per Orange.
+
+Usage: v run main.v orange
+
+Options: none
+
+
+NEWER ORANGE FORMAT:
+A single-line header consisting of attribute names prefixed by an optional
+'<flags>#'' string, i.e. flags followed by a hash ('#') sign. The flags can
+be a consistent combination of:
+
+c for class attribute (also known as a target variable or dependent variable),
+i for attribute to be ignored,
+m for meta attributes (not used in learning),
+C for attributes that are continuous (numeric),
+D for attributes that are discrete (categorical),
+T for attributes that represent date and/or time in one of the ISO 8601 formats,
+S for string attributes.
+
+    if there are no prefixes for an attribute (ie just the attribute name)
+    then the attribute will be treated as discrete, unless the actual values
+    are numbers, in which case it will be treated as continuous.
+
+OLDER ORANGE FORMAT:
+the information about variable type, etc is contained in two lines:
+  in the second line:
+  d or discrete or a list of values: denotes a discrete attribute
+  c or continuous: denotes a continuous attribute
+  string denotes a string variable, which we ignore
+  basket: these are continuous-valued meta attributes; ignore
+  it may also contain a string of values separated by spaces. Use these
+  as the values for a discrete attribute.
+the third line contains optional flags:
+  i or ignore
+  c or class: there can only be one class attribute. If none is found,
+   use the last attribute as the class attribute.
+  m or meta: meta attribute, eg weighting information; ignore
+  -dc followed by a value: indicates how a don't care is represented.
+    "
+
+// CliOptions allows the cli() function to be driven programmatically:
+// pass either a pre-split args slice or a single space-separated
+// string (astr). If both are empty, os.args is used.
+@[params]
+pub struct CliOptions {
+	LoadOptions
+pub mut:
+	args []string
+	astr string
+}
+
+// cli() is the command line interface app for the holder66.vhamml ML library (vhammll2).
+// ```sh
+// Usage: v run main.v [command] [flags and options] <path_to_file>
+// Datafiles should be either tab-delimited, or have extension .csv or .arff
+// Commands: analyze | append | cross | display | examples | explore
+// | make | optimals | orange | partition | query | rank | validate | verify
+// To get help with individual commands, type `v run main.v [command] -h`
+//
+// Flags and options (note that most are specific to commands):
+// -a --attributes, followed by one, two, or 3 integers: Parameters.number_of_attributes
+// -aa --all-attributes: for each category of optimals, retain all settings (the
+//    default is to retain only settings with unique attribute numbers in each category);
+// -af --all-flags: Options.traverse_all_flags
+// -b --bins, followed by one, two, or 3 integers: Binning
+// -bpt --balance-prevalences-threshold, followed by a float: the ratio threshold
+//    below which class prevalences are considered imbalanced (default 0.9):
+//    LoadOptions.balance_prevalences_threshold
+// -cl --combination-limits: sets minimum and maximum lengths for combinations
+//    of multiple classifiers: Options.DisplaySettings.CombinationSizeLimits;
+// -e --expanded, expanded results on the console: DisplaySettings.expanded_flag
+// -ea display information re trained attributes on the console, for
+//    classification operations; DisplaySettings.show_attributes_flag
+// -exr --explore-rank, followed by eg "2,7", will repeat the ranking
+//    exercise over the binning range from 2 through 7 => Options.explore_rank
+// -f --folds, followed by an integer specifying the number of folds in
+//    cross-validation. The default is leave-one-out: Parameters.folds
+// -g --graph, displays a plot: DisplaySettings.graph_flag
+// -h --help: DisplaySettings.help_flag
+// -k --classifier, followed by the path to a file for a saved Classifier: Options.classifierfile_path
+// -ka --kaggle, followed by the path to a file. Used with the "validate" command,
+// 	  a csv file suitable for submission to a Kaggle competition is created
+// -l --limit-output, followed by an integer which specifies how many
+//  	attributes (discrete and continuous) should be included in the console listing:
+//    DisplaySettings.limit_output
+// -lc --limit-continuous, followed by an integer which specifies how many
+//    continuous-attribute traces should be shown in plots:
+//    DisplaySettings.limit_continuous
+// -m --multiple, classify using more than one trained classifier, followed by
+//    the path to a json file with parameters to generate each classifier:
+//    Options.multiple_classify_options_file_path
+// -ma when multiple classifiers are used, stop classifying when matches
+//    have been found for all classifiers;
+// -mc sets multi_strategy to 'combined';
+// -mr for multiclass datasets, perform classification using one-vs-rest;
+// -mt sets multi_strategy to 'totalnn';
+// -m# followed by a list of which classifiers to apply in a multiple classi-
+//	  fication run;
+// -ms append the settings to a file (path follows flag) for use in multiple
+//    classification (with -m#).
+// -o --output, followed by the path to a file;
+// -of --overfitting, when ranking attributes, include overfitting assessment.
+// -pos, followed by the name of the class to be considered the Positive class;
+// -p#, number of partitions and their relative size;
+// -ps, list of file paths for saving each partition in its own file;
+// -pmc --purge-missing-classes, removes instances for which the class value is missing;
+// -r --reps, number of repetitions;
+// -rand, when partitioning datafiles, picks cases randomly;
+// -roc, generate sensitivity vs 1-specificity values;
+// -s --show, output results to the console;
+// -t --test, followed by the path to the datafile to be verified or validated;
+// -u --uniform, specifies if uniform binning is to be used;
+// ```
+pub fn cli(cli_options CliOptions) ! {
+	sw := time.new_stopwatch()
+	mut opts := get_options(match true {
+		cli_options.astr != '' { cli_options.astr.split(' ') }
+		cli_options.args != [] { cli_options.args }
+		else { os.args[1..] }
+	})
+	if opts.command == '' && os.args.len > 1 {
+		opts.command = os.args[1]
+	}
+	// From the CLI, full display is the default; -s/--short suppresses it.
+	// Programmatic callers that construct Options{} directly get no output
+	// unless they set show_flag or expanded_flag themselves.
+	if !opts.show_flag {
+		opts.expanded_flag = true
+	}
+	if opts.help_flag {
+		println(show_help(opts))
+	} else {
+		command := opts.command
+		match command {
+			'analyze' { analyze(opts) }
+			'append' { do_append(opts)! }
+			'cross' { cross(opts) }
+			'display' { do_display(opts) }
+			'examples' { examples()! }
+			'explore' { explore(opts) }
+			'make' { make(opts) }
+			'optimals' { do_optimals(opts) }
+			'orange' { orange() }
+			'partition' { do_partition(opts)! }
+			'query' { do_query(opts)! }
+			'rank' { rank(opts) }
+			'validate' { do_validate(opts)! }
+			'verify' { verify(opts) }
+			else { println('unrecognized command') }
+		}
+	}
+	mut duration := sw.elapsed()
+	println('processing time: ${int(duration.hours())} hrs ${int(math.fmod(duration.minutes(),
+		60))} min ${math.fmod(duration.seconds(), 60):6.3f} sec')
+}
+
+// Cmd carries the command name used by opts() to set Options.command
+// when constructing an Options struct from a string.
+@[params]
+pub struct Cmd {
+pub mut:
+	cmd string
+}
+
+// opts takes a string of command line arguments and returns an Options struct
+// corresponding to the command line arguments.
+pub fn opts(s string, c Cmd) Options {
+	mut result := get_options(s.split(' '))
+	result.command = c.cmd
+	return result
+}
+
+// get_options fills an Options struct with values from the command line
+fn get_options(args []string) Options {
+	mut opts := Options{
+		args: args
+	}
+
+	if (flag(args, ['-h', '--help', 'help']) && args.len == 2) || args.len <= 1 {
+		opts.help_flag = true
+	}
+	opts.non_options = oscmdline.only_non_options(args)
+	if opts.non_options.len > 0 {
+		opts.datafile_path = opts.non_options.last()
+	}
+	opts.traverse_all_flags = flag(args, ['-af', '--all-flags'])
+	opts.graph_flag = flag(args, ['-g', '--graph'])
+	opts.switches_flag = flag(args, ['-sw', '--switches'])
+	if option(args, ['-swt', '--switch-threshold']) != '' {
+		opts.switches_threshold = option(args, ['-swt', '--switch-threshold']).int()
+	}
+	opts.uniform_bins = flag(args, ['-u', '--uniform'])
+	opts.show_flag = flag(args, ['-s', '--short'])
+	opts.show_attributes_flag = flag(args, ['-ea'])
+	opts.multiple_flag = flag(args, ['-m', '--multiple'])
+	opts.break_on_all_flag = flag(args, ['-ma'])
+	if flag(args, ['-mt']) {
+		opts.multi_strategy = 'totalnn'
+	} else if flag(args, ['-mc']) {
+		opts.multi_strategy = 'combined'
+	}
+	opts.one_vs_rest_flag = flag(args, ['-mr'])
+	opts.append_settings_flag = flag(args, ['-ms'])
+	opts.overfitting_flag = flag(args, ['-of', '--overfitting'])
+	opts.class_missing_purge_flag = flag(args, ['-pmc', '--purge-missing-classes'])
+	if option(args, ['-bpt', '--balance-prevalences-threshold']) != '' {
+		opts.balance_prevalences_threshold = option(args, ['-bpt', '--balance-prevalences-threshold']).f64()
+	}
+	opts.random_pick = flag(args, ['-rand'])
+	opts.generate_roc_flag = flag(args, ['-roc'])
+	opts.all_attributes_flag = flag(args, ['-aa', '--all_attributes'])
+
+	if option(args, ['-a', '--attributes']) != '' {
+		opts.number_of_attributes = parse_range(option(args, ['-a', '--attributes']))
+	}
+	if option(args, ['-cl', '--combination-limits']) != '' {
+		limits := parse_range(option(args, ['-cl', '--combination-limits']))
+		opts.DisplaySettings.CombinationSizeLimits = CombinationSizeLimits{
+			generate_combinations_flag: true
+			min:                        limits.first()
+			max:                        limits.last()
+		}
+	}
+	if option(args, ['-f', '--folds']) != '' {
+		opts.folds = option(args, ['-f', '--folds']).int()
+	}
+
+	if option(args, ['-l', '--limit-output']) != '' {
+		opts.limit_output = option(args, ['-l', '--limit-output']).int()
+	}
+
+	if option(args, ['-lc', '--limit-continuous']) != '' {
+		opts.limit_continuous = option(args, ['-lc', '--limit-continuous']).int()
+	}
+
+	if option(args, ['-r', '--reps']) != '' {
+		opts.repetitions = option(args, ['-r', '--reps']).int()
+	}
+	if option(args, ['-pos', '--positive-class']) != '' {
+		opts.positive_class = option(args, ['-pos', '--positive-class'])
+	}
+	if option(args, ['-b', '--bins']) != '' {
+		opts.bins = parse_range(option(args, ['-b', '--bins']))
+	}
+	if option(args, ['-exr', '--explore-rank']) != '' {
+		opts.explore_rank = parse_range(option(args, ['-exr', '--explore-rank']))
+	}
+	if option(args, ['-m#']) != '' {
+		opts.classifiers = parse_range(option(args, ['-m#']))
+	}
+	if option(args, ['-p#']) != '' {
+		opts.partition_sizes = parse_range(option(args, ['-p#']))
+	}
+	if option(args, ['-ps']) != '' {
+		opts.partitionfiles_paths = parse_paths(option(args, ['-ps']))
+	}
+	opts.testfile_path = option(args, ['-t', '--test'])
+	opts.outputfile_path = option(args, ['-o', '--output'])
+	opts.classifierfile_path = option(args, ['-k', '--classifier'])
+	opts.multiple_classify_options_file_path = option(args, ['-m', '--multiple'])
+	opts.settingsfile_path = option(args, ['-ms'])
+	opts.kagglefile_path = option(args, ['-ka', '--kaggle'])
+	opts.roc_settingsfile_path = option(args, ['-roc'])
+	return opts
+}
+
+// show_help
+fn show_help(opts Options) string {
+	return match opts.command {
+		'rank' { rank_help }
+		'query' { query_help }
+		'analyze' { analyze_help }
+		'append' { append_help }
+		'make' { make_help }
+		'optimals' { optimals_help }
+		'orange' { orange_help }
+		'verify' { verify_help }
+		'cross' { cross_help }
+		'explore' { explore_help }
+		'validate' { validate_help }
+		'display' { display_help }
+		'examples' { examples_help }
+		'partition' { partition_help }
+		else { vhammll_help }
+	}
+}
+
+// option returns the parameter following any of a list of options
+fn option(args []string, what []string) string {
+	mut found := false
+	mut result := ''
+	for arg in args {
+		if found {
+			result = arg
+			break
+		} else if arg in what {
+			found = true
+		}
+	}
+	return result
+}
+
+// flag returns true if a specific flag is found, false otherwise
+fn flag(args []string, what []string) bool {
+	for arg in args {
+		if arg in what {
+			return true
+		}
+	}
+	return false
+}
+
+// analyze prints out to the console
+fn analyze(opts Options) {
+	analyze_dataset(opts)
+}
+
+// do_append appends instances in a file, to a classifier in a file specified
+// by flag -k, and (optionally) stores the extended classifier in a file
+// specified by -o. It displays the extended classifier on the console.
+fn do_append(opts Options) ! {
+	append_instances(load_classifier_file(opts.classifierfile_path)!, load_instances_file(opts.datafile_path)!,
+		opts)
+}
+
+// do_display displays information about the contents of a file
+// for classifiers, datasets, or results of operations
+fn do_display(opts Options) {
+	display_file(opts.datafile_path, opts)
+}
+
+fn get_classifier(opts Options) !Classifier {
+	if opts.classifierfile_path == '' {
+		return make_classifier(opts)
+	}
+	return load_classifier_file(opts.classifierfile_path)!
+}
+
+// query
+fn do_query(opts Options) ! {
+	cl := get_classifier(opts)!
+	query(cl, opts)
+}
+
+// validate
+fn do_validate(opts Options) ! {
+	cl := get_classifier(opts)!
+	validate(cl, opts)!
+}
+
+// cross performs n-fold cross-validation.
+// For folds > 1 (non-LOO), always uses random selection.
+fn cross(opts Options) {
+	mut new_opts := opts
+	new_opts.random_pick = if opts.folds > 1 { true } else { false }
+	new_opts.command = 'cross'
+	cross_validate(new_opts)
+}
+
+fn do_optimals(opts Options) {
+	optimals(opts.datafile_path, opts)
+}
+
+// orange
+fn orange() {
+}
+
+// rank generates an array of attributes sorted according to their
+// capacity to separate the classes, and displays it on the console.
+fn rank(opts Options) {
+	mut ra := RankingResult{}
+	if opts.one_vs_rest_flag {
+		ra = rank_one_vs_rest(opts)
+	} else {
+		ra = rank_attributes(opts)
+	}
+	_ = ra
+}
+
+// make generates a Classifier, and displays it on the console.
+// Optionally (-o flag) it saves the classifier file.
+fn make(opts Options) {
+	make_classifier(opts)
+}
+
+fn do_partition(opts Options) ! {
+	partition_file(opts.partition_sizes, opts.datafile_path, opts.partitionfiles_paths,
+		opts.random_pick)!
+}

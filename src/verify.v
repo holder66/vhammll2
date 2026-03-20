@@ -1,0 +1,184 @@
+module vhammll2
+
+const verify_help = '
+Description:
+"verify" takes two datasets; it creates a classifier from the dataset file
+given by the last item in the command line, and uses that classifier to
+classify the instances in the second dataset, given by the -t --test option.
+The parameters for which attributes to use, the list of permissible attribute
+values for discrete attributes, and the binning information for continuous
+attributes is copied from the classification dataset. Each instance in the
+verification dataset is classified, and the inferred classes are compared to
+the labeled classes to provide accuracy and other statistics.
+
+Usage: v run main.v verify -t datasets/bcw174test datasets/bcw350train
+
+Required:
+-t --test: path to a test file to be verified.
+Options:
+In addition to the options below, the options for "make" apply to
+both the classification and the verification datafile.
+-bpt --balance-prevalences-threshold: ratio threshold below which class
+    prevalences are considered imbalanced (default 0.9; range 0.0–1.0);
+-e --expanded, expanded results on the console;
+-k --classifier, followed by the path to a file for a saved Classifier;
+    can be used instead of the training dataset;
+-m --multiple:    classify using more than one trained classifier, followed
+     by the path to a json file with parameters to generate
+     each classifier;
+-ma: when multiple classifiers are used, stop classifying when
+     matches have been found for all classifiers;
+-mc: sets multi_strategy to combined: combine the possible
+     hamming distances for each classifier into a single list;
+-mt: sets multi_strategy to totalnn: add the nearest neighbors
+     from each classifier, weight by class prevalences, and then
+     infer from the totals; takes precedence over -mc if both
+     are specified;
+-m#: followed by a list of which classifiers to apply in a
+     multiple classification run (zero-indexed);
+-af --all-flags: when used with -m (multiple classifiers), iterates
+    over all combinations of multi-strategy (-mc/-mt) and -ma settings
+    (3 strategies × 2 -ma values = 6 rows) and prints results side by side;
+    '
+
+// verify classifies all the instances in a verification datafile (specified
+// by `opts.testfile_path`) using a trained Classifier; returns metrics
+// comparing the inferred classes to the labeled (assigned) classes
+// of the verification datafile.
+// For multiclass datasets (ds.classes.len > 2), automatically uses
+// one-vs-rest classification.
+// ```sh
+// Optional (also see `make_classifier.v` for options in training a classifier)
+// Output options:
+// show_flag: display results on the console;
+// expanded_flag: display additional information on the console, including
+// 		a confusion matrix.
+// show_attributes_flag: list the trained attributes for the classifier used
+// outputfile_path: saves the result as a json file
+// ```
+pub fn verify(opts Options) CrossVerifyResult {
+	if opts.multiple_flag {
+		return multi_verify(opts)
+	}
+	if opts.one_vs_rest_flag {
+		return one_vs_rest_verify(opts)
+	}
+	// auto-detect multiclass and use one-vs-rest
+	ds_check := load_file(opts.datafile_path, opts.LoadOptions)
+	if ds_check.classes.len > 2 {
+		return one_vs_rest_verify(opts)
+	}
+	return run_verify(opts)
+}
+
+fn run_verify(opts Options) CrossVerifyResult {
+	mut ds := load_file(opts.datafile_path, opts.LoadOptions)
+	// always balance prevalences when imbalance is detected
+	if evaluate_class_prevalence_imbalance(ds, opts) {
+		ds = balance_prevalences(mut ds, opts.balance_prevalences_threshold)
+	}
+	// load the testfile as a Dataset struct, but reset
+	mut testfile_load_opts := opts.LoadOptions
+	{}
+	mut test_ds := load_file(opts.testfile_path, testfile_load_opts)
+	mut confusion_matrix_map := map[string]StringFloatMap{}
+	// for each class, instantiate an entry in the confusion matrix map
+	for key1, _ in test_ds.class_counts {
+		for key2, _ in test_ds.class_counts {
+			confusion_matrix_map[key2][key1] = 0
+		}
+	}
+	// instantiate a struct for the result
+	mut inferences_map := map[string]int{}
+	for key, _ in ds.class_counts {
+		inferences_map[key] = 0
+	}
+	mut verify_result := CrossVerifyResult{
+		LoadOptions:                         opts.LoadOptions
+		Parameters:                          opts.Parameters
+		DisplaySettings:                     opts.DisplaySettings
+		MultipleOptions:                     opts.MultipleOptions
+		Class:                               ds.Class
+		datafile_path:                       opts.datafile_path
+		testfile_path:                       opts.testfile_path
+		multiple_classify_options_file_path: opts.multiple_classify_options_file_path
+		multiple_classifier_settings:        opts.multiple_classifier_settings
+		labeled_classes:                     test_ds.class_values
+		// class_counts:                         test_ds.class_counts
+		// pre_balance_prevalences_class_counts: ds.pre_balance_prevalences_class_counts
+		// classes:                              test_ds.classes
+		pos_neg_classes:      get_pos_neg_classes(test_ds)
+		confusion_matrix_map: confusion_matrix_map
+		correct_inferences:   inferences_map.clone()
+		incorrect_inferences: inferences_map.clone()
+		wrong_inferences:     inferences_map.clone()
+		true_positives:       inferences_map.clone()
+		true_negatives:       inferences_map.clone()
+		false_positives:      inferences_map.clone()
+		false_negatives:      inferences_map.clone()
+	}
+	verify_result.binning = get_binning(opts.bins)
+	mut cl := Classifier{}
+	if opts.classifierfile_path == '' {
+		cl = make_classifier_using_ds(mut ds, opts)
+	} else {
+		cl = load_classifier_file(opts.classifierfile_path) or { panic(err) }
+	}
+	verify_result.trained_attribute_maps_array << cl.trained_attributes
+	// massage each case in the test dataset according to the
+	// attribute parameters in the classifier
+	case_array := generate_case_array(cl, test_ds)
+	// for the instances in the test data, perform classifications
+	mut classify_result := ClassifyResult{}
+	for i, test_instance in case_array {
+		classify_result = classify_case(cl, test_instance, opts)
+		verify_result.inferred_classes << classify_result.inferred_class
+		verify_result.nearest_neighbors_by_class << classify_result.nearest_neighbors_by_class
+		verify_result.actual_classes << verify_result.labeled_classes[i]
+	}
+	verify_result.classifier_instances_counts << cl.history_events[0].instances_count
+	verify_result.prepurge_instances_counts_array << cl.history_events[0].prepurge_instances_count
+	verify_result = summarize_results(1, mut verify_result)
+	verify_result.Metrics = get_metrics(verify_result)
+	if verify_result.pos_neg_classes.len == 2 {
+		verify_result.BinaryMetrics = get_binary_stats(verify_result)
+	}
+
+	if opts.command != 'explore' && (opts.show_flag || opts.expanded_flag) {
+		show_verify(verify_result, opts)
+	}
+	if opts.outputfile_path != '' {
+		verify_result.command = 'verify'
+		save_json_file[CrossVerifyResult](verify_result, opts.outputfile_path)
+	}
+	if opts.append_settings_flag && opts.command != 'explore' {
+		append_cross_verify_settings_to_file(verify_result, opts)
+	}
+	verify_result.train_dataset_class_counts = ds.class_counts.clone()
+	return verify_result
+}
+
+// generate_case_array
+fn generate_case_array(cl Classifier, test_ds Dataset) [][]u8 {
+	// for each usable attribute in cl, massage the equivalent test_ds attribute
+	mut test_binned_values := []int{}
+	mut test_attr_binned_values := [][]u8{}
+	mut test_index := 0
+	for attr in cl.attribute_ordering {
+		// get an index into this attribute in test_ds
+		for j, value in test_ds.attribute_names {
+			if value == attr {
+				test_index = j
+			}
+		}
+		if cl.trained_attributes[attr].attribute_type == 'C' {
+			test_binned_values = discretize_attribute_with_range_check[f32](test_ds.useful_continuous_attributes[test_index],
+				cl.trained_attributes[attr].minimum, cl.trained_attributes[attr].maximum,
+				cl.trained_attributes[attr].bins)
+		} else { // ie for discrete attributes
+			test_binned_values = test_ds.useful_discrete_attributes[test_index].map(cl.trained_attributes[attr].translation_table[it])
+		}
+		test_attr_binned_values << test_binned_values.map(u8(it))
+	}
+	return transpose(test_attr_binned_values)
+}
