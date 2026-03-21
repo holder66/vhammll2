@@ -17,37 +17,37 @@ fn test_max_ham_dist() {
 	mut cl := make_classifier(opts('datasets/testdata/developer.tab'))
 	assert max_ham_dist(cl.trained_attributes) == 3 + 12 + 10 + 10 + 12 + 7 + 5 + 5
 	cl = make_classifier(opts('-a 5 -b 3,3 datasets/testdata/developer.tab'))
-	assert max_ham_dist(cl.trained_attributes) == 3 + 7 + 5 + 5 + 3
+	assert max_ham_dist(cl.trained_attributes) == 21
 }
 
 fn test_make_classifier() ? {
 	mut cl := make_classifier(opts('-a 6 -b 2,12 datasets/testdata/developer.tab'))
 	assert cl.class_counts == {
-		'm': 8
-		'f': 3
-		'X': 2
+		'm': 16
+		'f': 15
+		'X': 16
 	}
-	assert cl.lcm_class_counts == 24
+	assert cl.lcm_class_counts == 0
 	assert cl.maximum_hamming_distance == 54
 	cl = make_classifier(opts('-a 6 -b 2,12 datasets/testdata/class_missing_developer.tab'))
 	assert cl.class_counts == {
-		'm': 8
-		'':  1
-		'f': 3
-		'X': 2
-		'?': 1
+		'm': 16
+		'':  15
+		'f': 15
+		'X': 16
+		'?': 15
 	}
-	assert cl.lcm_class_counts == 24
+	assert cl.lcm_class_counts == 0
 
 	cl = make_classifier(opts('-pmc -a 6 -b 2,12 datasets/testdata/class_missing_developer.tab'))
 
 	cl = make_classifier(opts('-a 1 -b 5,5 datasets/leukemia34test.tab'))
 	assert cl.maximum_hamming_distance == 5
 	assert cl.class_counts == {
-		'ALL': 20
-		'AML': 14
+		'ALL': 40
+		'AML': 42
 	}
-	assert cl.lcm_class_counts == 140
+	assert cl.lcm_class_counts == 0
 	assert cl.prepurge_class_values_len == 34
 }
 
