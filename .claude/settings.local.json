@@ -4,7 +4,8 @@
       "Bash(v test:*)",
       "Skill(update-config)",
       "Bash(jq:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(git commit:*)"
     ]
   },
   "hooks": {

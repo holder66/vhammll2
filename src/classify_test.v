@@ -8,8 +8,16 @@ fn test_classify_case() {
 		number_of_attributes: [6]
 	}
 	mut cl := make_classifier(opts)
-	assert cl.pre_balance_prevalences_class_counts == {'m': 8, 'f': 3, 'X': 2}
-	assert cl.class_counts == {'m': 16, 'f': 15, 'X': 16}
+	assert cl.pre_balance_prevalences_class_counts == {
+		'm': 8
+		'f': 3
+		'X': 2
+	}
+	assert cl.class_counts == {
+		'm': 16
+		'f': 15
+		'X': 16
+	}
 	assert classify_case(cl, cl.instances[0], opts).inferred_class == 'm'
 	assert classify_case(cl, cl.instances[0], opts).nearest_neighbors_by_class == [
 		2,

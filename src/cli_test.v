@@ -68,7 +68,6 @@ fn test_cli_append() {
 
 	dump(os.execute_or_panic('./temp append -k ${cl_file} ${inst_file}'))
 	// dump(os.execute_or_panic('./temp append -k ${cl_file} v'))
-	
 }
 
 fn test_cli_cross() {}

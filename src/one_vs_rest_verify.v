@@ -25,10 +25,10 @@ pub fn one_vs_rest_verify(opts Options) CrossVerifyResult {
 	}
 	// instantiate a struct for the result
 	mut verify_result := CrossVerifyResult{
-		LoadOptions:     opts.LoadOptions
-		Parameters:      opts.Parameters
-		DisplaySettings: opts.DisplaySettings
-		MultipleOptions: opts.MultipleOptions
+		LoadOptions:                         opts.LoadOptions
+		Parameters:                          opts.Parameters
+		DisplaySettings:                     opts.DisplaySettings
+		MultipleOptions:                     opts.MultipleOptions
 		datafile_path:                       opts.datafile_path
 		testfile_path:                       opts.testfile_path
 		multiple_classify_options_file_path: opts.multiple_classify_options_file_path

@@ -66,7 +66,27 @@ fn test_append() ! {
 
 	opts.outputfile_path = 'tempfolders/tempfolder_append/extended_classifierfile'
 	tcl = append_instances(cl, val_results, opts)
-	assert tcl.class_counts == {'diaporthe-stem-canker': 300, 'charcoal-rot': 300, 'rhizoctonia-root-rot': 300, 'phytophthora-rot': 328, 'brown-stem-rot': 304, 'powdery-mildew': 300, 'downy-mildew': 299, 'brown-spot': 325, 'bacterial-blight': 299, 'bacterial-pustule': 299, 'purple-seed-stain': 301, 'anthracnose': 304, 'phyllosticta-leaf-spot': 303, 'alternarialeaf-spot': 333, 'frog-eye-leaf-spot': 335, 'diaporthe-pod-&-stem-blight': 309, 'cyst-nematode': 308, '2-4-d-injury': 321, 'herbicide-injury': 304}
+	assert tcl.class_counts == {
+		'diaporthe-stem-canker':       300
+		'charcoal-rot':                300
+		'rhizoctonia-root-rot':        300
+		'phytophthora-rot':            328
+		'brown-stem-rot':              304
+		'powdery-mildew':              300
+		'downy-mildew':                299
+		'brown-spot':                  325
+		'bacterial-blight':            299
+		'bacterial-pustule':           299
+		'purple-seed-stain':           301
+		'anthracnose':                 304
+		'phyllosticta-leaf-spot':      303
+		'alternarialeaf-spot':         333
+		'frog-eye-leaf-spot':          335
+		'diaporthe-pod-&-stem-blight': 309
+		'cyst-nematode':               308
+		'2-4-d-injury':                321
+		'herbicide-injury':            304
+	}
 
 	// test if the appended classifier works as a classifier
 	opts.testfile_path = 'datasets/soybean-large-test.tab'

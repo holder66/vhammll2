@@ -137,8 +137,7 @@ pub fn show_classifier(cl Classifier) {
 	println(g_b('\nClassifier History:'))
 	println(b_u('Date & Time (UTC)    Event   From file                   Original Instances'))
 	for events in cl.history_events {
-		println(
-			'${events.event_date:-19}  ${events.event:-6}  ${events.file_path:-35} ${events.prepurge_instances_count:10}')
+		println('${events.event_date:-19}  ${events.event:-6}  ${events.file_path:-35} ${events.prepurge_instances_count:10}')
 	}
 }
 

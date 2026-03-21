@@ -186,7 +186,7 @@ fn multiple_classifier_classify(classifier_array []Classifier, case [][]u8, labe
 	if inferred_classes_by_classifier.len > 1
 		&& uniques(inferred_classes_by_classifier.filter(it != '')).len > 1 {
 		final_cr.inferred_class = resolve_conflict(mcr, opts)
-}
+	}
 	// final_cr.inferred_class_array = inferred_class_array
 	// final_cr.nearest_neighbors_array = nearest_neighbors_array
 	return final_cr

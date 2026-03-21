@@ -162,8 +162,8 @@ fn rank_dataset(ds Dataset, opts Options) RankingResult {
 			}
 			i in ds.useful_continuous_attributes.keys() {
 				r_v, bin_number, rank_value_array, hits_array, sw, sw_arr := rank_continuous_attribute(i,
-					ds, binning, false, false, opts.overfitting_flag,
-					opts.switches_flag, opts.switches_threshold)
+					ds, binning, false, false, opts.overfitting_flag, opts.switches_flag,
+					opts.switches_threshold)
 				rank_value_map[i] = r_v
 				binning_map[i] = bin_number
 				rank_value_array_map[i] = rank_value_array

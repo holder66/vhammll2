@@ -175,7 +175,7 @@ pub fn optimals(path string, opts Options) OptimalsResult {
 	if opts.expanded_flag {
 		println(m_u('Optimal classifiers in settings file: ${path}'))
 		println(lg('Total number of settings: ${all_settings.len}'))
-			print(c_u('Highest balanced accuracy values (%): '))
+		print(c_u('Highest balanced accuracy values (%): '))
 		println(g(result.best_balanced_accuracies.map('${it:6.2f}').join(', ')))
 		for i, setting in result.best_balanced_accuracies_classifiers_all {
 			println(g_b('For balanced accuracy: ${result.best_balanced_accuracies[i]:6.2f}%'))
