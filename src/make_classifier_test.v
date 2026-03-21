@@ -14,14 +14,14 @@ fn testsuite_end() ? {
 }
 
 fn test_max_ham_dist() {
-	mut cl := make_classifier(opts('datasets/developer.tab'))
+	mut cl := make_classifier(opts('datasets/testdata/developer.tab'))
 	assert max_ham_dist(cl.trained_attributes) == 3 + 12 + 10 + 10 + 12 + 7 + 5 + 5
-	cl = make_classifier(opts('-a 5 -b 3,3 datasets/developer.tab'))
+	cl = make_classifier(opts('-a 5 -b 3,3 datasets/testdata/developer.tab'))
 	assert max_ham_dist(cl.trained_attributes) == 3 + 7 + 5 + 5 + 3
 }
 
 fn test_make_classifier() ? {
-	mut cl := make_classifier(opts('-a 6 -b 2,12 datasets/developer.tab'))
+	mut cl := make_classifier(opts('-a 6 -b 2,12 datasets/testdata/developer.tab'))
 	assert cl.class_counts == {
 		'm': 8
 		'f': 3
@@ -29,7 +29,7 @@ fn test_make_classifier() ? {
 	}
 	assert cl.lcm_class_counts == 24
 	assert cl.maximum_hamming_distance == 54
-	cl = make_classifier(opts('-a 6 -b 2,12 datasets/class_missing_developer.tab'))
+	cl = make_classifier(opts('-a 6 -b 2,12 datasets/testdata/class_missing_developer.tab'))
 	assert cl.class_counts == {
 		'm': 8
 		'':  1
@@ -39,7 +39,7 @@ fn test_make_classifier() ? {
 	}
 	assert cl.lcm_class_counts == 24
 
-	cl = make_classifier(opts('-pmc -a 6 -b 2,12 datasets/class_missing_developer.tab'))
+	cl = make_classifier(opts('-pmc -a 6 -b 2,12 datasets/testdata/class_missing_developer.tab'))
 
 	cl = make_classifier(opts('-a 1 -b 5,5 datasets/leukemia34test.tab'))
 	assert cl.maximum_hamming_distance == 5
@@ -53,13 +53,13 @@ fn test_make_classifier() ? {
 
 fn test_switches_stored_in_trained_attributes() {
 	// Without -sw: sentinel value -1 is preserved for all trained attributes
-	cl := make_classifier(opts('-b 2,6 datasets/2_class_developer.tab'))
+	cl := make_classifier(opts('-b 2,6 datasets/testdata/2_class_developer.tab'))
 	for _, ta in cl.trained_attributes {
 		assert ta.switches == -1
 	}
 	// With -sw on a 2-class dataset: continuous attrs get switches >= 0 (loose threshold
 	// of 100 ensures no bin count is excluded), discrete attrs retain -1
-	cl_sw := make_classifier(opts('-sw -swt 100 -b 2,6 datasets/2_class_developer.tab'))
+	cl_sw := make_classifier(opts('-sw -swt 100 -b 2,6 datasets/testdata/2_class_developer.tab'))
 	for _, ta in cl_sw.trained_attributes {
 		if ta.attribute_type == 'C' {
 			assert ta.switches >= 0
@@ -107,7 +107,7 @@ fn test_save_classifier() ? {
 	mut cl := Classifier{}
 	mut tcl := Classifier{}
 
-	cl = make_classifier(opts('-a 6 -b 2,12 -o ${outputfile} datasets/developer.tab'))
+	cl = make_classifier(opts('-a 6 -b 2,12 -o ${outputfile} datasets/testdata/developer.tab'))
 	tcl = load_classifier_file(outputfile)!
 	assert tcl.trained_attributes == cl.trained_attributes
 	assert tcl.instances == cl.instances

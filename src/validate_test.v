@@ -21,8 +21,8 @@ fn test_validate_save_result() ? {
 
 fn test_kaggle() ! {
 	kagglefile := 'tempfolder3/kagglefile'
-	datafile := 'datasets/test.tab'
-	testfile := 'datasets/test_validate.tab'
+	datafile := 'datasets/testdata/test.tab'
+	testfile := 'datasets/testdata/test_validate.tab'
 
 	cl := make_classifier(opts('-a 2 -b 2,3 -ka ${kagglefile} -t ${testfile} ${datafile}'))
 	result := validate(cl, opts('-a 2 -b 2,3 -ka ${kagglefile} -t ${testfile} ${datafile}'))!

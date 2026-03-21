@@ -14,12 +14,12 @@ fn testsuite_end() ? {
 }
 
 fn test_partition_file() ! {
-	partition_file([2, 1], 'datasets/developer.tab', [], true)!
-	partition_file([2, 1], 'datasets/developer.tab', [
+	partition_file([2, 1], 'datasets/testdata/developer.tab', [], true)!
+	partition_file([2, 1], 'datasets/testdata/developer.tab', [
 		'tempfolders/tempfolder_partition_file/developer_bigtrain.tab',
 		'tempfolders/tempfolder_partition_file/developer_bigtest.tab',
 	], false)!
-	partition_file([2, 2, 1], 'datasets/developer.tab', [
+	partition_file([2, 2, 1], 'datasets/testdata/developer.tab', [
 		'tempfolders/tempfolder_partition_file/developer_train.tab',
 		'tempfolders/tempfolder_partition_file/developer_test.tab',
 		'tempfolders/tempfolder_partition_file/developer_validate.tab',

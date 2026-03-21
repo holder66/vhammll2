@@ -25,11 +25,11 @@ fn test_append() ! {
 	mut val_results := ValidateResult{}
 	// create the classifier file and save it
 	opts.outputfile_path = 'tempfolders/tempfolder_append/classifierfile'
-	opts.datafile_path = 'datasets/test.tab'
+	opts.datafile_path = 'datasets/testdata/test.tab'
 	cl = make_classifier(opts)
 	// do a validation and save the result
 	opts.outputfile_path = 'tempfolders/tempfolder_append/instancesfile'
-	opts.testfile_path = 'datasets/test_validate.tab'
+	opts.testfile_path = 'datasets/testdata/test_validate.tab'
 	val_results = validate(cl, opts)!
 	// now do the append, first from val_results, and
 	// saving the extended classifier
@@ -49,7 +49,7 @@ fn test_append() ! {
 	assert stcl.history_events.len == 3
 
 	// test if the appended classifier works as a classifier
-	opts.testfile_path = 'datasets/test_verify.tab'
+	opts.testfile_path = 'datasets/testdata/test_verify.tab'
 	opts.classifierfile_path = 'tempfolders/tempfolder_append/extclassifierfile'
 	mut result := verify(opts)
 

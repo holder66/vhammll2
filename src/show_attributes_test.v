@@ -15,7 +15,7 @@ fn testsuite_end() ? {
 }
 
 fn test_show_attributes_in_make_classifier() {
-	make_classifier(opts('-s -ea datasets/developer.tab'))
+	make_classifier(opts('-s -ea datasets/testdata/developer.tab'))
 }
 
 fn test_show_attributes_with_switches() {

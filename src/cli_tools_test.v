@@ -74,7 +74,10 @@ fn test_option() {
 	assert option(['-t', '-g', 'datasets/iris.tab'], ['-t', '--test']) == '-g'
 
 	// what has multiple entries; match is on the second entry
-	assert option(['--test', 'datasets/test.tab', 'datasets/iris.tab'], ['-t', '--test']) == 'datasets/test.tab'
+	assert option(['--test', 'datasets/testdata/test.tab', 'datasets/iris.tab'], [
+		'-t',
+		'--test',
+	]) == 'datasets/testdata/test.tab'
 
 	// case-sensitive: wrong case does not match
 	assert option(['-B', '3,6', 'datasets/iris.tab'], ['-b', '--bins']) == ''
@@ -224,8 +227,8 @@ fn test_get_options() {
 	assert o.partition_sizes == [70, 30]
 	o = get_options(['-ps', 'out_a.tab,out_b.tab', 'datasets/iris.tab'])
 	assert o.partitionfiles_paths == ['out_a.tab', 'out_b.tab']
-	o = get_options(['-t', 'datasets/test_verify.tab', 'datasets/iris.tab'])
-	assert o.testfile_path == 'datasets/test_verify.tab'
+	o = get_options(['-t', 'datasets/testdata/test_verify.tab', 'datasets/iris.tab'])
+	assert o.testfile_path == 'datasets/testdata/test_verify.tab'
 	o = get_options(['-o', '/tmp/result.json', 'datasets/iris.tab'])
 	assert o.outputfile_path == '/tmp/result.json'
 	o = get_options(['-k', '/tmp/classifier.json', 'datasets/iris.tab'])
@@ -271,8 +274,8 @@ fn test_get_options() {
 	assert o.positive_class == 'benign'
 	o = get_options(['--explore-rank', '2,7', 'datasets/iris.tab'])
 	assert o.explore_rank == [2, 7]
-	o = get_options(['--test', 'datasets/test_verify.tab', 'datasets/iris.tab'])
-	assert o.testfile_path == 'datasets/test_verify.tab'
+	o = get_options(['--test', 'datasets/testdata/test_verify.tab', 'datasets/iris.tab'])
+	assert o.testfile_path == 'datasets/testdata/test_verify.tab'
 	o = get_options(['--output', '/tmp/out.json', 'datasets/iris.tab'])
 	assert o.outputfile_path == '/tmp/out.json'
 	o = get_options(['--classifier', '/tmp/cl.json', 'datasets/iris.tab'])
@@ -312,8 +315,9 @@ fn test_get_options() {
 
 	// --- combined multi-option invocation ---
 	o = get_options(['-g', '-sw', '-u', '-s', '-mr', '-rand', '-a', '4', '-b', '2,8', '-f', '5',
-		'-r', '3', '-swt', '4', '-bpt', '0.6', '-pos', 'malignant', '-t', 'datasets/test_verify.tab',
-		'-o', '/tmp/result.json', '-k', '/tmp/cl.json', 'datasets/iris.tab'])
+		'-r', '3', '-swt', '4', '-bpt', '0.6', '-pos', 'malignant', '-t',
+		'datasets/testdata/test_verify.tab', '-o', '/tmp/result.json', '-k', '/tmp/cl.json',
+		'datasets/iris.tab'])
 	assert o.graph_flag
 	assert o.switches_flag
 	assert o.uniform_bins
@@ -327,7 +331,7 @@ fn test_get_options() {
 	assert o.switches_threshold == 4
 	assert o.balance_prevalences_threshold == 0.6
 	assert o.positive_class == 'malignant'
-	assert o.testfile_path == 'datasets/test_verify.tab'
+	assert o.testfile_path == 'datasets/testdata/test_verify.tab'
 	assert o.outputfile_path == '/tmp/result.json'
 	assert o.classifierfile_path == '/tmp/cl.json'
 	assert o.datafile_path == 'datasets/iris.tab'
@@ -350,12 +354,12 @@ fn test_opts_function() {
 	assert result.command == ''
 
 	// multiple-classifier options: -m path, -m# classifier ids
-	result = opts('-pos ALL -m datasets/multiples-train.tab -m# 0,20,40 datasets/leukemia38train.tab')
-	assert result.args == ['-pos', 'ALL', '-m', 'datasets/multiples-train.tab', '-m#', '0,20,40',
-		'datasets/leukemia38train.tab']
+	result = opts('-pos ALL -m datasets/testdata/multiples-train.tab -m# 0,20,40 datasets/leukemia38train.tab')
+	assert result.args == ['-pos', 'ALL', '-m', 'datasets/testdata/multiples-train.tab', '-m#',
+		'0,20,40', 'datasets/leukemia38train.tab']
 	assert result.command == ''
 	assert result.positive_class == 'ALL'
-	assert result.multiple_classify_options_file_path == 'datasets/multiples-train.tab'
+	assert result.multiple_classify_options_file_path == 'datasets/testdata/multiples-train.tab'
 	assert result.multiple_flag
 	assert result.classifiers == [0, 20, 40]
 	assert result.datafile_path == 'datasets/leukemia38train.tab'
@@ -371,11 +375,11 @@ fn test_opts_function() {
 	assert result.datafile_path == 'datasets/leukemia38train.tab'
 
 	// multiple-classifier with test file
-	result = opts('-pos ALL -m datasets/multiples-train.tab -m# 0,10 -t datasets/leukemia34test.tab datasets/leukemia38train.tab')
-	assert result.args == ['-pos', 'ALL', '-m', 'datasets/multiples-train.tab', '-m#', '0,10',
-		'-t', 'datasets/leukemia34test.tab', 'datasets/leukemia38train.tab']
+	result = opts('-pos ALL -m datasets/testdata/multiples-train.tab -m# 0,10 -t datasets/leukemia34test.tab datasets/leukemia38train.tab')
+	assert result.args == ['-pos', 'ALL', '-m', 'datasets/testdata/multiples-train.tab', '-m#',
+		'0,10', '-t', 'datasets/leukemia34test.tab', 'datasets/leukemia38train.tab']
 	assert result.positive_class == 'ALL'
-	assert result.multiple_classify_options_file_path == 'datasets/multiples-train.tab'
+	assert result.multiple_classify_options_file_path == 'datasets/testdata/multiples-train.tab'
 	assert result.classifiers == [0, 10]
 	assert result.testfile_path == 'datasets/leukemia34test.tab'
 	assert result.datafile_path == 'datasets/leukemia38train.tab'

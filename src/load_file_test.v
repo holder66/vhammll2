@@ -14,7 +14,7 @@ fn testsuite_end() ! {
 }
 
 fn test_file_type() {
-	assert file_type('datasets/developer.tab') == 'orange_newer'
+	assert file_type('datasets/testdata/developer.tab') == 'orange_newer'
 	assert file_type('datasets/iris.tab') == 'orange_older'
 	assert file_type('datasets/ESL.arff') == 'arff'
 	home_dir := os.home_dir()
@@ -49,7 +49,7 @@ fn test_infer_type_from_data() {
 
 fn test_load_file() {
 	mut ds := Dataset{}
-	ds = load_file('datasets/developer.tab')
+	ds = load_file('datasets/testdata/developer.tab')
 	assert ds.Class == Class{
 		class_name:                           'gender'
 		class_index:                          3
@@ -86,7 +86,7 @@ fn test_load_file() {
 fn test_load_file_with_purging() ! {
 	// first, no purging
 	mut ds := Dataset{}
-	mut datafile := 'datasets/class_missing_developer.tab'
+	mut datafile := 'datasets/testdata/class_missing_developer.tab'
 	ds = load_file(datafile)
 	assert ds.Class == Class{
 		class_name:                           'gender'

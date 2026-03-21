@@ -18,7 +18,7 @@ fn test_verify() ? {
 	mut cl := Classifier{}
 
 	// test verify with a non-saved classifier
-	verify(opts('-a 2 -b 2,3 -t datasets/test_verify.tab datasets/test.tab'))
+	verify(opts('-a 2 -b 2,3 -t datasets/testdata/test_verify.tab datasets/testdata/test.tab'))
 	println(r_b('Done with test.tab'))
 
 	// now with a binary classifier with continuous values

@@ -21,8 +21,8 @@ fn test_display_multiple_classifier_settings() ? {
 fn test_display_saved_classifier() ? {
 	// make a classifier, show it, then save it, then display the saved classifier file
 	outputfile := 'tempfolders/tempfolder_display/classifierfile'
-	cl := make_classifier(opts('-s -a 8 -b 3,10 -o ${outputfile} datasets/developer.tab'))
-	display_file(outputfile, opts('-s datasets/developer.tab'))
+	cl := make_classifier(opts('-s -a 8 -b 3,10 -o ${outputfile} datasets/testdata/developer.tab'))
+	display_file(outputfile, opts('-s datasets/testdata/developer.tab'))
 }
 
 fn test_display_saved_analyze_result() ? {

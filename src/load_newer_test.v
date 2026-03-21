@@ -1,25 +1,25 @@
 module vhammll2
 
 // fn test_infer_attribute_types_newer() {
-// 	mut ds := load_orange_newer_file('datasets/developer.tab')
+// 	mut ds := load_orange_newer_file('datasets/testdata/developer.tab')
 // 	// println('types from file: $ds.attribute_types')
 // 	types := ds.attribute_types
 // 	ds.attribute_types = ['i', '', 'w', 'cD', 'C', 'm', '', 'T', 'S', '']
 // 	assert infer_attribute_types_newer(ds) == ['i', 'D', 'i', 'c', 'C', 'i', 'D', 'i', 'i', 'C']
 
-// 	assert infer_attribute_types_newer(load_file('datasets/developer.tab')) == ['i', 'D', 'C',
+// 	assert infer_attribute_types_newer(load_file('datasets/testdata/developer.tab')) == ['i', 'D', 'C',
 // 		'c', 'C', 'C', 'D', 'D', 'C', 'C']
 // }
 
 fn test_combine_raw_and_inferred_types() {
-	mut ds := load_orange_newer_file('datasets/developer.tab')
+	mut ds := load_orange_newer_file('datasets/testdata/developer.tab')
 	// println('types from file: $ds.attribute_types')
 	types := ds.attribute_types
 	ds.attribute_types = ['i', '', 'w', 'cD', 'C', 'm', '', 'T', 'S', '']
 	assert combine_raw_and_inferred_types(ds) == ['i', 'D', 'C', 'c', 'C', 'C', 'D', 'D', 'C',
 		'C']
 
-	assert combine_raw_and_inferred_types(load_file('datasets/developer.tab')) == [
+	assert combine_raw_and_inferred_types(load_file('datasets/testdata/developer.tab')) == [
 		'i',
 		'D',
 		'C',
@@ -34,8 +34,8 @@ fn test_combine_raw_and_inferred_types() {
 }
 
 fn test_load_with_purge_instances_for_missing_class_values() {
-	mut ds := load_orange_newer_file('datasets/class_missing_developer.tab')
-	mut dspmc := load_orange_newer_file('datasets/class_missing_developer.tab',
+	mut ds := load_orange_newer_file('datasets/testdata/class_missing_developer.tab')
+	mut dspmc := load_orange_newer_file('datasets/testdata/class_missing_developer.tab',
 		class_missing_purge_flag: true
 	)
 	assert ds.class_values.len - 2 == dspmc.class_values.len

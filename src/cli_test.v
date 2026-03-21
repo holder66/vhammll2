@@ -55,15 +55,15 @@ fn test_cli_append() {
 	assert os.execute_or_panic('./temp append -h') == r
 	assert os.execute_or_panic('./temp append --help') == r
 	// make a classifier
-	datafile := 'vhammll2/datasets/test.tab'
+	datafile := 'vhammll2/datasets/testdata/test.tab'
 	cl_file := 'tempfolders/tempfolder_cli/test.cl'
-	val_file := 'vhammll2/datasets/test_validate.tab'
+	val_file := 'vhammll2/datasets/testdata/test_validate.tab'
 	inst_file := 'tempfolders/tempfolder_cli/instances'
 	clr := os.execute_or_panic('./temp make -o ${cl_file} ${datafile}')
-	assert clr.output.contains('make    vhammll2/datasets/test.tab                   6')
+	assert clr.output.contains('make    vhammll2/datasets/testdata/test.tab                   6')
 	assert os.is_file(cl_file)
 	rv := os.execute_or_panic('./temp validate -o ${inst_file} -t ${val_file} ${datafile}')
-	assert rv.output.contains('Validation of "vhammll2/datasets/test_validate.tab" using a classifier from "vhammll2/datasets/test.tab"')
+	assert rv.output.contains('Validation of "vhammll2/datasets/testdata/test_validate.tab" using a classifier from "vhammll2/datasets/testdata/test.tab"')
 	assert os.is_file(inst_file)
 
 	dump(os.execute_or_panic('./temp append -k ${cl_file} ${inst_file}'))

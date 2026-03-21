@@ -2,7 +2,7 @@ module vhammll2
 
 fn test_classify_case() {
 	mut opts := Options{
-		datafile_path:        'datasets/developer.tab'
+		datafile_path:        'datasets/testdata/developer.tab'
 		bins:                 [2, 12]
 		command:              'classify'
 		number_of_attributes: [6]

@@ -2,12 +2,12 @@ module vhammll2
 
 fn test_analyze_dataset() ? {
 	mut opts := Options{
-		datafile_path: 'datasets/developer.tab'
+		datafile_path: 'datasets/testdata/developer.tab'
 		// show_flag: false
 	}
 	// orange_newer file
 	mut pr := analyze_dataset(opts)
-	assert pr.datafile_path == 'datasets/developer.tab'
+	assert pr.datafile_path == 'datasets/testdata/developer.tab'
 	assert pr.datafile_type == 'orange_newer'
 	assert pr.attributes[2].name == 'age'
 	assert pr.attributes[9].min == -90
@@ -36,10 +36,10 @@ fn test_analyze_dataset() ? {
 fn test_analyze_dataset_with_purging_of_instances_with_missing_class_values() {
 	mut opts := Options{
 		// show_flag: false
-		datafile_path: 'datasets/class_missing_developer.tab'
+		datafile_path: 'datasets/testdata/class_missing_developer.tab'
 	}
 	mut pr := analyze_dataset(opts)
-	assert pr.datafile_path == 'datasets/class_missing_developer.tab'
+	assert pr.datafile_path == 'datasets/testdata/class_missing_developer.tab'
 	assert pr.datafile_type == 'orange_newer'
 	assert pr.class_name == 'gender'
 	assert pr.class_counts == {
@@ -76,7 +76,7 @@ fn test_analyze_dataset_with_purging_of_instances_with_missing_class_values() {
 	// repeat with purging of instances where the class value is missing
 	opts.class_missing_purge_flag = true
 	pr = analyze_dataset(opts)
-	assert pr.datafile_path == 'datasets/class_missing_developer.tab'
+	assert pr.datafile_path == 'datasets/testdata/class_missing_developer.tab'
 	assert pr.datafile_type == 'orange_newer'
 
 	assert pr.class_name == 'gender'

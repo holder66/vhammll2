@@ -17,7 +17,7 @@ fn test_evaluate_class_prevalence_imbalance() {
 	mut o := Options{
 		balance_prevalences_threshold: 0.25
 	}
-	mut ds := load_file('datasets/developer.tab', o.LoadOptions)
+	mut ds := load_file('datasets/testdata/developer.tab', o.LoadOptions)
 	assert evaluate_class_prevalence_imbalance(ds, o)
 	o.balance_prevalences_threshold = 0.25
 	assert evaluate_class_prevalence_imbalance(ds, o)
@@ -50,7 +50,7 @@ fn test_evaluate_class_prevalence_imbalance() {
 }
 
 fn test_balance_prevalences() {
-	mut ds := load_file('datasets/developer.tab')
+	mut ds := load_file('datasets/testdata/developer.tab')
 	mut threshold := 0.8
 	mut counts := ds.class_counts.clone()
 	assert counts == {

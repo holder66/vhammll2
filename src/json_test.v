@@ -18,7 +18,7 @@ fn test_load_classifier_file() ! {
 	mut cl := Classifier{}
 	mut tcl := Classifier{}
 
-	cl = make_classifier(opts('-a 4 -b 2,4 -o ${outputfile} datasets/developer.tab'))
+	cl = make_classifier(opts('-a 4 -b 2,4 -o ${outputfile} datasets/testdata/developer.tab'))
 	tcl = load_classifier_file(outputfile)!
 	assert cl.Parameters == tcl.Parameters
 	assert cl.Class == tcl.Class
@@ -42,8 +42,8 @@ fn test_load_instances_file() ! {
 	mut vr := ValidateResult{}
 	mut tvr := ValidateResult{}
 
-	cl = make_classifier(opts('-o ${outputfile} -t datasets/test_validate.tab datasets/test.tab'))
-	vr = validate(cl, opts('-o ${outputfile} -t datasets/test_validate.tab datasets/test.tab'))!
+	cl = make_classifier(opts('-o ${outputfile} -t datasets/testdata/test_validate.tab datasets/testdata/test.tab'))
+	vr = validate(cl, opts('-o ${outputfile} -t datasets/testdata/test_validate.tab datasets/testdata/test.tab'))!
 	tvr = load_instances_file(outputfile)!
 	assert vr.Class == tvr.Class
 	assert vr.inferred_classes == tvr.inferred_classes
