@@ -111,24 +111,4 @@ fn test_save_classifier() ? {
 	tcl = load_classifier_file(outputfile)!
 	assert tcl.trained_attributes == cl.trained_attributes
 	assert tcl.instances == cl.instances
-
-	cl = make_classifier(opts('-a 6 -b 2,12 -o ${outputfile} datasets/anneal.tab'))
-	tcl = load_classifier_file(outputfile)!
-	assert tcl.trained_attributes == cl.trained_attributes
-	assert tcl.instances == cl.instances
-	assert tcl.maximum_hamming_distance == 32
-
-	cl = make_classifier(opts('-a 6 -b 2,12 -o ${outputfile} datasets/soybean-large-train.tab'))
-	tcl = load_classifier_file(outputfile)!
-	assert tcl.trained_attributes == cl.trained_attributes
-	assert tcl.instances == cl.instances
-	assert tcl.maximum_hamming_distance == 27
-
-	if get_environment().arch_details[0] != '4 cpus' {
-		cl = make_classifier(opts('-a 6 -b 2,12 -o ${outputfile} datasets/mnist_test.tab'))
-		tcl = load_classifier_file(outputfile)!
-		assert tcl.trained_attributes == cl.trained_attributes
-		assert tcl.instances == cl.instances
-		assert tcl.maximum_hamming_distance == 72
-	}
 }

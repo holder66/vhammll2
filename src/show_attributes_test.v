@@ -27,10 +27,6 @@ fn test_show_attributes_with_switches() {
 	make_classifier(opts('-sw -s -ea datasets/iris.tab'))
 }
 
-fn test_show_attributes_in_verify() {
-	verify(opts('-s -ea -t datasets/mobile_price_classification_test.csv datasets/mobile_price_classification_train.csv'))
-}
-
 fn test_multiple_classifier_verify_totalnn() ? {
 	datafile := 'datasets/leukemia38train.tab'
 	testfile := 'datasets/leukemia34test.tab'

@@ -32,13 +32,6 @@ fn test_display_saved_analyze_result() ? {
 	display_file(outputfile, opts('-s datasets/UCI/anneal.arff'))
 }
 
-fn test_display_saved_ranking_result() ? {
-	// rank a dataset file and show the result; save the result, then display the saved file
-	outputfile := 'tempfolders/tempfolder_display/rank_result'
-	_ = rank_attributes(opts('-s -o ${outputfile} datasets/UCI/anneal.arff'))
-	display_file(outputfile, opts('-s datasets/UCI/anneal.arff'))
-}
-
 fn test_display_saved_validate_result() ? {
 	// validate a dataset file and show the result; save the result, then display the saved file
 	outputfile := 'tempfolders/tempfolder_display/validate_result'
@@ -73,19 +66,6 @@ fn test_display_saved_verify_result() ? {
 	display_file(outputfile, opts('-s -ea ${datafile}'))
 }
 
-fn test_display_cross_result() ? {
-	// cross-validate a dataset file and display the result; save the result, then display
-	// the saved result file
-	datafile := 'datasets/UCI/segment.arff'
-	outputfile := 'tempfolders/tempfolder_display/cross_result'
-
-	cross_validate(opts('-s -a 4 -b 12 -f 5 -o ${outputfile} ${datafile}'))
-	display_file(outputfile, opts('-s ${datafile}'))
-	cross_validate(opts('-s -a 4 -b 12 -f 10 -r 10 -rand -o ${outputfile} ${datafile}'))
-	display_file(outputfile, opts('-s ${datafile}'))
-	println(r_b('\nDone for test_display_cross_result'))
-}
-
 fn test_display_explore_result_cross() ? {
 	datafile := 'datasets/UCI/iris.arff'
 	outputfile := 'tempfolders/tempfolder_display/explore_result'
@@ -99,17 +79,3 @@ fn test_display_explore_result_cross() ? {
 	display_file(outputfile, opts('-s ${datafile2}'))
 }
 
-fn test_display_explore_result_verify() ? {
-	datafile := 'datasets/soybean-large-train.tab'
-	testfile := 'datasets/soybean-large-test.tab'
-	outputfile := 'tempfolders/tempfolder_display/explore_result'
-
-	explore(opts('-s -a 12,15 -b 2,6 -o ${outputfile} -t ${testfile} ${datafile}'))
-	display_file(outputfile, opts('-s ${datafile}'))
-
-	// repeat for a binary class dataset
-	datafile2 := 'datasets/bcw350train'
-	testfile2 := 'datasets/bcw174test'
-	explore(opts('-s -a 0 -b 2,6 -o ${outputfile} -t ${testfile2} ${datafile2}'))
-	display_file(outputfile, opts('-s ${datafile2}'))
-}

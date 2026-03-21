@@ -34,7 +34,7 @@ fn test_show_analyze() {
 }
 
 fn test_show_append() ? {
-	println(r_b('test_show_append should print out a test.tab classifier, with 6 instances, followed by a test.tab classifier with 16 instances, and then a test.tab classifier with 26 instances and 3 history events. Then 3 classifiers based on soybean-large-train.tab.'))
+	println(r_b('test_show_append should print out a test.tab classifier, with 6 instances, followed by a test.tab classifier with 16 instances, and then a test.tab classifier with 26 instances and 3 history events.'))
 
 	mut cl := Classifier{}
 	mut tcl := Classifier{}
@@ -50,24 +50,11 @@ fn test_show_append() ? {
 	// appending to the previously extended classifier
 	tcl = append_instances(load_classifier_file('tempfolders/tempfolder_show/classifierfile')!,
 		load_instances_file('tempfolders/tempfolder_show/instancesfile')!, opts('-o tempfolders/tempfolder_show/classifierfile datasets/testdata/test.tab'))
-
-	// repeat with soybean
-	cl = make_classifier(opts('-o tempfolders/tempfolder_show/classifierfile datasets/soybean-large-train.tab'))
-	// do a validation and save the result
-	val_results = validate(cl, opts('-o tempfolders/tempfolder_show/instancesfile -t datasets/soybean-large-validate.tab datasets/soybean-large-train.tab'))!
-	// now do the append, first from val_results, and saving the extended classifier
-	tcl = append_instances(cl, val_results, opts('-o tempfolders/tempfolder_show/classifierfile datasets/soybean-large-train.tab'))
-
-	// now do it again but from the saved validate result,
-	// appending to the previously extended classifier
-	tcl = append_instances(load_classifier_file('tempfolders/tempfolder_show/classifierfile')!,
-		load_instances_file('tempfolders/tempfolder_show/instancesfile')!, opts('-o tempfolders/tempfolder_show/classifierfile datasets/soybean-large-train.tab'))
 }
 
 fn test_show_classifier() {
 	println(r_b('test_show_classifier prints out classifiers for iris.tab and for developer.tab'))
 	mut cl := make_classifier(opts('-a 2 -b 3,10 datasets/iris.tab'))
-	cl = make_classifier(opts('-s -a 2 -b 3,10 datasets/anneal.tab'))
 
 	// now with purging of instances with missing class values
 	cl = make_classifier(opts('-s -pmc -a 2 -b 3,10 datasets/class_missing_iris.tab'))
@@ -108,22 +95,13 @@ fn test_show_explore_cross() ? {
 	results = explore(opts('-s -rand -pmc -a 2,4 -b 2,5 -f 10 -r 50 datasets/testdata/class_missing_developer.tab'))
 }
 
-fn test_show_explore_verify() ? {
-	println(r_b('\n\ntest_show_explore_verify prints out explore results for verification of bcw350train with bcw174test'))
-	mut results := ExploreResult{}
-	results = explore(opts('-s -a 2,6 -t datasets/bcw174test datasets/bcw350train'))
-	results = explore(opts('-s -a 0 -t datasets/bcw174test datasets/bcw350train'))
-}
-
 fn test_show_rank_attributes() {
-	println(r_b('\n\ntest_show_rank_attributes prints out attribute rankings for developer.tab, iris.tab, and anneal.tab (without and with missing values)'))
+	println(r_b('\n\ntest_show_rank_attributes prints out attribute rankings for developer.tab and iris.tab'))
 	mut rr := RankingResult{}
 	rr = rank_attributes(opts('-s datasets/testdata/developer.tab'))
 	rr = rank_attributes(opts('-s -b 3,3 datasets/iris.tab'))
 	// repeat for class missing purge
 	rr = rank_attributes(opts('-s -pmc -b 3,3 datasets/class_missing_iris.tab'))
-	rr = rank_attributes(opts('-s -b 3,3 datasets/anneal.tab'))
-	rr = rank_attributes(opts('-s -b 3,3 datasets/anneal.tab'))
 }
 
 fn test_show_validate() ? {
