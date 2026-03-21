@@ -1,0 +1,24 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(v test:*)",
+      "Skill(update-config)",
+      "Bash(jq:*)",
+      "Bash(git add:*)"
+    ]
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "jq -r '.tool_input.file_path' | { read -r f; case \"$f\" in *.v) v fmt -w \"$f\" ;; esac; } 2>/dev/null || true",
+            "statusMessage": "Running v fmt..."
+          }
+        ]
+      }
+    ]
+  }
+}

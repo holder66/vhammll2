@@ -236,20 +236,11 @@ pub fn cli(cli_options CliOptions) ! {
 		60))} min ${math.fmod(duration.seconds(), 60):6.3f} sec')
 }
 
-// Cmd carries the command name used by opts() to set Options.command
-// when constructing an Options struct from a string.
-@[params]
-pub struct Cmd {
-pub mut:
-	cmd string
-}
-
-// opts takes a string of command line arguments and returns an Options struct
-// corresponding to the command line arguments.
-pub fn opts(s string, c Cmd) Options {
-	mut result := get_options(s.split(' '))
-	result.command = c.cmd
-	return result
+// opts takes a string of command line arguments and returns an Options struct.
+// Use this in tests and programmatic callers to avoid constructing Options{} by hand:
+//   result := cross_validate(opts('-a 2 -b 3,6 path/to/data.tab'))
+pub fn opts(s string) Options {
+	return get_options(s.split(' '))
 }
 
 // get_options fills an Options struct with values from the command line

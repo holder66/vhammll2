@@ -34,6 +34,9 @@ pub fn append_instances(cl Classifier, instances_to_append ValidateResult, opts 
 	// append needs to append the array of byte values for each new instance
 	// to cl.instances, and append the class value for each new instance
 	// cl.class_values, update the cl.class_counts map, and calculate a new lcm
+	// vhammll2 version requires to add the new instances to the original set of instances in 
+	// the classifier (ie before balancing prevalences) and then output a classifier with
+	// prevalences again balanced. Note that this is not yet implemented!
 	mut ext_cl := cl
 	history_event := HistoryEvent{
 		Environment:     get_environment()

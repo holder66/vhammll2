@@ -1,0 +1,134 @@
+module vhammll2
+
+import os
+
+fn testsuite_begin() ? {
+	if os.is_dir('tempfolders/tempfolder_make_classifier') {
+		os.rmdir_all('tempfolders/tempfolder_make_classifier')!
+	}
+	os.mkdir_all('tempfolders/tempfolder_make_classifier')!
+}
+
+fn testsuite_end() ? {
+	os.rmdir_all('tempfolders/tempfolder_make_classifier')!
+}
+
+fn test_max_ham_dist() {
+	mut cl := make_classifier(opts('datasets/developer.tab'))
+	assert max_ham_dist(cl.trained_attributes) == 3 + 12 + 10 + 10 + 12 + 7 + 5 + 5
+	cl = make_classifier(opts('-a 5 -b 3,3 datasets/developer.tab'))
+	assert max_ham_dist(cl.trained_attributes) == 3 + 7 + 5 + 5 + 3
+}
+
+fn test_make_classifier() ? {
+	mut cl := make_classifier(opts('-a 6 -b 2,12 datasets/developer.tab'))
+	assert cl.class_counts == {
+		'm': 8
+		'f': 3
+		'X': 2
+	}
+	assert cl.lcm_class_counts == 24
+	assert cl.maximum_hamming_distance == 54
+	cl = make_classifier(opts('-a 6 -b 2,12 datasets/class_missing_developer.tab'))
+	assert cl.class_counts == {
+		'm': 8
+		'':  1
+		'f': 3
+		'X': 2
+		'?': 1
+	}
+	assert cl.lcm_class_counts == 24
+
+	cl = make_classifier(opts('-pmc -a 6 -b 2,12 datasets/class_missing_developer.tab'))
+
+	cl = make_classifier(opts('-a 1 -b 5,5 datasets/leukemia34test.tab'))
+	assert cl.maximum_hamming_distance == 5
+	assert cl.class_counts == {
+		'ALL': 20
+		'AML': 14
+	}
+	assert cl.lcm_class_counts == 140
+	assert cl.prepurge_class_values_len == 34
+}
+
+fn test_switches_stored_in_trained_attributes() {
+	// Without -sw: sentinel value -1 is preserved for all trained attributes
+	cl := make_classifier(opts('-b 2,6 datasets/2_class_developer.tab'))
+	for _, ta in cl.trained_attributes {
+		assert ta.switches == -1
+	}
+	// With -sw on a 2-class dataset: continuous attrs get switches >= 0 (loose threshold
+	// of 100 ensures no bin count is excluded), discrete attrs retain -1
+	cl_sw := make_classifier(opts('-sw -swt 100 -b 2,6 datasets/2_class_developer.tab'))
+	for _, ta in cl_sw.trained_attributes {
+		if ta.attribute_type == 'C' {
+			assert ta.switches >= 0
+		} else {
+			assert ta.switches == -1
+		}
+	}
+	// With -sw on a multi-class dataset: class_counts.len > 2, so switches stays -1
+	cl_multi := make_classifier(opts('-sw -swt 100 -b 2,6 datasets/iris.tab'))
+	for _, ta in cl_multi.trained_attributes {
+		assert ta.switches == -1
+	}
+	// switches values in trained_attributes match what rank_attributes reports
+	// for the same attributes (leukemia38train: all-continuous, 2-class)
+	ranking := rank_attributes(opts('-sw -b 2,6 datasets/leukemia38train.tab'))
+	cl_leuk := make_classifier(opts('-sw -b 2,6 datasets/leukemia38train.tab'))
+	for ra in ranking.array_of_ranked_attributes {
+		assert cl_leuk.trained_attributes[ra.attribute_name].switches == ra.switches
+	}
+}
+
+fn test_make_translation_table() {
+	mut array := ['Montreal', 'Ottawa', 'Markham', 'Oakville', 'Oakville', 'Laval', 'Laval', 'Laval',
+		'Laval', 'Laval', 'Laval', 'Laval', 'Laval']
+	lo := LoadOptions{}
+	assert make_translation_table(array, lo.missings) == {
+		'Montreal': 1
+		'Ottawa':   2
+		'Markham':  3
+		'Oakville': 4
+		'Laval':    5
+	}
+	array = ['4', '5', '3', '?', '2', '4', '2', '4', '2', '4', '4', '3', '3']
+	assert make_translation_table(array, lo.missings) == {
+		'4': 1
+		'5': 2
+		'3': 3
+		'?': 0
+		'2': 4
+	}
+}
+
+fn test_save_classifier() ? {
+	outputfile := 'tempfolders/tempfolder_make_classifier/classifierfile'
+	mut cl := Classifier{}
+	mut tcl := Classifier{}
+
+	cl = make_classifier(opts('-a 6 -b 2,12 -o ${outputfile} datasets/developer.tab'))
+	tcl = load_classifier_file(outputfile)!
+	assert tcl.trained_attributes == cl.trained_attributes
+	assert tcl.instances == cl.instances
+
+	cl = make_classifier(opts('-a 6 -b 2,12 -o ${outputfile} datasets/anneal.tab'))
+	tcl = load_classifier_file(outputfile)!
+	assert tcl.trained_attributes == cl.trained_attributes
+	assert tcl.instances == cl.instances
+	assert tcl.maximum_hamming_distance == 32
+
+	cl = make_classifier(opts('-a 6 -b 2,12 -o ${outputfile} datasets/soybean-large-train.tab'))
+	tcl = load_classifier_file(outputfile)!
+	assert tcl.trained_attributes == cl.trained_attributes
+	assert tcl.instances == cl.instances
+	assert tcl.maximum_hamming_distance == 27
+
+	if get_environment().arch_details[0] != '4 cpus' {
+		cl = make_classifier(opts('-a 6 -b 2,12 -o ${outputfile} datasets/mnist_test.tab'))
+		tcl = load_classifier_file(outputfile)!
+		assert tcl.trained_attributes == cl.trained_attributes
+		assert tcl.instances == cl.instances
+		assert tcl.maximum_hamming_distance == 72
+	}
+}
