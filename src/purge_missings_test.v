@@ -19,7 +19,7 @@ fn test_purge_instances_for_missing_class_values() {
 		datafile_path:        'datasets/class_missing_iris.tab'
 	}
 	mut cl := make_classifier(opts)
-	assert cl.instances.len == 562
+	assert cl.instances.len == 142
 	opts.class_missing_purge_flag = true
 	mut pmcl := make_classifier(opts)
 	assert pmcl.instances.len == 142
@@ -28,7 +28,7 @@ fn test_purge_instances_for_missing_class_values() {
 	opts.datafile_path = 'datasets/testdata/class_missing_developer.tab'
 	opts.class_missing_purge_flag = false
 	cl = make_classifier(opts)
-	assert cl.instances.len == 77
+	assert cl.instances.len == 47
 	opts.class_missing_purge_flag = true
 	pmcl = make_classifier(opts)
 	assert pmcl.instances.len == 47

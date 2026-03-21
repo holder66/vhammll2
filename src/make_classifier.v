@@ -55,6 +55,11 @@ Options:
 // ```
 pub fn make_classifier(opts Options) Classifier {
 	mut ds := load_file(opts.datafile_path, opts.LoadOptions)
+	// purge instances with missing class values before evaluating imbalance,
+	// so they don't distort the threshold calculation or the balanced counts;
+	// when class_missing_purge_flag is true the loader already did this, so
+	// the call here is a no-op in that case
+	ds.purge_instances_for_missing_class_values()
 	// always balance prevalences when imbalance is detected
 	if evaluate_class_prevalence_imbalance(ds, opts) {
 		ds = balance_prevalences(mut ds, opts.balance_prevalences_threshold)

@@ -32,10 +32,8 @@ fn test_make_classifier() ? {
 	cl = make_classifier(opts('-a 6 -b 2,12 datasets/testdata/class_missing_developer.tab'))
 	assert cl.class_counts == {
 		'm': 16
-		'':  15
 		'f': 15
 		'X': 16
-		'?': 15
 	}
 	assert cl.lcm_class_counts == 0
 
