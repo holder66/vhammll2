@@ -1,4 +1,4 @@
-module perf
+module visual
 
 import vhammll2
 

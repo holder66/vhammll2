@@ -183,9 +183,13 @@ fn multiple_classifier_classify(classifier_array []Classifier, case [][]u8, labe
 	// collect the classes inferred by each classifier
 	// dump(mcr.results_by_classifier.map(it.inferred_class))
 	inferred_classes_by_classifier := mcr.results_by_classifier.map(it.inferred_class)
-	if inferred_classes_by_classifier.len > 1
-		&& uniques(inferred_classes_by_classifier.filter(it != '')).len > 1 {
-		final_cr.inferred_class = resolve_conflict(mcr, opts)
+	non_empty_inferred := inferred_classes_by_classifier.filter(it != '')
+	if non_empty_inferred.len > 0 {
+		if uniques(non_empty_inferred).len > 1 {
+			final_cr.inferred_class = resolve_conflict(mcr, opts)
+		} else {
+			final_cr.inferred_class = non_empty_inferred[0]
+		}
 	}
 	// final_cr.inferred_class_array = inferred_class_array
 	// final_cr.nearest_neighbors_array = nearest_neighbors_array

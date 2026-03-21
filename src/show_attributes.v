@@ -13,6 +13,10 @@ fn show_attributes_for_verify(result CrossVerifyResult) {
 }
 
 fn show_trained_attributes_for_one_classifier(result CrossVerifyResult) {
+	if result.trained_attribute_maps_array.len == 0 {
+		println(g_b('Trained attributes not available for this result type'))
+		return
+	}
 	println(g_b('Trained attributes for classifier on dataset "${result.datafile_path}"'))
 	show_trained_attributes(result.trained_attribute_maps_array[0], result.switches_flag
 		&& result.class_counts.len == 2)

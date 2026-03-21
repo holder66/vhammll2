@@ -595,7 +595,7 @@ fn c(s string) string {
 	return chlk(s, c_)
 }
 
-fn m_u(s string) string {
+pub fn m_u(s string) string {
 	return chlk(s, m_u)
 }
 
@@ -607,11 +607,11 @@ fn m(s string) string {
 	return chlk(s, m_)
 }
 
-fn g_b(s string) string {
+pub fn g_b(s string) string {
 	return chlk(s, g_b)
 }
 
-fn b_u(s string) string {
+pub fn b_u(s string) string {
 	return chlk(s, b_u)
 }
 
@@ -627,7 +627,7 @@ fn r(s string) string {
 	return chlk(s, r_)
 }
 
-fn r_b(s string) string {
+pub fn r_b(s string) string {
 	return chlk(s, r_b)
 }
 

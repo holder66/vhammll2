@@ -97,8 +97,12 @@ pub fn show_rank_attributes(result RankingResult) {
 	println('Add instances to balance class prevalences: ${result.balance_prevalences_flag}')
 	if result.balance_prevalences_flag {
 		println('${'Threshold: ':60}${result.balance_prevalences_threshold}')
-		println('${'class counts: ':60}${result.class_counts}   ratio: ${ratio(result.class_counts.values())}')
-		println('${'pre_balance_prevalences_class_counts: ':60}${result.pre_balance_prevalences_class_counts}   ratio: ${ratio(result.pre_balance_prevalences_class_counts.values())}')
+		if result.class_counts.len >= 2 {
+			println('${'class counts: ':60}${result.class_counts}   ratio: ${ratio(result.class_counts.values())}')
+		}
+		if result.pre_balance_prevalences_class_counts.len >= 2 {
+			println('${'pre_balance_prevalences_class_counts: ':60}${result.pre_balance_prevalences_class_counts}   ratio: ${ratio(result.pre_balance_prevalences_class_counts.values())}')
+		}
 	}
 	show_switches := result.switches_flag && result.class_counts.len == 2
 	if show_switches {
@@ -157,8 +161,12 @@ fn show_parameters(r ParametersForShow) {
 	println('${'Add instances to balance class prevalences: ':55}${r.balance_prevalences_flag}')
 	if r.balance_prevalences_flag {
 		println('${'Threshold: ':60}${r.balance_prevalences_threshold}')
-		println('${'class counts: ':60}${r.class_counts}   ratio: ${ratio(r.class_counts.values())}')
-		println('${'pre_balance_prevalences_class_counts: ':60}${r.pre_balance_prevalences_class_counts}   ratio: ${ratio(r.pre_balance_prevalences_class_counts.values())}')
+		if r.class_counts.len >= 2 {
+			println('${'class counts: ':60}${r.class_counts}   ratio: ${ratio(r.class_counts.values())}')
+		}
+		if r.pre_balance_prevalences_class_counts.len >= 2 {
+			println('${'pre_balance_prevalences_class_counts: ':60}${r.pre_balance_prevalences_class_counts}   ratio: ${ratio(r.pre_balance_prevalences_class_counts.values())}')
+		}
 		// println('${'train_dataset_class_counts: ':60}${r.train_dataset_class_counts}   ratio: ${ratio(r.train_dataset_class_counts.values())}')
 	}
 	println('${'Purging of instances with missing class values: ':55}${r.class_missing_purge_flag}')

@@ -1,4 +1,4 @@
-module vhammll2
+module visual
 
 import os
 
@@ -11,12 +11,13 @@ fn main() {
 }'
 
 fn testsuite_begin() ? {
+	os.execute('open -a "Firefox" --new --args -setDefaultBrowser')
 	os.chdir('..')!
 	mut f := os.create(os.abs_path('') + '/temp.v')!
 	f.write_string(main_text)!
 	f.close()
 
-	os.execute_or_panic('v -keepc run temp.v')
+	os.execute_or_panic('v temp.v')
 	if os.is_dir('tempfolders/tempfolder_plot') {
 		os.rmdir_all('tempfolders/tempfolder_plot')!
 	}
@@ -31,6 +32,7 @@ fn testsuite_end() ? {
 		os.rm('temp.v')!
 	}
 	os.rmdir_all('tempfolders/tempfolder_plot')!
+	os.execute('open -a "Safari" --new --args -setDefaultBrowser')
 }
 
 fn test_plot_roc() {

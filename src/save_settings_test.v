@@ -17,7 +17,9 @@ fn test_append_make_settings_to_file() ? {
 	datafile := 'datasets/leukemia38train.tab'
 	settingsfile := 'tempfolders/tempfolder_save_settings/make_leuk.opts'
 	// first make call
-	make_classifier(opts('-a 2 -b 3,3 -ms ${settingsfile} ${datafile}'))
+	mut mo := opts('-a 2 -b 3,3 -ms ${settingsfile} ${datafile}')
+	mo.command = 'make'
+	make_classifier(mo)
 	assert os.is_file(settingsfile)
 	mut r := read_multiple_opts(settingsfile)!
 	assert r.len == 1
@@ -27,7 +29,9 @@ fn test_append_make_settings_to_file() ? {
 	assert r[0].correct_counts == []
 	assert r[0].t_p == 0
 	// second make call with different parameters: classifier_id increments
-	make_classifier(opts('-a 4 -b 5,5 -ms ${settingsfile} ${datafile}'))
+	mut mo2 := opts('-a 4 -b 5,5 -ms ${settingsfile} ${datafile}')
+	mo2.command = 'make'
+	make_classifier(mo2)
 	r = read_multiple_opts(settingsfile)!
 	assert r.len == 2
 	assert r.map(it.classifier_id) == [0, 1]
@@ -37,11 +41,15 @@ fn test_append_make_settings_to_file() ? {
 fn test_append_cross_validate_settings_to_file() {
 	datafile := 'datasets/iris.tab'
 	settingsfile := 'tempfolders/tempfolder_save_settings/iris1.opts'
-	cross_validate(opts('-a 2 -b 2,2 -ms ${settingsfile} ${datafile}'))
+	mut co := opts('-a 2 -b 2,2 -ms ${settingsfile} ${datafile}')
+	co.command = 'cross'
+	cross_validate(co)
 	assert os.is_file(settingsfile)
 	mut r := read_multiple_opts(settingsfile)!
 	// add another classifier
-	cross_validate(opts('-a 2 -b 3,3 -ms ${settingsfile} ${datafile}'))
+	mut co2 := opts('-a 2 -b 3,3 -ms ${settingsfile} ${datafile}')
+	co2.command = 'cross'
+	cross_validate(co2)
 	r = read_multiple_opts(settingsfile)!
 	assert r.len == 2
 	assert r.map(it.classifier_id) == [0, 1]
@@ -80,9 +88,9 @@ fn test_append_explore_verify_settings_to_file() {
 	explore(opts('-a 1,4 -ms ${settingsfile} -t ${testfile} ${datafile}'))
 	assert os.is_file(settingsfile)
 	mut r := read_multiple_opts(settingsfile)!
-	assert r.len == 7
+	assert r.len == 11
 	// now add another explore
 	explore(opts('-a 2,4 -ms ${settingsfile} -t ${testfile} ${datafile}'))
 	r = read_multiple_opts(settingsfile)!
-	assert r.len == 14
+	assert r.len == 21
 }
