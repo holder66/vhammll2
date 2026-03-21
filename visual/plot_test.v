@@ -43,3 +43,42 @@ fn test_plot_roc() {
 	output = os.execute_or_panic('./temp display -g tempfolders/tempfolder_plot/bcw.opts')
 	assert output.output.contains('Listening on')
 }
+
+fn test_plot_rank() {
+	// exercises plot_rank with a multiclass dataset
+	output := os.execute_or_panic('./temp rank -g vhammll2/datasets/iris.tab')
+	assert output.output.contains('Listening on')
+}
+
+fn test_plot_switches() {
+	// exercises plot_switches: rank with -sw flag on a 2-class dataset
+	output := os.execute_or_panic('./temp rank -g -sw vhammll2/datasets/bcw350train')
+	assert output.output.contains('Listening on')
+}
+
+fn test_plot_hits() {
+	// exercises plot_hits: triggered by -of flag (not -g); limit to 1 continuous
+	// attribute and 2 bin counts to keep the number of browser windows small
+	output := os.execute_or_panic('./temp rank -of -b 2,3 -lc 1 vhammll2/datasets/iris.tab')
+	assert output.output.contains('Listening on')
+}
+
+fn test_plot_explore_cross() {
+	// exercises plot_explore with cross-validation (no -t flag)
+	output := os.execute_or_panic('./temp explore -g -a 1,3 -b 2,4 vhammll2/datasets/iris.tab')
+	assert output.output.contains('Listening on')
+}
+
+fn test_plot_optimals_roc() {
+	// exercises plot_mult_roc via the optimals command;
+	// reuses the bcw.opts settings file generated in test_plot_roc
+	output := os.execute_or_panic('./temp optimals -g tempfolders/tempfolder_plot/bcw.opts')
+	assert output.output.contains('Listening on')
+}
+
+fn test_plot_auc_combinations() {
+	// exercises plot_auc_combinations via optimals with -cl (combination limits) flag;
+	// reuses the bcw.opts settings file generated in test_plot_roc
+	output := os.execute_or_panic('./temp optimals -g -cl 2,4 tempfolders/tempfolder_plot/bcw.opts')
+	assert output.output.contains('Listening on')
+}
