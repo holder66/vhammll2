@@ -1,6 +1,7 @@
-module vhammll2
+module perf
 
 import os
+import vhammll2
 
 fn testsuite_begin() ! {
 	if os.is_dir('tempfolders/tempfolder_append_perf') {
@@ -14,26 +15,26 @@ fn testsuite_end() ! {
 }
 
 fn test_append_perf() ! {
-	mut opts := Options{
+	mut o := vhammll2.Options{
 		command: 'append'
 	}
 
-	mut cl := Classifier{}
-	mut tcl := Classifier{}
-	mut val_results := ValidateResult{}
+	mut cl := vhammll2.Classifier{}
+	mut tcl := vhammll2.Classifier{}
+	mut val_results := vhammll2.ValidateResult{}
 
 	// test with the soybean files
 	// create the classifier file and save it
-	opts.outputfile_path = 'tempfolders/tempfolder_append_perf/classifierfile'
-	opts.datafile_path = 'datasets/soybean-large-train.tab'
-	cl = make_classifier(opts)
+	o.outputfile_path = 'tempfolders/tempfolder_append_perf/classifierfile'
+	o.datafile_path = 'datasets/soybean-large-train.tab'
+	cl = vhammll2.make_classifier(o)
 	// do a validation and save the result
-	opts.outputfile_path = 'tempfolders/tempfolder_append_perf/instancesfile'
-	opts.testfile_path = 'datasets/soybean-large-validate.tab'
-	val_results = validate(cl, opts)!
+	o.outputfile_path = 'tempfolders/tempfolder_append_perf/instancesfile'
+	o.testfile_path = 'datasets/soybean-large-validate.tab'
+	val_results = vhammll2.validate(cl, o)!
 	// now do the append
-	opts.outputfile_path = 'tempfolders/tempfolder_append_perf/extended_classifierfile'
-	tcl = append_instances(cl, val_results, opts)
+	o.outputfile_path = 'tempfolders/tempfolder_append_perf/extended_classifierfile'
+	tcl = vhammll2.append_instances(cl, val_results, o)
 	assert tcl.class_counts == {
 		'diaporthe-stem-canker':       300
 		'charcoal-rot':                300
@@ -57,7 +58,7 @@ fn test_append_perf() ! {
 	}
 
 	// test if the appended classifier works as a classifier
-	opts.testfile_path = 'datasets/soybean-large-test.tab'
-	opts.classifierfile_path = 'tempfolders/tempfolder_append_perf/extended_classifierfile'
-	verify(opts)
+	o.testfile_path = 'datasets/soybean-large-test.tab'
+	o.classifierfile_path = 'tempfolders/tempfolder_append_perf/extended_classifierfile'
+	vhammll2.verify(o)
 }
