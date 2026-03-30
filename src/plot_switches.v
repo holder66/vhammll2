@@ -10,8 +10,8 @@ import vsl.plot
 // result.switches_threshold.  Returns immediately without opening a browser
 // window when no continuous attributes have switch data (e.g. discrete-only
 // datasets or multi-class datasets where switches are not computed).
-// Called by rank_attributes when both -g and -sw are active and the dataset
-// is binary (classes.len == 2).
+// Called by rank_attributes when -g is active and -nsw is not set and the
+// dataset is binary (classes.len == 2).
 fn plot_switches(result RankingResult) {
 	mut x := []f64{}
 	for i in result.binning.lower .. result.binning.upper + 1 {

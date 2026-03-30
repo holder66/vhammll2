@@ -194,10 +194,11 @@ pub mut:
 	number_of_attributes []int = [0]
 	uniform_bins         bool
 	// switches_flag enables the dominant-class switch metric for 2-class
-	// datasets during attribute ranking (-sw / --switches). When true, bin
-	// counts whose switch count exceeds switches_threshold are excluded from
-	// the search for the maximum rank value; attributes where every bin count
-	// exceeds the threshold receive rank value 0 (treated as noise).
+	// datasets during attribute ranking (on by default; disable with -nsw /
+	// --no-switches). When true, bin counts whose switch count exceeds
+	// switches_threshold are excluded from the search for the maximum rank
+	// value; attributes where every bin count exceeds the threshold receive
+	// rank value 0 (treated as noise).
 	switches_flag bool
 	// switches_threshold sets the maximum permitted number of dominant-class
 	// switches per bin count when switches_flag is active (-swt). Valid values

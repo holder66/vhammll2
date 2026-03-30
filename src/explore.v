@@ -82,10 +82,6 @@ pub fn explore(opts Options) ExploreResult {
 
 fn run_explore(opts Options) ExploreResult {
 	mut ds := load_file(opts.datafile_path, opts.LoadOptions)
-	// always balance prevalences when imbalance is detected
-	if evaluate_class_prevalence_imbalance(ds, opts) {
-		ds = balance_prevalences(mut ds, opts.balance_prevalences_threshold)
-	}
 	mut ex_opts := opts
 	mut results := ExploreResult{
 		Parameters:      opts.Parameters

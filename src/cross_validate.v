@@ -93,7 +93,15 @@ fn multi_classify_balance_prevalence(opts Options) bool {
 // outputfile_path: saves the result as a json file.
 // ```
 pub fn cross_validate(opts Options) CrossVerifyResult {
-	mut ds := load_file(opts.datafile_path, opts.LoadOptions)
+	if opts.one_vs_rest_flag {
+		return one_vs_rest_cross_validate(opts)
+	}
+	// auto-detect multiclass and use one-vs-rest
+	ds_check := load_file(opts.datafile_path, opts.LoadOptions)
+	if ds_check.classes.len > 2 {
+		return one_vs_rest_cross_validate(opts)
+	}
+	mut ds := ds_check
 	// always balance prevalences when imbalance is detected, or if any multiple classifier
 	// settings file requires it
 	if evaluate_class_prevalence_imbalance(ds, opts) || multi_classify_balance_prevalence(opts) {

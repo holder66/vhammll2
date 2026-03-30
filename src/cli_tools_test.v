@@ -102,7 +102,7 @@ fn test_get_options() {
 	assert !o.graph_flag
 	assert !o.show_flag
 	assert !o.traverse_all_flags
-	assert !o.switches_flag
+	assert o.switches_flag
 	assert !o.uniform_bins
 	assert !o.show_attributes_flag
 	assert !o.multiple_flag
@@ -153,8 +153,8 @@ fn test_get_options() {
 	assert o.traverse_all_flags
 	o = get_options(['-g', 'datasets/iris.tab'])
 	assert o.graph_flag
-	o = get_options(['-sw', 'datasets/iris.tab'])
-	assert o.switches_flag
+	o = get_options(['-nsw', 'datasets/iris.tab'])
+	assert !o.switches_flag
 	o = get_options(['-u', 'datasets/iris.tab'])
 	assert o.uniform_bins
 	o = get_options(['-s', 'datasets/iris.tab'])
@@ -183,8 +183,8 @@ fn test_get_options() {
 	assert o.traverse_all_flags
 	o = get_options(['--graph', 'datasets/iris.tab'])
 	assert o.graph_flag
-	o = get_options(['--switches', 'datasets/iris.tab'])
-	assert o.switches_flag
+	o = get_options(['--no-switches', 'datasets/iris.tab'])
+	assert !o.switches_flag
 	o = get_options(['--uniform', 'datasets/iris.tab'])
 	assert o.uniform_bins
 	o = get_options(['--short', 'datasets/iris.tab'])
@@ -314,8 +314,8 @@ fn test_get_options() {
 	assert o.multi_strategy == 'totalnn'
 
 	// --- combined multi-option invocation ---
-	o = get_options(['-g', '-sw', '-u', '-s', '-mr', '-rand', '-a', '4', '-b', '2,8', '-f', '5',
-		'-r', '3', '-swt', '4', '-bpt', '0.6', '-pos', 'malignant', '-t',
+	o = get_options(['-g', '-u', '-s', '-mr', '-rand', '-a', '4', '-b', '2,8', '-f', '5', '-r',
+		'3', '-swt', '4', '-bpt', '0.6', '-pos', 'malignant', '-t',
 		'datasets/testdata/test_verify.tab', '-o', '/tmp/result.json', '-k', '/tmp/cl.json',
 		'datasets/iris.tab'])
 	assert o.graph_flag

@@ -39,8 +39,8 @@ fn test_multiple_classifier_verify_totalnn() ? {
 			'AML': 1.0
 		}
 		'AML': {
-			'ALL': 7.0
-			'AML': 7.0
+			'ALL': 6.0
+			'AML': 8.0
 		}
 	}
 	println(r_b('Next, verify that the settings file was saved, and display it:'))

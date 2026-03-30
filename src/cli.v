@@ -258,7 +258,7 @@ fn get_options(args []string) Options {
 	}
 	opts.traverse_all_flags = flag(args, ['-af', '--all-flags'])
 	opts.graph_flag = flag(args, ['-g', '--graph'])
-	opts.switches_flag = flag(args, ['-sw', '--switches'])
+	opts.switches_flag = !flag(args, ['-nsw', '--no-switches'])
 	if option(args, ['-swt', '--switch-threshold']) != '' {
 		opts.switches_threshold = option(args, ['-swt', '--switch-threshold']).int()
 	}

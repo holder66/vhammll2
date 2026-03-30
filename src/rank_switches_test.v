@@ -1,6 +1,6 @@
 module vhammll2
 
-// Tests for count_switches and the -sw / -swt behaviour in rank_attributes.
+// Tests for count_switches and the -nsw / -swt behaviour in rank_attributes.
 
 // ---------------------------------------------------------------------------
 // count_switches — pure unit tests using hand-constructed hits arrays

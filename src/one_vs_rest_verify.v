@@ -54,18 +54,38 @@ pub fn one_vs_rest_verify(opts Options) CrossVerifyResult {
 			'not_${class}'
 		})
 		one_vs_rest_ds.class_counts = element_counts(one_vs_rest_ds.class_values)
+		if evaluate_class_prevalence_imbalance(one_vs_rest_ds, opts) {
+			one_vs_rest_ds = balance_prevalences(mut one_vs_rest_ds, opts.balance_prevalences_threshold)
+			// balance_prevalences rebuilds class_values from data (original labels)
+			// — remap to binary labels
+			one_vs_rest_ds.class_values = one_vs_rest_ds.class_values.map(if it == class {
+				it
+			} else {
+				'not_${class}'
+			})
+			one_vs_rest_ds.class_counts = element_counts(one_vs_rest_ds.class_values)
+		}
 		mut one_vs_rest_cl := make_classifier_using_ds(mut one_vs_rest_ds, opts)
 		one_vs_rest_cl_array << one_vs_rest_cl
 	}
 
 	mut cases := [][]u8{}
 	mut inferred_classes := []string{len: test_ds.class_values.len}
-	for classifier in one_vs_rest_cl_array {
+	mut best_scores := []f32{len: test_ds.class_values.len, init: f32(-1.0)}
+	for ci, classifier in one_vs_rest_cl_array {
 		cases = generate_case_array(classifier, test_ds)
 		for j, case in cases {
-			inf_class := classify_case(classifier, case, opts).inferred_class
-			if !inf_class.contains('not_') {
-				inferred_classes[j] = inf_class
+			res := classify_case(classifier, case, opts)
+			total := array_sum(res.nearest_neighbors_by_class)
+			if total == 0 {
+				continue
+			}
+			// classes[0] is always the positive class; score it by its
+			// share of nearest neighbors at the winning Hamming radius
+			score := f32(res.nearest_neighbors_by_class[0]) / f32(total)
+			if score > best_scores[j] {
+				best_scores[j] = score
+				inferred_classes[j] = ds.classes[ci]
 			}
 		}
 	}

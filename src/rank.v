@@ -23,9 +23,9 @@ Options:
   -b --bins, eg, "3,6" specifies the lower and upper limits for the number
       of slices or bins for continuous attributes [Options.bins]
   -g --graph, produce a plot showing rank values vs number of bins for
-      continuous attributes; if -sw is also set on a binary dataset, a second
-      plot of dominant-class switches vs bins is shown alongside; no plot is
-      produced when the dataset has no continuous attributes
+      continuous attributes; for binary datasets, a second plot of
+      dominant-class switches vs bins is shown alongside unless -nsw is set;
+      no plot is produced when the dataset has no continuous attributes
       [DisplaySettings.graph_flag]
   -l --limit-output, followed by an integer which specifies how many
       attributes (discrete and continuous) should be included in the console
@@ -39,15 +39,15 @@ Options:
   -exr --explore-rank, followed by eg "2,7", will repeat the ranking
   		exercise over the binning range from 2 through 7 [Options.explore_rank]
   -u --uniform, uses uniform binning over all attributes [Parameters.uniform_bins]
-  -sw --switches, enables the dominant-class switch metric for 2-class
-      datasets: bin counts whose switch count exceeds the threshold are
-      excluded when searching for the maximum rank value; attributes where
-      every bin count exceeds the threshold receive rank value 0; combine
-      with -g to display the switches-vs-bins plot [Parameters.switches_flag]
+  -nsw --no-switches, disables the dominant-class switch metric for 2-class
+      datasets (on by default): when active, bin counts whose switch count
+      exceeds the threshold are excluded when searching for the maximum rank
+      value; attributes where every bin count exceeds the threshold receive
+      rank value 0; combine -g with the default (no -nsw) to display the
+      switches-vs-bins plot [Parameters.switches_flag]
   -swt --switch-threshold, followed by an integer (default 2, min 1, max
-      upper binning limit); sets the switch count threshold used when -sw is
-      active; drawn as a dashed reference line when -g is also set
-      [Parameters.switches_threshold]
+      upper binning limit); sets the switch count threshold; drawn as a
+      dashed reference line when -g is also set [Parameters.switches_threshold]
   -pmc --purge-missing-classes, removes instances whose class value is
       missing before ranking [LoadOptions.class_missing_purge_flag]
 

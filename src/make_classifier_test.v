@@ -50,30 +50,30 @@ fn test_make_classifier() ? {
 }
 
 fn test_switches_stored_in_trained_attributes() {
-	// Without -sw: sentinel value -1 is preserved for all trained attributes
-	cl := make_classifier(opts('-b 2,6 datasets/testdata/2_class_developer.tab'))
-	for _, ta in cl.trained_attributes {
-		assert ta.switches == -1
-	}
-	// With -sw on a 2-class dataset: continuous attrs get switches >= 0 (loose threshold
+	// Default (switches on): continuous attrs get switches >= 0 (loose threshold
 	// of 100 ensures no bin count is excluded), discrete attrs retain -1
-	cl_sw := make_classifier(opts('-sw -swt 100 -b 2,6 datasets/testdata/2_class_developer.tab'))
-	for _, ta in cl_sw.trained_attributes {
+	cl := make_classifier(opts('-swt 100 -b 2,6 datasets/testdata/2_class_developer.tab'))
+	for _, ta in cl.trained_attributes {
 		if ta.attribute_type == 'C' {
 			assert ta.switches >= 0
 		} else {
 			assert ta.switches == -1
 		}
 	}
-	// With -sw on a multi-class dataset: class_counts.len > 2, so switches stays -1
-	cl_multi := make_classifier(opts('-sw -swt 100 -b 2,6 datasets/iris.tab'))
+	// With -nsw: sentinel value -1 is preserved for all trained attributes
+	cl_nsw := make_classifier(opts('-nsw -b 2,6 datasets/testdata/2_class_developer.tab'))
+	for _, ta in cl_nsw.trained_attributes {
+		assert ta.switches == -1
+	}
+	// On a multi-class dataset: class_counts.len > 2, so switches stays -1
+	cl_multi := make_classifier(opts('-swt 100 -b 2,6 datasets/iris.tab'))
 	for _, ta in cl_multi.trained_attributes {
 		assert ta.switches == -1
 	}
 	// switches values in trained_attributes match what rank_attributes reports
 	// for the same attributes (leukemia38train: all-continuous, 2-class)
-	ranking := rank_attributes(opts('-sw -b 2,6 datasets/leukemia38train.tab'))
-	cl_leuk := make_classifier(opts('-sw -b 2,6 datasets/leukemia38train.tab'))
+	ranking := rank_attributes(opts('-b 2,6 datasets/leukemia38train.tab'))
+	cl_leuk := make_classifier(opts('-b 2,6 datasets/leukemia38train.tab'))
 	for ra in ranking.array_of_ranked_attributes {
 		assert cl_leuk.trained_attributes[ra.attribute_name].switches == ra.switches
 	}

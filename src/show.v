@@ -494,7 +494,12 @@ fn show_multiple_classes_stats(result CrossVerifyResult) {
 	for i, class in result.classes {
 		show_result << '    ${class:-27}   ${result.labeled_instances[class]:5}   ${result.correct_inferences[class]:5} (${f32(result.correct_inferences[class]) * 100 / result.labeled_instances[class]:6.2f}%)        ${m.precision[i]:5.3f}     ${m.recall[i]:5.3f}       ${m.f1_score[i]:5.3f}'
 	}
-	show_result << '        Totals                    ${result.total_count:5}   ${result.correct_count:5} (accuracy: raw:${result.raw_acc:6.2f}% balanced:${result.balanced_accuracy:6.2f}%)'
+	raw_acc := if result.total_count > 0 {
+		f64(result.correct_count) * 100.0 / f64(result.total_count)
+	} else {
+		0.0
+	}
+	show_result << '        Totals                    ${result.total_count:5}   ${result.correct_count:5} (accuracy: raw:${raw_acc:6.2f}% balanced:${result.balanced_accuracy:6.2f}%)'
 	for i, avg_type in m.avg_type {
 		show_result << '${avg_type.title():20} Averages:                                   ${m.avg_precision[i]:5.3f}     ${m.avg_recall[i]:5.3f}       ${m.avg_f1_score[i]:5.3f}'
 	}

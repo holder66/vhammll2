@@ -22,11 +22,11 @@ Options:
   -ms: followed by the path to a settings file; appends the classifier
       settings to that file for later use in multiple classification;
   -o --output: followed by the path to a file in which the classifier will be stored;
-  -sw --switches: use the dominant-class switch count when ranking attributes
-      (2-class datasets only); bin counts whose switch count exceeds the
+  -nsw --no-switches: disable the dominant-class switch metric (on by default
+      for 2-class datasets); bin counts whose switch count exceeds the
       threshold are excluded from the rank value search;
-  -swt --switch-threshold: maximum permitted switches per bin count when
-      -sw is active (default 2);
+  -swt --switch-threshold: maximum permitted switches per bin count
+      (default 2);
   -pmc --purge-missing-classes: remove instances whose class value is
       missing before training the classifier;
     '

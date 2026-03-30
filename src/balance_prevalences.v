@@ -12,18 +12,23 @@ fn evaluate_class_prevalence_imbalance(ds Dataset, opts Options) bool {
 }
 
 fn balance_prevalences(mut ds Dataset, threshold f64) Dataset {
+	ds, _ = balance_prevalences_with_mapping(mut ds, threshold)
+	return ds
+}
+
+// balance_prevalences_with_mapping balances class prevalences and also returns
+// a mapping slice where mapping[balanced_idx] = original_idx, so callers can
+// trace each balanced instance back to the original dataset row it came from.
+fn balance_prevalences_with_mapping(mut ds Dataset, threshold f64) (Dataset, []int) {
 	ds.pre_balance_prevalences_class_counts = ds.class_counts.clone()
 	mut transposed_data := transpose(ds.data)
 
-	// new version using arrays
 	mut new_class_counts_array := ds.class_counts.values()
-	// initialize multipliers, including changing 0's to 1's
 	mut multipliers := ([]int{len: new_class_counts_array.len, init: (array_sum(new_class_counts_array) - new_class_counts_array[index]) / new_class_counts_array[index]}).map(if it == 0 {
 		1
 	} else {
 		it
 	})
-	// determine if the threshold condition is met
 	for {
 		new_class_counts_array = array_multiply(ds.class_counts.values(), multipliers)
 		if (f64(array_min(new_class_counts_array)) / f64(array_max(new_class_counts_array))) >= threshold {
@@ -45,16 +50,16 @@ fn balance_prevalences(mut ds Dataset, threshold f64) Dataset {
 	for key, _ in multipliers_map {
 		new_class_data_indices_map[key] = idxs_match(ds.class_values, key)
 	}
-	// strip off first element in each array, as it is set to 0 when the map was created
 	for _, mut val in new_class_data_indices_map {
 		val.delete(0)
 	}
-	// create a new set of data rows
 	mut new_data := [][]string{}
+	mut mapping := []int{}
 	for class, multiplier in multipliers_map {
 		for _ in 0 .. multiplier {
 			for idx in new_class_data_indices_map[class] {
 				new_data << transposed_data[idx]
+				mapping << idx
 			}
 		}
 	}
@@ -63,5 +68,5 @@ fn balance_prevalences(mut ds Dataset, threshold f64) Dataset {
 	ds.class_counts = element_counts(ds.class_values)
 	ds.useful_continuous_attributes = get_useful_continuous_attributes(ds)
 	ds.useful_discrete_attributes = get_useful_discrete_attributes(ds)
-	return ds
+	return ds, mapping
 }
