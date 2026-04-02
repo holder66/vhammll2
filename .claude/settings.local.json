@@ -5,7 +5,25 @@
       "Skill(update-config)",
       "Bash(jq:*)",
       "Bash(git add:*)",
-      "Bash(git commit:*)"
+      "Bash(git commit:*)",
+      "Bash(grep -h \"datasets/\" /Users/henryolders/use_vhammll/vhammll2/src/*_test.v)",
+      "Bash(wc -l /Users/henryolders/use_vhammll/vhammll2/datasets/*.tab /Users/henryolders/use_vhammll/vhammll2/datasets/*.csv /Users/henryolders/use_vhammll/vhammll2/datasets/*.arff /Users/henryolders/use_vhammll/vhammll2/datasets/bcw* /Users/henryolders/use_vhammll/vhammll2/datasets/UCI/*.arff)",
+      "Bash(v fmt:*)",
+      "Bash(grep -v \"^$\")",
+      "Bash(grep -n \"datasets/\" /Users/henryolders/use_vhammll/vhammll2/src/*_test.v)",
+      "Bash(git rm:*)",
+      "Bash(grep -rn \"fn multi_verify\\\\|confusion_matrix_map\" src/*.v)",
+      "Bash(ls /Users/henryolders/use_vhammll/vhammll2/src/*.v)",
+      "Bash(grep:*)",
+      "Bash(v build:*)",
+      "Bash(v visual/plot_test.v)",
+      "Bash(v:*)",
+      "Read(//Users/henryolders/use_vhammll/vhammll/**)",
+      "Bash(cp /Users/henryolders/use_vhammll/vhammll/docs/classification_results_with_public_datasets.numbers /Users/henryolders/use_vhammll/vhammll2/docs/)",
+      "Bash(cp /Users/henryolders/use_vhammll/vhammll/docs/classification_results_with_public_datasets.numbers.pdf /Users/henryolders/use_vhammll/vhammll2/docs/)",
+      "Bash(cp /Users/henryolders/use_vhammll/vhammll/docs/description_of_attribute_ranking_algorithm.numbers /Users/henryolders/use_vhammll/vhammll2/docs/)",
+      "Bash(cp /Users/henryolders/use_vhammll/vhammll/docs/description_of_classification_algorithm.numbers /Users/henryolders/use_vhammll/vhammll2/docs/)",
+      "Bash(ls /Users/henryolders/use_vhammll/vhammll2/datasets/*.tab)"
     ]
   },
   "hooks": {

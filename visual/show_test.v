@@ -50,8 +50,7 @@ fn test_show_append() ? {
 	// now do it again but from the saved validate result,
 	// appending to the previously extended classifier
 	tcl = vhammll2.append_instances(vhammll2.load_classifier_file('tempfolders/tempfolder_show/classifierfile')!,
-		vhammll2.load_instances_file('tempfolders/tempfolder_show/instancesfile')!,
-		vhammll2.opts('-o tempfolders/tempfolder_show/classifierfile datasets/testdata/test.tab'))
+		vhammll2.load_instances_file('tempfolders/tempfolder_show/instancesfile')!, vhammll2.opts('-o tempfolders/tempfolder_show/classifierfile datasets/testdata/test.tab'))
 }
 
 fn test_show_classifier() {

@@ -87,7 +87,8 @@ fn show_explore_trailer(results ExploreResult, analytics map[string]Analytics, o
 
 // get_purged_percent
 fn get_purged_percent(result CrossVerifyResult) (f64, f64, f64) {
-	if result.prepurge_instances_counts_array.len == 0 || result.classifier_instances_counts.len == 0 {
+	if result.prepurge_instances_counts_array.len == 0
+		|| result.classifier_instances_counts.len == 0 {
 		return 0, 0, 0
 	}
 	total_count_avg := arrays.sum(result.prepurge_instances_counts_array) or { panic(err) } / f64(result.prepurge_instances_counts_array.len)

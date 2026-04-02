@@ -43,5 +43,4 @@ fn test_verify() ? {
 	cl = make_classifier(opts('-a 4 -b 2,4 -o tempfolders/tempfolder_verify/classifierfile datasets/bcw350train'))
 	assert result.BinaryMetrics == verify(opts('-a 4 -b 2,4 -k tempfolders/tempfolder_verify/classifierfile -t datasets/bcw174test datasets/bcw350train')).BinaryMetrics
 	println(r_b('Done with bcw350train using saved classifier'))
-
 }

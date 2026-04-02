@@ -73,8 +73,7 @@ pub fn one_vs_rest_cross_validate(opts Options) CrossVerifyResult {
 			// balance before folding (mirrors cross_validate for binary datasets)
 			mut mapping := []int{len: bin_ds.class_values.len, init: index}
 			if evaluate_class_prevalence_imbalance(bin_ds, cross_opts) {
-				bin_ds, mapping = balance_prevalences_with_mapping(mut bin_ds,
-					cross_opts.balance_prevalences_threshold)
+				bin_ds, mapping = balance_prevalences_with_mapping(mut bin_ds, cross_opts.balance_prevalences_threshold)
 				// balance_prevalences_with_mapping rebuilds class_values from data,
 				// which still has original class labels — remap to binary labels
 				bin_ds.class_values = bin_ds.class_values.map(if it == class {

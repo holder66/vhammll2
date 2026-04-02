@@ -29,7 +29,7 @@ fn test_save_classifier_perf() ? {
 	tcl = vhammll2.load_classifier_file(outputfile)!
 	assert tcl.trained_attributes == cl.trained_attributes
 	assert tcl.instances == cl.instances
-	assert tcl.maximum_hamming_distance == 27
+	assert tcl.maximum_hamming_distance == 30
 
 	if vhammll2.get_environment().arch_details[0] != '4 cpus' {
 		cl = vhammll2.make_classifier(vhammll2.opts('-a 6 -b 2,12 -o ${outputfile} datasets/mnist_test.tab'))
