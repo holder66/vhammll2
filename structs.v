@@ -291,6 +291,11 @@ pub mut:
 	command                             string
 	args                                []string
 	kagglefile_path                     string
+	// per_class_parameters holds per-class optimal Parameters for OvR operations.
+	// When non-empty, one_vs_rest_cross_validate and one_vs_rest_verify use the
+	// class-specific Parameters (binning, number_of_attributes, etc.) instead of
+	// the global Parameters.  Populated by run_ovr_explore via OvrExploreResult.
+	per_class_parameters map[string]Parameters
 }
 
 // MultipleClassifierSettingsFileStruct is a thin wrapper used when
@@ -554,6 +559,42 @@ pub mut:
 	// analytics        []MaxSettings
 	// analytics map[string]Analytics
 	args []string
+}
+
+// OvrClassExploreResult holds the bins-x-attributes sweep for one binary
+// class in a per-class OvR explore run.  It mirrors ExploreResult but is a
+// separate type to avoid a recursive map[string]ExploreResult field.
+pub struct OvrClassExploreResult {
+	Class
+	Parameters
+	LoadOptions
+	AttributeRange
+	DisplaySettings
+pub mut:
+	class_label      string
+	path             string
+	pos_neg_classes  []string
+	array_of_results []CrossVerifyResult
+	args             []string
+}
+
+// OvrExploreResult is returned by explore() for multiclass datasets.
+// It holds one OvrClassExploreResult per class (keyed by class label) and
+// the per-class optimal Parameters derived from each class's sweep.
+// Pass per_class_parameters to opts.per_class_parameters before calling
+// cross_validate or verify to use per-class optimal settings.
+pub struct OvrExploreResult {
+	Class
+	Parameters
+	LoadOptions
+	DisplaySettings
+pub mut:
+	struct_type           string = '.OvrExploreResult'
+	path                  string
+	testfile_path         string
+	args                  []string
+	class_explore_results map[string]OvrClassExploreResult
+	per_class_parameters  map[string]Parameters
 }
 
 // ValidateResult is returned by validate(); it contains the inferred

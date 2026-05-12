@@ -84,7 +84,12 @@ pub fn one_vs_rest_cross_validate(opts Options) CrossVerifyResult {
 				bin_ds.class_counts = element_counts(bin_ds.class_values)
 			}
 
-			binary_cross_validate(bin_ds, mapping, class, cross_opts, mut best_scores, mut
+			// use per-class optimal parameters if provided by a prior OvR explore
+			mut class_opts := cross_opts
+			if class in cross_opts.per_class_parameters {
+				class_opts.Parameters = cross_opts.per_class_parameters[class]
+			}
+			binary_cross_validate(bin_ds, mapping, class, class_opts, mut best_scores, mut
 				rep_inferred, mut cross_result)
 		}
 

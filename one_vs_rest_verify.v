@@ -65,7 +65,12 @@ pub fn one_vs_rest_verify(opts Options) CrossVerifyResult {
 			})
 			one_vs_rest_ds.class_counts = element_counts(one_vs_rest_ds.class_values)
 		}
-		mut one_vs_rest_cl := make_classifier_using_ds(mut one_vs_rest_ds, opts)
+		// use per-class optimal parameters if provided by a prior OvR explore
+		mut class_opts := opts
+		if class in opts.per_class_parameters {
+			class_opts.Parameters = opts.per_class_parameters[class]
+		}
+		mut one_vs_rest_cl := make_classifier_using_ds(mut one_vs_rest_ds, class_opts)
 		one_vs_rest_cl_array << one_vs_rest_cl
 	}
 

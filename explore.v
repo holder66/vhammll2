@@ -82,6 +82,16 @@ pub fn explore(opts Options) ExploreResult {
 
 fn run_explore(opts Options) ExploreResult {
 	mut ds := load_file(opts.datafile_path, opts.LoadOptions)
+	// dispatch to per-class OvR explore for multiclass datasets
+	if ds.classes.len > 2 {
+		run_ovr_explore(ds, opts)
+		return ExploreResult{
+			Class:       ds.Class
+			Parameters:  opts.Parameters
+			LoadOptions: ds.LoadOptions
+			path:        ds.path
+		}
+	}
 	mut ex_opts := opts
 	mut results := ExploreResult{
 		Parameters:      opts.Parameters

@@ -74,11 +74,12 @@ fn test_append_explore_cross_settings_to_file() {
 	explore(opts('-a 1,4 -b 2,7 -ms ${settingsfile} ${datafile}'))
 	assert os.is_file(settingsfile)
 	mut r := read_multiple_opts(settingsfile)!
-	assert r.len == 9
+	// per-class OvR explore: 3 classes × 7 binary analytics entries = 21
+	assert r.len == 21
 	// now add another explore
 	explore(opts('-a 1,4 -b 2,7 -ms ${settingsfile} ${datafile}'))
 	r = read_multiple_opts(settingsfile)!
-	assert r.len == 18
+	assert r.len == 42
 }
 
 fn test_append_explore_verify_settings_to_file() {

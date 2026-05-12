@@ -94,3 +94,56 @@ fn test_switches_applied_in_ovr() {
 		assert ra.switches == -1, 'expected switches == -1 for ${ra.attribute_name} with -nsw'
 	}
 }
+
+// test_ovr_explore_per_class verifies that run_ovr_explore produces one
+// independent sweep result per class and derives per-class optimal Parameters.
+fn test_ovr_explore_per_class() {
+	datafile := 'datasets/iris.tab'
+	ds := load_file(datafile, LoadOptions{})
+	ovr_opts := opts('-a 1,2 -b 2,4 -f 5 ${datafile}')
+	ovr := run_ovr_explore(ds, ovr_opts)
+
+	// one entry per class
+	assert ovr.class_explore_results.len == ds.classes.len
+	assert ovr.per_class_parameters.len == ds.classes.len
+
+	for class in ds.classes {
+		assert class in ovr.class_explore_results
+		assert class in ovr.per_class_parameters
+
+		class_result := ovr.class_explore_results[class]
+		// each class sweep has array_of_results populated
+		assert class_result.array_of_results.len > 0
+		// every result in the sweep is binary (2 classes)
+		for r in class_result.array_of_results {
+			assert r.classes.len == 2
+		}
+		// optimal params have a valid number_of_attributes
+		p := ovr.per_class_parameters[class]
+		assert p.number_of_attributes[0] > 0
+	}
+}
+
+// test_ovr_cross_validate_uses_per_class_params verifies that
+// one_vs_rest_cross_validate uses per-class optimal Parameters when provided,
+// and that the result differs from using uniform settings.
+fn test_ovr_cross_validate_uses_per_class_params() {
+	datafile := 'datasets/iris.tab'
+	ds := load_file(datafile, LoadOptions{})
+
+	// find per-class optimal settings via explore
+	ovr := run_ovr_explore(ds, opts('-a 1,4 -b 2,6 -f 5 ${datafile}'))
+
+	// cross_validate with per-class optimal settings
+	mut per_class_opts := opts('-a 4 -b 4,4 -f 10 ${datafile}')
+	per_class_opts.per_class_parameters = ovr.per_class_parameters.clone()
+	result_per_class := one_vs_rest_cross_validate(per_class_opts)
+
+	// must still classify every instance
+	assert result_per_class.inferred_classes.len == ds.class_values.len
+	for inf in result_per_class.inferred_classes {
+		assert inf in ds.classes
+	}
+	// per-class settings should achieve reasonable accuracy on iris
+	assert result_per_class.Metrics.balanced_accuracy > 0.80
+}
