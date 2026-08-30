@@ -232,8 +232,7 @@ pub fn cli(cli_options CliOptions) ! {
 		}
 	}
 	mut duration := sw.elapsed()
-	println('processing time: ${int(duration.hours())} hrs ${int(math.fmod(duration.minutes(),
-		60))} min ${math.fmod(duration.seconds(), 60):6.3f} sec')
+	println('processing time: ${int(duration.hours())} hrs ${int(math.fmod(duration.minutes(), 60))} min ${math.fmod(duration.seconds(), 60):6.3f} sec')
 }
 
 // opts takes a string of command line arguments and returns an Options struct.
@@ -290,8 +289,8 @@ fn get_options(args []string) Options {
 		limits := parse_range(option(args, ['-cl', '--combination-limits']))
 		opts.DisplaySettings.CombinationSizeLimits = CombinationSizeLimits{
 			generate_combinations_flag: true
-			min:                        limits.first()
-			max:                        limits.last()
+			min: limits.first()
+			max: limits.last()
 		}
 	}
 	if option(args, ['-f', '--folds']) != '' {
@@ -392,8 +391,7 @@ fn analyze(opts Options) {
 // by flag -k, and (optionally) stores the extended classifier in a file
 // specified by -o. It displays the extended classifier on the console.
 fn do_append(opts Options) ! {
-	append_instances(load_classifier_file(opts.classifierfile_path)!, load_instances_file(opts.datafile_path)!,
-		opts)
+	append_instances(load_classifier_file(opts.classifierfile_path)!, load_instances_file(opts.datafile_path)!, opts)
 }
 
 // do_display displays information about the contents of a file
@@ -457,6 +455,5 @@ fn make(opts Options) {
 }
 
 fn do_partition(opts Options) ! {
-	partition_file(opts.partition_sizes, opts.datafile_path, opts.partitionfiles_paths,
-		opts.random_pick)!
+	partition_file(opts.partition_sizes, opts.datafile_path, opts.partitionfiles_paths, opts.random_pick)!
 }

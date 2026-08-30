@@ -30,7 +30,7 @@ fn partition(pick_list []int, current_fold int, folds int, ds Dataset, opts Opti
 	mut total_instances := ds.Class.class_values.len
 
 	// calculate array indices for partitioning
-	mut s, mut e := get_partition_indices(total_instances, folds, current_fold)
+	mut s, e := get_partition_indices(total_instances, folds, current_fold)
 	// println('s: $s e: $e')
 	mut fold_indices := pick_list[s..e].clone()
 	mut part_indices := get_rest_of_array(pick_list, s, e)
@@ -44,13 +44,13 @@ fn partition(pick_list []int, current_fold int, folds int, ds Dataset, opts Opti
 	part_ds.useful_discrete_attributes = get_useful_discrete_attributes(part_ds)
 
 	mut fold := Fold{
-		fold_number:     current_fold
+		fold_number: current_fold
 		attribute_names: ds.attribute_names
-		indices:         fold_indices
-		data:            transpose(get_index_items(transpose(ds.data), fold_indices))
-		class_name:      ds.class_name
-		class_values:    fold_class_values
-		class_counts:    element_counts(fold_class_values)
+		indices: fold_indices
+		data: transpose(get_index_items(transpose(ds.data), fold_indices))
+		class_name: ds.class_name
+		class_values: fold_class_values
+		class_counts: element_counts(fold_class_values)
 	}
 	return part_ds, fold
 }

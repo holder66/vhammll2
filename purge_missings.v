@@ -20,8 +20,8 @@ pub fn (mut ds Dataset) purge_instances_for_missing_class_values() Dataset {
 			result << e
 		}
 	}
-	// println('result.len: ${result.len}')
 
+	// println('result.len: ${result.len}')
 	ds.classes = uniques(result)
 	ds.class_values = purge_array(ds.class_values, instances_to_purge)
 	ds.class_counts = element_counts(ds.class_values)

@@ -5,7 +5,6 @@ module vhammll2
 // ---------------------------------------------------------------------------
 // count_switches — pure unit tests using hand-constructed hits arrays
 // ---------------------------------------------------------------------------
-
 fn test_count_switches_non_two_class() {
 	// Returns -1 for anything other than exactly 2 classes
 	assert count_switches([], [], false) == -1

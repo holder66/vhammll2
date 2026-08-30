@@ -94,6 +94,7 @@ fn test_get_options() {
 	// --- defaults (empty args) ---
 	mut o := get_options([])
 	assert o.help_flag // args.len <= 1 triggers help
+	
 	assert o.bins == [2, 16]
 	assert o.number_of_attributes == [0]
 	assert o.switches_threshold == 2

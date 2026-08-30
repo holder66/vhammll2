@@ -7,8 +7,8 @@ import os
 // settings file specified in opts.settingsfile_path.
 fn append_make_settings_to_file(cl Classifier, opts Options) {
 	mut settings_to_append := ClassifierSettings{
-		Parameters:    cl.Parameters
-		LoadOptions:   cl.LoadOptions
+		Parameters: cl.Parameters
+		LoadOptions: cl.LoadOptions
 		datafile_path: cl.datafile_path
 	}
 	settings_to_append.classifier_id = get_next_classifier_index(opts.settingsfile_path)
@@ -18,11 +18,10 @@ fn append_make_settings_to_file(cl Classifier, opts Options) {
 // append_cross_verify_settings_to_file
 fn append_cross_verify_settings_to_file(result CrossVerifyResult, opts Options) {
 	mut settings_to_append := ClassifierSettings{
-		Parameters:    result.Parameters
+		Parameters: result.Parameters
 		BinaryMetrics: result.BinaryMetrics
-		Metrics:       result.Metrics
-		LoadOptions:   result.LoadOptions
-
+		Metrics: result.Metrics
+		LoadOptions: result.LoadOptions
 		datafile_path: result.datafile_path
 	}
 	settings_to_append.classifier_id = get_next_classifier_index(opts.settingsfile_path)
@@ -58,10 +57,10 @@ fn append_explore_settings_to_file(results ExploreResult, explore_analytics_valu
 		if i in indices {
 			mut u := ClassifierSettings{
 				classifier_id: next_classifier_index + i
-				Parameters:    results.array_of_results[a.idx].Parameters
+				Parameters: results.array_of_results[a.idx].Parameters
 				BinaryMetrics: results.array_of_results[a.idx].BinaryMetrics
-				Metrics:       results.array_of_results[a.idx].Metrics
-				LoadOptions:   results.array_of_results[a.idx].LoadOptions
+				Metrics: results.array_of_results[a.idx].Metrics
+				LoadOptions: results.array_of_results[a.idx].LoadOptions
 				datafile_path: opts.datafile_path
 			}
 			append_json_file(u, opts.settingsfile_path)

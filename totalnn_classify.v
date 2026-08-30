@@ -20,7 +20,7 @@ import arrays
 fn multiple_classifier_classify_totalnn(classifier_array []Classifier, case_array [][]u8, labeled_classes []string, opts Options) ClassifyResult {
 	mut final_cr := ClassifyResult{
 		multiple_flag: true
-		Class:         classifier_array[0].Class
+		Class: classifier_array[0].Class
 	}
 	mut total_nns_by_class := []i64{len: classifier_array[0].classes.len}
 	mut single_maxima := []bool{len: classifier_array.len}

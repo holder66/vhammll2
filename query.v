@@ -101,9 +101,7 @@ fn get_byte_values(cl Classifier, responses map[string]string) []u8 {
 			if responses[attr] == '' {
 				byte_values << u8(0)
 			} else {
-				byte_values << bin_single_value(f32(strconv.atof_quick(responses[attr])),
-					cl.trained_attributes[attr].minimum, cl.trained_attributes[attr].maximum,
-					cl.trained_attributes[attr].bins)
+				byte_values << bin_single_value(f32(strconv.atof_quick(responses[attr])), cl.trained_attributes[attr].minimum, cl.trained_attributes[attr].maximum, cl.trained_attributes[attr].bins)
 			}
 		}
 	}

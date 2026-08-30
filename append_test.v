@@ -42,8 +42,7 @@ fn test_append() ! {
 	// repeat the append, this time with the saved files
 	mut scl := load_classifier_file('tempfolders/tempfolder_append/extclassifierfile')!
 	// dump(scl.history_events)
-	stcl := append_instances(scl, load_instances_file('tempfolders/tempfolder_append/instancesfile')!,
-		opts)
+	stcl := append_instances(scl, load_instances_file('tempfolders/tempfolder_append/instancesfile')!, opts)
 	// dump(stcl.history.len)
 	assert stcl.instances.len == 26
 	assert stcl.history_events.len == 3

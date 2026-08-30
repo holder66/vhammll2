@@ -58,7 +58,7 @@ fn (mut a Environment) collect_info() {
 	if os_kind == 'windows' {
 		arch_details << a.cmd(
 			command: 'wmic cpu get name /format:table'
-			line:    1
+			line: 1
 		)
 	}
 	//
@@ -82,7 +82,7 @@ fn (mut a Environment) collect_info() {
 		}
 		// From https://unix.stackexchange.com/a/14346
 		// awk_cmd := '[ "$(awk \'\$5=="/" {print \$1}\' </proc/1/mountinfo)" != "$(awk \'\$5=="/" {print \$1}\' </proc/$$/mountinfo)" ] ; echo \$?'
-		awk_cmd := '[ "$(awk \'\$5=="/" { print \$1 }\' </proc/1/mountinfo)" != "$(awk \'\$5=="/" { print \$1 }\' </proc/$$/mountinfo)" ] ; echo \$?'
+		awk_cmd := '[ "\$(awk \'\$5=="/" { print \$1 }\' </proc/1/mountinfo)" != "\$(awk \'\$5=="/" { print \$1 }\' </proc/\$\$/mountinfo)" ] ; echo \$?'
 		if a.cmd(command: awk_cmd) == '0' {
 			os_details += ' (chroot)'
 		}
@@ -95,7 +95,7 @@ fn (mut a Environment) collect_info() {
 	} else if os_kind == 'windows' {
 		wmic_info := a.cmd(
 			command: 'wmic os get * /format:value'
-			line:    -1
+			line: -1
 		)
 		p := a.parse(wmic_info, '=')
 		caption, build_number, os_arch := p['caption'], p['buildnumber'], p['osarchitecture']

@@ -13,7 +13,6 @@ Thus, for Kaggle, adjust their test file by adding (if necessary) a row
 identifier attribute, and make sure that there is a class attribute whose
 values are empty.
 */
-
 const validate_help = '
 Description:
 "validate" classifies the instances in a validation dataset (specified by
@@ -60,15 +59,17 @@ pub fn validate(cl Classifier, opts Options) !ValidateResult {
 	mut test_ds := load_file(opts.testfile_path)
 	// instantiate a struct for the result
 	mut validate_result := ValidateResult{
-		LoadOptions:                     cl.LoadOptions
-		struct_type:                     '.ValidateResult'
-		inferred_classes:                []string{}
-		validate_file_path:              opts.testfile_path
-		datafile_path:                   opts.datafile_path
-		number_of_attributes:            opts.number_of_attributes
-		binning:                         cl.binning
-		classifier_instances_counts:     [cl.history_events[0].instances_count]
-		prepurge_instances_counts_array: [cl.history_events[0].prepurge_instances_count]
+		LoadOptions: cl.LoadOptions
+		struct_type: '.ValidateResult'
+		inferred_classes: []string{}
+		validate_file_path: opts.testfile_path
+		datafile_path: opts.datafile_path
+		number_of_attributes: opts.number_of_attributes
+		binning: cl.binning
+		classifier_instances_counts: [cl.history_events[0].instances_count]
+		prepurge_instances_counts_array: [
+			cl.history_events[0].prepurge_instances_count,
+		]
 	}
 	// for each usable attribute in cl, massage the equivalent test_ds attribute
 	mut test_binned_values := []int{}
@@ -82,17 +83,15 @@ pub fn validate(cl Classifier, opts Options) !ValidateResult {
 			}
 		}
 		if cl.trained_attributes[attr].attribute_type == 'C' {
-			test_binned_values = discretize_attribute_with_range_check[f32](test_ds.useful_continuous_attributes[test_index],
-				cl.trained_attributes[attr].minimum, cl.trained_attributes[attr].maximum,
-				cl.trained_attributes[attr].bins)
+			test_binned_values = discretize_attribute_with_range_check[f32](test_ds.useful_continuous_attributes[test_index], cl.trained_attributes[attr].minimum, cl.trained_attributes[attr].maximum, cl.trained_attributes[attr].bins)
 		} else { // ie for discrete attributes
 			test_binned_values = test_ds.useful_discrete_attributes[test_index].map(cl.trained_attributes[attr].translation_table[it])
 		}
 		test_attr_binned_values << test_binned_values.map(u8(it))
 	}
 	cases := transpose(test_attr_binned_values)
-	// for each case in the test data, perform a classification and compile the results
 
+	// for each case in the test data, perform a classification and compile the results
 	validate_result.Class = cl.Class
 	mut classify_result := ClassifyResult{}
 	for case in cases {

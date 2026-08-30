@@ -4,7 +4,7 @@ fn test_get_partition_indices() {
 	mut arr := [11, 22, 33, 44, 55, 66]
 	mut len := arr.len
 	// leave-one-out, first fold
-	mut s, mut e := get_partition_indices(len, 0, 0)
+	mut s, e := get_partition_indices(len, 0, 0)
 	assert s == 0
 	assert e == 1
 	assert arr[s..e] == [11]
@@ -87,8 +87,7 @@ fn test_get_partition_indices() {
 // test_partition
 fn test_partition() {
 	mut opts := Options{}
-	mut part_ds, mut fold := partition([1, 8, 0, 2, 4, 9, 12, 5, 11, 10, 6, 7, 3], 1,
-		4, load_file('datasets/testdata/developer.tab'), opts)
+	mut part_ds, fold := partition([1, 8, 0, 2, 4, 9, 12, 5, 11, 10, 6, 7, 3], 1, 4, load_file('datasets/testdata/developer.tab'), opts)
 	assert fold.class_values == ['m', 'f', 'm']
 	assert part_ds.class_counts == {
 		'm': 6

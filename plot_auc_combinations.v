@@ -37,8 +37,8 @@ pub fn plot_auc_combinations(combos []AucClassifiers, files RocFiles, top_n int)
 			hover << combo.classifier_ids.map('${it}').join(',')
 		}
 		plt.scatter(
-			x:    x
-			y:    y
+			x: x
+			y: y
 			text: hover
 			mode: 'lines+markers'
 			name: '${length}-classifier combinations'
@@ -47,16 +47,15 @@ pub fn plot_auc_combinations(combos []AucClassifiers, files RocFiles, top_n int)
 
 	top_n_label := if top_n > 0 { 'top ${top_n} per length' } else { 'all' }
 	plt.layout(
-		title:  'AUC by Multi-Classifier Combination<br>' + 'Settings: ${files.settingsfile}<br>' +
-			'Data: ${files.datafile} (${top_n_label})'
-		width:  800
+		title: 'AUC by Multi-Classifier Combination<br>' + 'Settings: ${files.settingsfile}<br>' + 'Data: ${files.datafile} (${top_n_label})'
+		width: 800
 		height: 600
-		xaxis:  plot.Axis{
+		xaxis: plot.Axis{
 			title: plot.AxisTitle{
 				text: 'Rank within combination length (1 = highest AUC)'
 			}
 		}
-		yaxis:  plot.Axis{
+		yaxis: plot.Axis{
 			title: plot.AxisTitle{
 				text: 'AUC'
 			}

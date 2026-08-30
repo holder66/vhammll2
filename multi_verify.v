@@ -18,32 +18,31 @@ fn multi_verify(opts Options) CrossVerifyResult {
 		inferences_map[key] = 0
 	}
 	mut verify_result := CrossVerifyResult{
-		LoadOptions:                         mult_opts.LoadOptions
-		Parameters:                          mult_opts.Parameters
-		DisplaySettings:                     mult_opts.DisplaySettings
-		MultipleOptions:                     mult_opts.MultipleOptions
-		Class:                               ds.Class
-		datafile_path:                       mult_opts.datafile_path
-		testfile_path:                       mult_opts.testfile_path
+		LoadOptions: mult_opts.LoadOptions
+		Parameters: mult_opts.Parameters
+		DisplaySettings: mult_opts.DisplaySettings
+		MultipleOptions: mult_opts.MultipleOptions
+		Class: ds.Class
+		datafile_path: mult_opts.datafile_path
+		testfile_path: mult_opts.testfile_path
 		multiple_classify_options_file_path: mult_opts.multiple_classify_options_file_path
-		labeled_classes:                     test_ds.class_values
+		labeled_classes: test_ds.class_values
 		// classes:                             test_ds.classes
-		pos_neg_classes:      get_pos_neg_classes(test_ds)
+		pos_neg_classes: get_pos_neg_classes(test_ds)
 		confusion_matrix_map: confusion_matrix_map
-		correct_inferences:   inferences_map.clone()
+		correct_inferences: inferences_map.clone()
 		incorrect_inferences: inferences_map.clone()
-		wrong_inferences:     inferences_map.clone()
-		true_positives:       inferences_map.clone()
-		true_negatives:       inferences_map.clone()
-		false_positives:      inferences_map.clone()
-		false_negatives:      inferences_map.clone()
+		wrong_inferences: inferences_map.clone()
+		true_positives: inferences_map.clone()
+		true_negatives: inferences_map.clone()
+		false_positives: inferences_map.clone()
+		false_negatives: inferences_map.clone()
 	}
 	verify_result.binning = get_binning(mult_opts.bins)
 
 	mut classifier_array := []Classifier{}
 	mut array_of_case_arrays := [][][]u8{}
-	mult_opts.multiple_classifier_settings = pick_classifiers(mult_opts.multiple_classify_options_file_path,
-		mult_opts.classifiers) or {
+	mult_opts.multiple_classifier_settings = pick_classifiers(mult_opts.multiple_classify_options_file_path, mult_opts.classifiers) or {
 		panic('Unable to load file ${mult_opts.multiple_classify_options_file_path}')
 	}
 	verify_result.multiple_classifier_settings = mult_opts.multiple_classifier_settings
@@ -86,11 +85,9 @@ fn multi_verify(opts Options) CrossVerifyResult {
 
 	for i, case_array in array_of_case_arrays {
 		m_classify_result = if opts.multi_strategy == 'totalnn' {
-			multiple_classifier_classify_totalnn(classifier_array, case_array, test_ds.classes,
-				mult_opts)
+			multiple_classifier_classify_totalnn(classifier_array, case_array, test_ds.classes, mult_opts)
 		} else {
-			multiple_classifier_classify(classifier_array, case_array, test_ds.classes,
-				mult_opts)
+			multiple_classifier_classify(classifier_array, case_array, test_ds.classes, mult_opts)
 		}
 		verify_result.inferred_classes << m_classify_result.inferred_class
 		verify_result.actual_classes << verify_result.labeled_classes[i]

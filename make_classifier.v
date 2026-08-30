@@ -69,10 +69,10 @@ pub fn make_classifier(opts Options) Classifier {
 
 fn make_classifier_using_ds(mut ds Dataset, opts Options) Classifier {
 	mut cl := Classifier{
-		Class:         ds.Class
-		Parameters:    opts.Parameters
+		Class: ds.Class
+		Parameters: opts.Parameters
 		datafile_path: ds.path
-		LoadOptions:   opts.LoadOptions
+		LoadOptions: opts.LoadOptions
 	}
 	// if binning is specified already in parameters, use it
 	if opts.binning.lower > 0 {
@@ -108,16 +108,15 @@ fn make_classifier_using_ds(mut ds Dataset, opts Options) Classifier {
 			attr_values = ds.useful_continuous_attributes[ra.attribute_index]
 			min = array_min(attr_values.filter(!is_nan(it)))
 			max = array_max(attr_values.filter(!is_nan(it)))
-			binned_values = discretize_attribute_with_range_check(attr_values, min, max,
-				ra.bins)
+			binned_values = discretize_attribute_with_range_check(attr_values, min, max, ra.bins)
 			cl.trained_attributes[ra.attribute_name] = TrainedAttribute{
 				attribute_type: ra.attribute_type
-				minimum:        min
-				maximum:        max
-				bins:           ra.bins
-				rank_value:     ra.rank_value
-				index:          ra.attribute_index
-				switches:       ra.switches
+				minimum: min
+				maximum: max
+				bins: ra.bins
+				rank_value: ra.rank_value
+				index: ra.attribute_index
+				switches: ra.switches
 			}
 		} else { // ie for discrete attributes
 			attr_string_values = ds.useful_discrete_attributes[ra.attribute_index]
@@ -125,10 +124,10 @@ fn make_classifier_using_ds(mut ds Dataset, opts Options) Classifier {
 			// use the translation table to generate an array of translated values
 			binned_values = attr_string_values.map(translation_table[it])
 			cl.trained_attributes[ra.attribute_name] = TrainedAttribute{
-				attribute_type:    ra.attribute_type
+				attribute_type: ra.attribute_type
 				translation_table: translation_table
-				rank_value:        ra.rank_value
-				index:             ra.attribute_index
+				rank_value: ra.rank_value
+				index: ra.attribute_index
 			}
 		}
 		attr_binned_values << binned_values.map(u8(it))
@@ -141,8 +140,8 @@ fn make_classifier_using_ds(mut ds Dataset, opts Options) Classifier {
 	// purge removed in vhammll2
 	// create an event
 	mut event := HistoryEvent{
-		event:                    'make'
-		instances_count:          cl.instances.len
+		event: 'make'
+		instances_count: cl.instances.len
 		prepurge_instances_count: prepurge_instances_count
 	}
 	if opts.command in ['make', 'append', 'verify', 'validate', 'query'] {

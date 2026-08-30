@@ -13,7 +13,6 @@ import math
 // fn testsuite_end() ! {
 // 	os.rmdir_all('tempfolders/tempfolder_metrics')!
 // }
-
 fn test_wt_avg() ? {
 	assert wt_avg([0.0], [1]) == 0.0
 	// assert wt_avg([], []) or { 1.0 } == 0.0, 'cannot sum over an empty array'

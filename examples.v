@@ -22,7 +22,7 @@ To stop before completing the demo, hit ctrl-C
 // run_example
 fn run_example(before string, after string, cmd string) ! {
 	println(before)
-	println('eg, ~$ ' + c_r(cmd))
+	println('eg, ~\$ ' + c_r(cmd))
 	line := read_line('Press "return" to execute ("s" to skip)...')!
 	// test if an 's' was entered
 	if !line.contains_u8(115) {
@@ -164,7 +164,6 @@ Let's look at cross-validation first:"
 	// cmd = 'v run . query -a 4 -w -s  ~/.vmodules/holder66/vhammll/datasets/bcw350train'
 	// after = ''
 	// run_example(before, after, cmd)!
-
 	before = 'It is possible to save the results of a query or a validate to a file specified with the -o or --output option. This saved file can be used to extend a saved classifier by appending the now labeled instances onto it. First, save a classifier:'
 	cmd = 'v run . make -a 33 -o ${examples_tempfolder}/soybean.cl ~/.vmodules/holder66/vhammll/datasets/soybean-large-train.tab'
 	after = ''

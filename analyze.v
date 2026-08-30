@@ -44,12 +44,12 @@ Options:
 pub fn analyze_dataset(opts Options) AnalyzeResult {
 	ds := load_file(opts.datafile_path, opts.LoadOptions)
 	mut result := AnalyzeResult{
-		environment:              get_environment()
-		datafile_path:            ds.path
-		datafile_type:            file_type(ds.path)
-		class_name:               ds.class_name
-		class_index:              ds.class_index
-		class_counts:             ds.class_counts
+		environment: get_environment()
+		datafile_path: ds.path
+		datafile_type: file_type(ds.path)
+		class_name: ds.class_name
+		class_index: ds.class_index
+		class_counts: ds.class_counts
 		class_missing_purge_flag: ds.class_missing_purge_flag
 	}
 	mut missing_vals := ds.data.map(missing_values(it, opts.missings))
@@ -60,16 +60,16 @@ pub fn analyze_dataset(opts Options) AnalyzeResult {
 	mut atts := []Attribute{}
 	for i, name in ds.attribute_names {
 		mut att_info := Attribute{
-			id:            i
-			name:          name
-			counts_map:    element_counts(ds.data[i])
-			count:         ds.data[i].len
-			uniques:       uniques_values(ds.data[i])
-			missing:       missing_vals[i]
-			raw_type:      ds.raw_attribute_types[i]
-			att_type:      ds.attribute_types[i]
+			id: i
+			name: name
+			counts_map: element_counts(ds.data[i])
+			count: ds.data[i].len
+			uniques: uniques_values(ds.data[i])
+			missing: missing_vals[i]
+			raw_type: ds.raw_attribute_types[i]
+			att_type: ds.attribute_types[i]
 			inferred_type: ds.inferred_attribute_types[i]
-			for_training:  i in indices_of_useful_attributes
+			for_training: i in indices_of_useful_attributes
 		}
 		if i in indices_of_useful_attributes && ds.attribute_types[i] == 'C' {
 			att_info.max = array_max(ds.useful_continuous_attributes[i].filter(!is_nan(it)))

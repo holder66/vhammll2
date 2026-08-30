@@ -79,7 +79,8 @@ fn run_verify(opts Options) CrossVerifyResult {
 	}
 	// load the testfile as a Dataset struct, but reset
 	mut testfile_load_opts := opts.LoadOptions
-	{}
+	{
+	}
 	mut test_ds := load_file(opts.testfile_path, testfile_load_opts)
 	mut confusion_matrix_map := map[string]StringFloatMap{}
 	// for each class, instantiate an entry in the confusion matrix map
@@ -94,28 +95,28 @@ fn run_verify(opts Options) CrossVerifyResult {
 		inferences_map[key] = 0
 	}
 	mut verify_result := CrossVerifyResult{
-		LoadOptions:                         opts.LoadOptions
-		Parameters:                          opts.Parameters
-		DisplaySettings:                     opts.DisplaySettings
-		MultipleOptions:                     opts.MultipleOptions
-		Class:                               ds.Class
-		datafile_path:                       opts.datafile_path
-		testfile_path:                       opts.testfile_path
+		LoadOptions: opts.LoadOptions
+		Parameters: opts.Parameters
+		DisplaySettings: opts.DisplaySettings
+		MultipleOptions: opts.MultipleOptions
+		Class: ds.Class
+		datafile_path: opts.datafile_path
+		testfile_path: opts.testfile_path
 		multiple_classify_options_file_path: opts.multiple_classify_options_file_path
-		multiple_classifier_settings:        opts.multiple_classifier_settings
-		labeled_classes:                     test_ds.class_values
+		multiple_classifier_settings: opts.multiple_classifier_settings
+		labeled_classes: test_ds.class_values
 		// class_counts:                         test_ds.class_counts
 		// pre_balance_prevalences_class_counts: ds.pre_balance_prevalences_class_counts
 		// classes:                              test_ds.classes
-		pos_neg_classes:      get_pos_neg_classes(test_ds)
+		pos_neg_classes: get_pos_neg_classes(test_ds)
 		confusion_matrix_map: confusion_matrix_map
-		correct_inferences:   inferences_map.clone()
+		correct_inferences: inferences_map.clone()
 		incorrect_inferences: inferences_map.clone()
-		wrong_inferences:     inferences_map.clone()
-		true_positives:       inferences_map.clone()
-		true_negatives:       inferences_map.clone()
-		false_positives:      inferences_map.clone()
-		false_negatives:      inferences_map.clone()
+		wrong_inferences: inferences_map.clone()
+		true_positives: inferences_map.clone()
+		true_negatives: inferences_map.clone()
+		false_positives: inferences_map.clone()
+		false_negatives: inferences_map.clone()
 	}
 	verify_result.binning = get_binning(opts.bins)
 	mut cl := Classifier{}
@@ -172,9 +173,7 @@ fn generate_case_array(cl Classifier, test_ds Dataset) [][]u8 {
 			}
 		}
 		if cl.trained_attributes[attr].attribute_type == 'C' {
-			test_binned_values = discretize_attribute_with_range_check[f32](test_ds.useful_continuous_attributes[test_index],
-				cl.trained_attributes[attr].minimum, cl.trained_attributes[attr].maximum,
-				cl.trained_attributes[attr].bins)
+			test_binned_values = discretize_attribute_with_range_check[f32](test_ds.useful_continuous_attributes[test_index], cl.trained_attributes[attr].minimum, cl.trained_attributes[attr].maximum, cl.trained_attributes[attr].bins)
 		} else { // ie for discrete attributes
 			test_binned_values = test_ds.useful_discrete_attributes[test_index].map(cl.trained_attributes[attr].translation_table[it])
 		}

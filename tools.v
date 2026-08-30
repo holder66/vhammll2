@@ -411,9 +411,7 @@ fn idxs_match[T](a []T, val T) []int {
 	if a.len == 0 {
 		panic('idxs_zero was called on an empty array')
 	}
-	mut idxs := [int{
-		cap: a.len
-	}]
+	mut idxs := []int{cap: a.len}
 	for i, value in a {
 		if value == val {
 			idxs << i
@@ -426,28 +424,28 @@ fn idxs_match[T](a []T, val T) []int {
 fn get_binning(bins []int) Binning {
 	if bins == [0] {
 		return Binning{
-			lower:    0
-			upper:    0
+			lower: 0
+			upper: 0
 			interval: 1
 		}
 	}
 	if bins.len == 1 {
 		return Binning{
-			lower:    bins[0]
-			upper:    bins[0]
+			lower: bins[0]
+			upper: bins[0]
 			interval: 1
 		}
 	}
 	if bins.len == 2 {
 		return Binning{
-			lower:    bins[0]
-			upper:    bins[1]
+			lower: bins[0]
+			upper: bins[1]
 			interval: 1
 		}
 	}
 	return Binning{
-		lower:    bins[0]
-		upper:    bins[1]
+		lower: bins[0]
+		upper: bins[1]
 		interval: bins[2]
 	}
 }
@@ -519,12 +517,12 @@ struct Styles {
 }
 
 const c_r = Styles{
-	fg:    'cyan'
+	fg: 'cyan'
 	style: 'reverse'
 }
 
 const m_u = Styles{
-	fg:    'magenta'
+	fg: 'magenta'
 	style: 'underline'
 }
 const lg = Styles{
@@ -534,25 +532,25 @@ const m_ = Styles{
 	fg: 'magenta'
 }
 const g_b = Styles{
-	fg:    'green'
+	fg: 'green'
 	style: 'bold'
 }
 const b_u = Styles{
-	fg:    'blue'
+	fg: 'blue'
 	style: 'underline'
 }
 const dg = Styles{
 	fg: 'dark_gray'
 }
 const c_u = Styles{
-	fg:    'cyan'
+	fg: 'cyan'
 	style: 'underline'
 }
 const r_ = Styles{
 	fg: 'red'
 }
 const r_b = Styles{
-	fg:    'red'
+	fg: 'red'
 	style: 'bold'
 }
 const b_ = Styles{
@@ -568,8 +566,8 @@ const c_ = Styles{
 	fg: 'cyan'
 }
 const rgb = Styles{
-	fg:    'red'
-	bg:    'green'
+	fg: 'red'
+	bg: 'green'
 	style: 'bold'
 }
 

@@ -40,7 +40,6 @@ fn testsuite_begin() ? {
 // cli(astr: 'rank')!
 // cli(args: ['rank'])!
 // }
-
 fn test_help() {
 	mut r := os.execute_or_panic('./temp')
 	assert r.output.contains('help, -h, --help to display this usage information.')
@@ -93,7 +92,6 @@ fn test_cli_examples() {}
 // 	dump(r.output)
 // 	assert r.output.contains('Cross-validation of "vhammll2/datasets/UCI/zoo.arff"')
 // }
-
 fn test_cli_make() {}
 
 fn test_cli_optimals() {}

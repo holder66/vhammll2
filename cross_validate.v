@@ -132,30 +132,29 @@ fn run_cross_validate(ds Dataset, opts Options) CrossVerifyResult {
 		inferences_map[key] = 0
 	}
 	mut cross_result := CrossVerifyResult{
-		Parameters:                          opts.Parameters
-		LoadOptions:                         ds.LoadOptions
-		DisplaySettings:                     opts.DisplaySettings
-		MultipleOptions:                     opts.MultipleOptions
-		Class:                               ds.Class
-		datafile_path:                       ds.path
+		Parameters: opts.Parameters
+		LoadOptions: ds.LoadOptions
+		DisplaySettings: opts.DisplaySettings
+		MultipleOptions: opts.MultipleOptions
+		Class: ds.Class
+		datafile_path: ds.path
 		multiple_classify_options_file_path: cross_opts.multiple_classify_options_file_path
-		labeled_classes:                     ds.class_values
-		pos_neg_classes:                     get_pos_neg_classes(ds)
-		confusion_matrix_map:                confusion_matrix_map
-		correct_inferences:                  inferences_map.clone()
-		incorrect_inferences:                inferences_map.clone()
-		wrong_inferences:                    inferences_map.clone()
-		true_positives:                      inferences_map.clone()
-		true_negatives:                      inferences_map.clone()
-		false_positives:                     inferences_map.clone()
-		false_negatives:                     inferences_map.clone()
+		labeled_classes: ds.class_values
+		pos_neg_classes: get_pos_neg_classes(ds)
+		confusion_matrix_map: confusion_matrix_map
+		correct_inferences: inferences_map.clone()
+		incorrect_inferences: inferences_map.clone()
+		wrong_inferences: inferences_map.clone()
+		true_positives: inferences_map.clone()
+		true_negatives: inferences_map.clone()
+		false_positives: inferences_map.clone()
+		false_negatives: inferences_map.clone()
 	}
 	cross_result.binning = get_binning(cross_opts.bins)
 
 	if opts.multiple_flag {
 		// disable concurrency, as not implemented for multiple classifiers
-		cross_opts.multiple_classifier_settings = pick_classifiers(cross_opts.multiple_classify_options_file_path,
-			cross_opts.classifiers) or {
+		cross_opts.multiple_classifier_settings = pick_classifiers(cross_opts.multiple_classify_options_file_path, cross_opts.classifiers) or {
 			panic('Unable to load file ${cross_opts.multiple_classify_options_file_path}')
 		}
 		cross_result.multiple_classifier_settings = cross_opts.multiple_classifier_settings
@@ -172,7 +171,11 @@ fn run_cross_validate(ds Dataset, opts Options) CrossVerifyResult {
 	for rep in 0 .. repeats {
 		// generate a pick list of indices
 		// for folds > 1 (non-LOO), always use random selection
-		folds_for_check := if cross_opts.folds == 0 { ds.class_values.len } else { cross_opts.folds }
+		folds_for_check := if cross_opts.folds == 0 {
+			ds.class_values.len
+		} else {
+			cross_opts.folds
+		}
 		mut pick_list := []int{}
 		if folds_for_check > 1 {
 			// always random for non-LOO
@@ -312,7 +315,7 @@ fn do_one_fold(pick_list []int, current_fold int, folds int, ds Dataset, cross_o
 	// partition the dataset into a partial dataset and a fold
 	mut part_ds, fold := partition(pick_list, current_fold, folds, ds, cross_opts)
 	mut fold_result := CrossVerifyResult{
-		labeled_classes:  fold.class_values
+		labeled_classes: fold.class_values
 		instance_indices: fold.indices
 	}
 	// if not a multiple classifier situation
@@ -363,19 +366,16 @@ fn do_one_fold(pick_list []int, current_fold int, folds int, ds Dataset, cross_o
 			byte_values_array = [][]u8{}
 			for attr in part_cl.attribute_ordering {
 				j := fold.attribute_names.index(attr)
-				byte_values_array << process_fold_data(part_cl.trained_attributes[attr],
-					fold.data[j])
+				byte_values_array << process_fold_data(part_cl.trained_attributes[attr], fold.data[j])
 			}
 			fold_cases := transpose(byte_values_array)
 			mult_fold_cases << [fold_cases]
 		}
 		for i, case in transpose(mult_fold_cases) {
 			m_classify_result := if mult_opts.multi_strategy == 'totalnn' {
-				multiple_classifier_classify_totalnn(classifier_array, case,
-					fold_result.labeled_classes, mult_opts)
+				multiple_classifier_classify_totalnn(classifier_array, case, fold_result.labeled_classes, mult_opts)
 			} else {
-				multiple_classifier_classify(classifier_array, case, fold_result.labeled_classes,
-					mult_opts)
+				multiple_classifier_classify(classifier_array, case, fold_result.labeled_classes, mult_opts)
 			}
 			fold_result.inferred_classes << m_classify_result.inferred_class
 			fold_result.actual_classes << fold_result.labeled_classes[i]

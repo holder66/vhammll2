@@ -8,13 +8,13 @@ module vhammll2
 // use the best per-class settings for subsequent cross_validate / verify calls.
 fn run_ovr_explore(ds Dataset, opts Options) OvrExploreResult {
 	mut ovr_result := OvrExploreResult{
-		Class:           ds.Class
-		Parameters:      opts.Parameters
-		LoadOptions:     ds.LoadOptions
+		Class: ds.Class
+		Parameters: opts.Parameters
+		LoadOptions: ds.LoadOptions
 		DisplaySettings: opts.DisplaySettings
-		path:            ds.path
-		testfile_path:   opts.testfile_path
-		args:            opts.args
+		path: ds.path
+		testfile_path: opts.testfile_path
+		args: opts.args
 	}
 
 	// Prepare binary datasets for all classes before spawning threads.
@@ -83,15 +83,15 @@ fn explore_binary_ds(bin_ds Dataset, class_label string, opts Options) OvrClassE
 	mut ex_opts := opts
 	total_attrs := bin_ds.useful_continuous_attributes.len + bin_ds.useful_discrete_attributes.len
 	mut result := OvrClassExploreResult{
-		Class:           bin_ds.Class
-		Parameters:      opts.Parameters
-		LoadOptions:     bin_ds.LoadOptions
+		Class: bin_ds.Class
+		Parameters: opts.Parameters
+		LoadOptions: bin_ds.LoadOptions
 		DisplaySettings: opts.DisplaySettings
-		class_label:     class_label
-		path:            bin_ds.path
+		class_label: class_label
+		path: bin_ds.path
 		pos_neg_classes: [class_label, 'not_${class_label}']
-		AttributeRange:  get_attribute_range(opts.number_of_attributes, total_attrs)
-		args:            opts.args
+		AttributeRange: get_attribute_range(opts.number_of_attributes, total_attrs)
+		args: opts.args
 	}
 	if bin_ds.useful_continuous_attributes.len == 0 {
 		ex_opts.bins = [0]
@@ -139,15 +139,15 @@ fn best_params_from_explore(class_result OvrClassExploreResult) Parameters {
 // functions can be reused without modification.
 fn ovr_class_to_explore_result(cr OvrClassExploreResult) ExploreResult {
 	return ExploreResult{
-		Class:            cr.Class
-		Parameters:       cr.Parameters
-		LoadOptions:      cr.LoadOptions
-		AttributeRange:   cr.AttributeRange
-		DisplaySettings:  cr.DisplaySettings
-		path:             cr.path
-		pos_neg_classes:  cr.pos_neg_classes
+		Class: cr.Class
+		Parameters: cr.Parameters
+		LoadOptions: cr.LoadOptions
+		AttributeRange: cr.AttributeRange
+		DisplaySettings: cr.DisplaySettings
+		path: cr.path
+		pos_neg_classes: cr.pos_neg_classes
 		array_of_results: cr.array_of_results
-		args:             cr.args
+		args: cr.args
 	}
 }
 

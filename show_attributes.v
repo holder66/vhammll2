@@ -18,8 +18,7 @@ fn show_trained_attributes_for_one_classifier(result CrossVerifyResult) {
 		return
 	}
 	println(g_b('Trained attributes for classifier on dataset "${result.datafile_path}"'))
-	show_trained_attributes(result.trained_attribute_maps_array[0], result.switches_flag
-		&& result.class_counts.len == 2)
+	show_trained_attributes(result.trained_attribute_maps_array[0], result.switches_flag && result.class_counts.len == 2)
 }
 
 fn show_trained_attributes(atts_map map[string]TrainedAttribute, show_switches bool) {
@@ -29,8 +28,11 @@ fn show_trained_attributes(atts_map map[string]TrainedAttribute, show_switches b
 		println(b_u('Index  Attribute                   Type  Rank Value   Uniques       Min        Max  Bins'))
 	}
 	for attr, val in atts_map {
-		base := '${val.index:5}  ${attr:-27} ${val.attribute_type:-4}  ${val.rank_value:10.2f}' +
-			if val.attribute_type == 'C' { '          ${val.minimum:10.2f} ${val.maximum:10.2f} ${val.bins:5}' } else { '      ${val.translation_table.len:4}' }
+		base := '${val.index:5}  ${attr:-27} ${val.attribute_type:-4}  ${val.rank_value:10.2f}' + if val.attribute_type == 'C' {
+			'          ${val.minimum:10.2f} ${val.maximum:10.2f} ${val.bins:5}'
+		} else {
+			'      ${val.translation_table.len:4}'
+		}
 		if show_switches {
 			sw_str := if val.switches == -1 { '       -' } else { '${val.switches:8}' }
 			println(base + '  ${sw_str}')
@@ -43,7 +45,6 @@ fn show_trained_attributes(atts_map map[string]TrainedAttribute, show_switches b
 fn show_trained_attributes_for_multiple_classifiers(result CrossVerifyResult) {
 	for i, idx in result.classifiers {
 		println(g_b('Trained attributes for classifier ${idx} on dataset "${result.datafile_path}"'))
-		show_trained_attributes(result.trained_attribute_maps_array[i], result.switches_flag
-			&& result.class_counts.len == 2)
+		show_trained_attributes(result.trained_attribute_maps_array[i], result.switches_flag && result.class_counts.len == 2)
 	}
 }

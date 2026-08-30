@@ -2,6 +2,7 @@ module vhammll2
 
 import math
 import vsl.plot
+
 // import time
 
 // plot_explore generates a scatterplot for the results of
@@ -28,11 +29,11 @@ fn plot_explore(result ExploreResult, opts Options) {
 		bin_values_strings_filtered = filter_int(b, bins_for_sorting, bin_values_strings)
 		max_percents = array_max(percents)
 		traces << ExploreTrace{
-			label:           'Bins: ${bin_values_strings_filtered[0]}  ${array_max(percents):5.2f}'
-			percents:        percents
-			max_percents:    max_percents
+			label: 'Bins: ${bin_values_strings_filtered[0]}  ${array_max(percents):5.2f}'
+			percents: percents
+			max_percents: max_percents
 			attributes_used: filter_int(b, bins_for_sorting, x)
-			bin_range:       ['${bin_values_strings_filtered[0]}']
+			bin_range: ['${bin_values_strings_filtered[0]}']
 			bin_for_sorting: b
 		}
 	}
@@ -60,35 +61,35 @@ fn plot_explore(result ExploreResult, opts Options) {
 	for trace in traces {
 		hovertext := trace.bin_range.repeat(trace.percents.len)
 		plt.scatter(
-			x:    trace.attributes_used
-			y:    trace.percents.map((math.round(it * 100)) / 100)
+			x: trace.attributes_used
+			y: trace.percents.map((math.round(it * 100)) / 100)
 			text: hovertext
 			mode: 'lines+markers'
 			name: trace.label
 		)
 	}
 	annotation1 := plot.Annotation{
-		x:          array_max(x)
-		y:          50
-		text:       'Hover your cursor<br>over a marker<br>to view details'
-		align:      'center'
-		showarrow:  false
+		x: array_max(x)
+		y: 50
+		text: 'Hover your cursor<br>over a marker<br>to view details'
+		align: 'center'
+		showarrow: false
 		arrowcolor: 'white'
-		font:       plot.Font{
+		font: plot.Font{
 			color: 'red'
-			size:  12.0
+			size: 12.0
 		}
 	}
 	annotation2 := plot.Annotation{
-		x:          array_min(x) + 1
-		y:          30
-		text:       explore_type_string(opts)
-		showarrow:  false
+		x: array_min(x) + 1
+		y: 30
+		text: explore_type_string(opts)
+		showarrow: false
 		arrowcolor: 'white'
-		align:      'left'
-		font:       plot.Font{
+		align: 'left'
+		font: plot.Font{
 			color: 'blue'
-			size:  12.0
+			size: 12.0
 		}
 	}
 	// annotation3 := plot.Annotation{
@@ -102,36 +103,36 @@ fn plot_explore(result ExploreResult, opts Options) {
 	// 	}
 	// }
 	annotation4 := plot.Annotation{
-		x:          (array_max(x) + array_min(x)) / 2
-		y:          20
-		text:       'args: ${opts.args}'
-		showarrow:  false
+		x: (array_max(x) + array_min(x)) / 2
+		y: 20
+		text: 'args: ${opts.args}'
+		showarrow: false
 		arrowcolor: 'white'
-		align:      'center'
-		font:       plot.Font{
+		align: 'center'
+		font: plot.Font{
 			color: 'black'
-			size:  12.0
+			size: 12.0
 		}
 	}
 	title_string := 'Balanced Accuracy by Number of Attributes<br>for "${opts.datafile_path}"'
 	plt.layout(
-		title:       title_string
-		width:       800
-		height:      600
-		xaxis:       plot.Axis{
-			title:    plot.AxisTitle{
+		title: title_string
+		width: 800
+		height: 600
+		xaxis: plot.Axis{
+			title: plot.AxisTitle{
 				text: 'Number of Attributes Used'
 			}
 			tickmode: 'linear'
-			dtick:    1.0
+			dtick: 1.0
 		}
-		yaxis:       plot.Axis{
-			title:    plot.AxisTitle{
+		yaxis: plot.Axis{
+			title: plot.AxisTitle{
 				text: 'Balanced Accuracy (%)'
 			}
-			range:    [0.0, 100.0]
+			range: [0.0, 100.0]
 			tickmode: 'linear'
-			dtick:    10.0
+			dtick: 10.0
 		}
 		annotations: [annotation4, annotation2, annotation1]
 		// autosize:    false
@@ -169,32 +170,31 @@ fn plot_explore_roc(result ExploreResult, opts Options) {
 	// mut pos_class := result.array_of_results[0].pos_neg_classes[0]
 	// mut neg_class := result.array_of_results[0].pos_neg_classes[1]
 	annotation1 := plot.Annotation{
-		x:          0.4
-		y:          0.1
+		x: 0.4
+		y: 0.1
 		arrowcolor: 'white'
-		text:       'Hover your cursor<br>over a marker<br>to view details'
-		align:      'center'
-		font:       plot.Font{
+		text: 'Hover your cursor<br>over a marker<br>to view details'
+		align: 'center'
+		font: plot.Font{
 			color: 'red'
-			size:  12.0
+			size: 12.0
 		}
 	}
 	annotation2 := plot.Annotation{
-		x:          0.9
-		y:          0.6
+		x: 0.9
+		y: 0.6
 		arrowcolor: 'white'
-		text:       explore_type_string(opts)
-		align:      'center'
-		font:       plot.Font{
+		text: explore_type_string(opts)
+		align: 'center'
+		font: plot.Font{
 			color: 'blue'
-			size:  12.0
+			size: 12.0
 		}
 	}
 
 	// first, we'll do a series of curves, one per bin range, thus
 	// with the number of attributes varying
 	// skip this if no binning
-
 	for res in result.array_of_results {
 		// println('res: $res')
 		// create strings that can be used for filtering
@@ -204,10 +204,10 @@ fn plot_explore_roc(result ExploreResult, opts Options) {
 			bin_range = 'bins ${res.bin_values[0]} - ${res.bin_values[1]}'
 		}
 		roc_results << ROCResult{
-			sensitivity:           res.sens
+			sensitivity: res.sens
 			one_minus_specificity: 1.0 - res.spec
-			bin_range:             bin_range
-			attributes_used:       '${res.attributes_used}'
+			bin_range: bin_range
+			attributes_used: '${res.attributes_used}'
 		}
 	}
 	// sort on the x axis value, ie one_minus_specificity
@@ -223,9 +223,9 @@ fn plot_explore_roc(result ExploreResult, opts Options) {
 	for key, _ in element_counts(bin_range_values) {
 		traces << ROCTrace{
 			curve_series_variable_values: '${key}'
-			x_coordinates:                filter(key, bin_range_values, x_coordinates)
-			y_coordinates:                filter(key, bin_range_values, y_coordinates)
-			curve_variable_values:        filter(key, bin_range_values, attributes_used_values)
+			x_coordinates: filter(key, bin_range_values, x_coordinates)
+			y_coordinates: filter(key, bin_range_values, y_coordinates)
+			curve_variable_values: filter(key, bin_range_values, attributes_used_values)
 		}
 	}
 	if result.binning.lower != 0 {
@@ -246,9 +246,9 @@ fn plot_explore_roc(result ExploreResult, opts Options) {
 	for key, _ in element_counts(attributes_used_values) {
 		traces << ROCTrace{
 			curve_series_variable_values: '${key}'
-			x_coordinates:                filter(key, attributes_used_values, x_coordinates)
-			y_coordinates:                filter(key, attributes_used_values, y_coordinates)
-			curve_variable_values:        filter(key, attributes_used_values, bin_range_values)
+			x_coordinates: filter(key, attributes_used_values, x_coordinates)
+			y_coordinates: filter(key, attributes_used_values, y_coordinates)
+			curve_variable_values: filter(key, attributes_used_values, bin_range_values)
 		}
 	}
 

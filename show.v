@@ -29,8 +29,7 @@ fn verbose_result(i int, cl Classifier, classify_result ClassifyResult) {
 pub fn show_analyze(result AnalyzeResult) {
 	// println('result in show_analyze: ${result}')
 	mut show := []string{}
-	show << m_u('\nAnalysis of Dataset:') + lg(' ${result.datafile_path} ') +
-		m('(File Type: ${result.datafile_type})')
+	show << m_u('\nAnalysis of Dataset:') + lg(' ${result.datafile_path} ') + m('(File Type: ${result.datafile_type})')
 	if result.class_missing_purge_flag {
 		show << r('Note: instances with missing class values were purged.')
 	}
@@ -68,15 +67,11 @@ pub fn show_analyze(result AnalyzeResult) {
 	cont_atts := result.attributes.filter(it.for_training && it.att_type == 'C')
 	show << g_b('Continuous Attributes for Training') + ' (${cont_atts.len} attributes)'
 
-	show << b_u(' Index  Name${' ':34}Uniques  Missing      %        Min        Max' +
-		'       Mean     Median')
+	show << b_u(' Index  Name${' ':34}Uniques  Missing      %        Min        Max' + '       Mean     Median')
 	for attr in cont_atts {
-		show <<
-			'${attr.id:6}  ${attr.name:-37} ${attr.uniques:7}  ${attr.missing:7}  ${attr.missing * 100 / f32(attr.count):5.1f}' +
-			' ${attr.min:10.3g} ${attr.max:10.3g} ${attr.mean:10.3g} ${attr.median:10.3g}'
+		show << '${attr.id:6}  ${attr.name:-37} ${attr.uniques:7}  ${attr.missing:7}  ${attr.missing * 100 / f32(attr.count):5.1f}' + ' ${attr.min:10.3g} ${attr.max:10.3g} ${attr.mean:10.3g} ${attr.median:10.3g}'
 	}
-	show << g_b('The Class Attribute: "${result.class_name}"') +
-		' (${result.class_counts.len} classes)'
+	show << g_b('The Class Attribute: "${result.class_name}"') + ' (${result.class_counts.len} classes)'
 	show << b_u('Class Value           Cases')
 	for key, value in result.class_counts {
 		show << '${key:-20}  ${value:5}'
@@ -130,9 +125,9 @@ pub fn show_rank_attributes(result RankingResult) {
 // show_classifier outputs to the console information about a classifier
 pub fn show_classifier(cl Classifier) {
 	mut parameters_for_show := ParametersForShow{
-		Parameters:  cl.Parameters
+		Parameters: cl.Parameters
 		LoadOptions: cl.LoadOptions
-		Class:       cl.Class
+		Class: cl.Class
 	}
 	println(m_u('\nClassifier from "${cl.datafile_path}"'))
 	show_parameters(parameters_for_show)
@@ -148,11 +143,17 @@ pub fn show_classifier(cl Classifier) {
 // show_parameters
 fn show_parameters(r ParametersForShow) {
 	if r.number_of_attributes.len == 1 {
-		println('${'Number of attributes: ':55}' +
-			if r.number_of_attributes[0] == 0 { 'all' } else { '${r.number_of_attributes[0]}' })
+		println('${'Number of attributes: ':55}' + if r.number_of_attributes[0] == 0 {
+			'all'
+		} else {
+			'${r.number_of_attributes[0]}'
+		})
 	}
-	println('${'Binning range for continuous attributes: ':55}' +
-		if r.binning.lower == 0 { 'not applicable (no continuous attributes used)' } else { 'from ${r.binning.lower} to ${r.binning.upper} with interval ${r.binning.interval}' })
+	println('${'Binning range for continuous attributes: ':55}' + if r.binning.lower == 0 {
+		'not applicable (no continuous attributes used)'
+	} else {
+		'from ${r.binning.lower} to ${r.binning.upper} with interval ${r.binning.interval}'
+	})
 	println('${'Missing values: ':55}included')
 	println('${'Switches flag for ranking attributes: ':55}${r.switches_flag}')
 	if r.switches_flag {
@@ -180,9 +181,9 @@ fn show_balanced_prevalences(load_options LoadOptions) {}
 // neighbor counts by class.
 pub fn show_validate(result ValidateResult) {
 	mut parameters_for_show := ParametersForShow{
-		Parameters:  result.Parameters
+		Parameters: result.Parameters
 		LoadOptions: result.LoadOptions
-		Class:       result.Class
+		Class: result.Class
 	}
 	println(m_u('\nValidation of "${result.validate_file_path}" using a classifier from "${result.datafile_path}"'))
 	show_parameters(parameters_for_show)
@@ -198,17 +199,19 @@ pub fn show_validate(result ValidateResult) {
 // instance counts, per-class accuracy, confusion matrix (when
 // expanded), and binary metrics for two-class problems.
 pub fn show_verify(result CrossVerifyResult, opts Options) {
-	println(m_u('\nVerification of "${result.testfile_path}" using ' +
-		if opts.multiple_flag { 'multiple classifiers ' } else { 'a classifier ' } +
-		'from "${result.datafile_path}"'))
+	println(m_u('\nVerification of "${result.testfile_path}" using ' + if opts.multiple_flag {
+		'multiple classifiers '
+	} else {
+		'a classifier '
+	} + 'from "${result.datafile_path}"'))
 	if opts.multiple_flag {
 		println('Classifier parameters are in file "${opts.multiple_classify_options_file_path}"')
 		show_multiple_classifier_settings(result, opts)
 	} else {
 		mut parameters_for_show := ParametersForShow{
-			Parameters:  result.Parameters
+			Parameters: result.Parameters
 			LoadOptions: result.LoadOptions
-			Class:       result.Class
+			Class: result.Class
 		}
 		show_parameters(parameters_for_show)
 	}
@@ -336,20 +339,32 @@ fn show_multiple_classifier_settings_details(multiple_classifier_settings []Clas
 // per-class accuracy, confusion matrix (when expanded), and binary
 // metrics for two-class problems.
 pub fn show_crossvalidation(result CrossVerifyResult, opts Options) {
-	println(m_u('\nCross-validation of "${result.datafile_path}"' +
-		if opts.multiple_flag { ' using multiple classifiers' } else { '' }))
-	println('Partitioning: ' + if result.folds == 0 { 'leave-one-out' } else { '${result.folds}-fold' + if result.repetitions > 1 { ', ${result.repetitions} repetitions' + if result.random_pick { ' with random selection of instances' } else { '' }
-		 } else { ''
-		 }
-	 })
+	println(m_u('\nCross-validation of "${result.datafile_path}"' + if opts.multiple_flag {
+		' using multiple classifiers'
+	} else {
+		''
+	}))
+	println('Partitioning: ' + if result.folds == 0 {
+		'leave-one-out'
+	} else {
+		'${result.folds}-fold' + if result.repetitions > 1 {
+			', ${result.repetitions} repetitions' + if result.random_pick {
+				' with random selection of instances'
+			} else {
+				''
+			}
+		} else {
+			''
+		}
+	})
 	if opts.multiple_flag {
 		println('Classifier parameters are in file "${opts.multiple_classify_options_file_path}"')
 		show_multiple_classifier_settings(result, opts)
 	} else {
 		mut parameters_for_show := ParametersForShow{
-			Parameters:  result.Parameters
+			Parameters: result.Parameters
 			LoadOptions: result.LoadOptions
-			Class:       result.Class
+			Class: result.Class
 		}
 		show_parameters(parameters_for_show)
 	}
@@ -450,8 +465,11 @@ fn print_confusion_matrix(result CrossVerifyResult) {
 	mut l := result.classes.map(it.len)
 	l << 9 // to make sure that the minimum length covers up to 5 digits
 	l_max := array_max(l)
-	println(b_u('Confusion Matrix' +
-		if result.repetitions > 1 { ' (values averaged over ${result.repetitions} repetitions):' } else { ':' }))
+	println(b_u('Confusion Matrix' + if result.repetitions > 1 {
+		' (values averaged over ${result.repetitions} repetitions):'
+	} else {
+		':'
+	}))
 	mut padded_item := ''
 	for i, rows in display_confusion_matrix {
 		for j, item in rows {

@@ -156,7 +156,6 @@ fn test_plot_explore_cross() {
 // 	output := os.execute_or_panic('./temp explore -g -a 1,3 -b 2,4 vhammll2/datasets/iris.tab')
 // 	assert output.output.count('Listening on') == 1
 // }
-
 fn test_plot_optimals_roc() {
 	// exercises plot_mult_roc via the optimals command;
 	// reuses the bcw.opts settings file generated in test_plot_roc

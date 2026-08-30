@@ -20,28 +20,36 @@ fn show_explore_header(results ExploreResult, settings DisplaySettings) {
 	}
 	mut explore_type_str := ''
 	if results.testfile_path == '' {
-		explore_type_str = if results.folds == 0 { 'leave-one-out ' } else { '${results.folds}-fold ' } + 'cross-validation' + if results.repetitions > 0 { '\n (${results.repetitions} repetitions' + if results.random_pick { ', with random selection of instances)' } else { ')' }
-		 } else { ''
-		 }
+		explore_type_str = if results.folds == 0 {
+			'leave-one-out '
+		} else {
+			'${results.folds}-fold '
+		} + 'cross-validation' + if results.repetitions > 0 {
+			'\n (${results.repetitions} repetitions' + if results.random_pick {
+				', with random selection of instances)'
+			} else {
+				')'
+			}
+		} else {
+			''
+		}
 	} else {
 		explore_type_str = 'verification of "${results.testfile_path}"'
 	}
 	println(m_u('\nExplore ${explore_type_str} using classifiers from "${results.path}"'))
 	mut parameters_for_show := ParametersForShow{
-		Parameters:  results.Parameters
+		Parameters: results.Parameters
 		LoadOptions: results.LoadOptions
-		Class:       results.Class
+		Class: results.Class
 	}
 	show_parameters(parameters_for_show)
 	println('Over attribute range from ${results.start} to ${results.end} by interval ${results.att_interval}')
 	if !settings.expanded_flag {
-		println(b_u('Attributes     Bins' +
-			'  Matches  Nonmatches  Accuracy: Raw  Balanced        MCC'))
+		println(b_u('Attributes     Bins' + '  Matches  Nonmatches  Accuracy: Raw  Balanced        MCC'))
 	} else {
 		if binary {
 			println('A correct classification to "${results.pos_neg_classes[0]}" is a True Positive (TP);\nA correct classification to "${results.pos_neg_classes[1]}" is a True Negative (TN).')
-			println(b_u('Attributes    Bins' +
-				"     TP    FN    TN    FP  Sens'y Spec'y    PPV    NPV  F1 Score  Accuracy: Raw  Balanced     MCC"))
+			println(b_u('Attributes    Bins' + "     TP    FN    TN    FP  Sens'y Spec'y    PPV    NPV  F1 Score  Accuracy: Raw  Balanced     MCC"))
 		} else {
 			println(b_u('Attributes    Bins'))
 			println(b_u('    Class                     Instances    True Positives    Precision    Recall    F1 Score'))
@@ -87,8 +95,7 @@ fn show_explore_trailer(results ExploreResult, analytics map[string]Analytics, o
 
 // get_purged_percent
 fn get_purged_percent(result CrossVerifyResult) (f64, f64, f64) {
-	if result.prepurge_instances_counts_array.len == 0
-		|| result.classifier_instances_counts.len == 0 {
+	if result.prepurge_instances_counts_array.len == 0 || result.classifier_instances_counts.len == 0 {
 		return 0, 0, 0
 	}
 	total_count_avg := arrays.sum(result.prepurge_instances_counts_array) or { panic(err) } / f64(result.prepurge_instances_counts_array.len)
@@ -106,12 +113,10 @@ fn show_explore_line(result CrossVerifyResult, settings DisplaySettings) {
 	if settings.show_flag || settings.expanded_flag {
 		if !settings.expanded_flag {
 			accuracy_percent := (f32(result.correct_count) * 100 / result.labeled_classes.len)
-			println('${result.attributes_used:10}  ${get_show_bins(result.bin_values)}' +
-				'  ${result.correct_count:7}  ${result.labeled_classes.len - result.correct_count:10}       ${accuracy_percent:7.2f}%  ${result.balanced_accuracy:7.2f}%      ${result.mcc:5.3f}')
+			println('${result.attributes_used:10}  ${get_show_bins(result.bin_values)}' + '  ${result.correct_count:7}  ${result.labeled_classes.len - result.correct_count:10}       ${accuracy_percent:7.2f}%  ${result.balanced_accuracy:7.2f}%      ${result.mcc:5.3f}')
 		} else {
 			if result.pos_neg_classes[0] != '' {
-				println('${result.attributes_used:10} ${get_show_bins(result.bin_values)}' +
-					'  ${get_binary_stats_line(result)}')
+				println('${result.attributes_used:10} ${get_show_bins(result.bin_values)}' + '  ${get_binary_stats_line(result)}')
 			} else {
 				println('${result.attributes_used:10} ${get_show_bins(result.bin_values)}')
 				show_multiple_classes_stats(result)

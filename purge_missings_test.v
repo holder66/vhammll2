@@ -13,10 +13,10 @@ fn test_purge_array() {
 
 fn test_purge_instances_for_missing_class_values() {
 	mut opts := Options{
-		bins:                 [3, 3]
-		command:              'make'
+		bins: [3, 3]
+		command: 'make'
 		number_of_attributes: [2]
-		datafile_path:        'datasets/class_missing_iris.tab'
+		datafile_path: 'datasets/class_missing_iris.tab'
 	}
 	mut cl := make_classifier(opts)
 	assert cl.instances.len == 142

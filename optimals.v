@@ -68,36 +68,31 @@ pub fn optimals(path string, opts Options) OptimalsResult {
 	corrects_max_ids := settings.filter(array_sum(it.correct_counts) == corrects_max).map(it.classifier_id)
 	mut result := OptimalsResult{
 		all_attributes_flag: opts.all_attributes_flag
-		settingsfile_path:   path
-		datafile_path:       settings[0].datafile_path
-		settings_length:     all_settings.len
-		settings_purged:     all_settings.len - settings.len
-		class_counts:        settings[0].class_counts_int
-		classes:             []string{len: settings[0].class_counts_int.len, init: '${index}'}
-
-		best_balanced_accuracies:                     balanced_accuracy_values
-		mcc_max:                                      mcc_max
-		mcc_max_classifiers_all:                      mcc_max_ids
-		mcc_max_classifiers:                          limit_to_unique_attribute_number(settings,
-			mcc_max_ids, opts.all_attributes_flag)
-		correct_inferences_total_max:                 corrects_max
+		settingsfile_path: path
+		datafile_path: settings[0].datafile_path
+		settings_length: all_settings.len
+		settings_purged: all_settings.len - settings.len
+		class_counts: settings[0].class_counts_int
+		classes: []string{len: settings[0].class_counts_int.len, init: '${index}'}
+		best_balanced_accuracies: balanced_accuracy_values
+		mcc_max: mcc_max
+		mcc_max_classifiers_all: mcc_max_ids
+		mcc_max_classifiers: limit_to_unique_attribute_number(settings, mcc_max_ids, opts.all_attributes_flag)
+		correct_inferences_total_max: corrects_max
 		correct_inferences_total_max_classifiers_all: corrects_max_ids
-		correct_inferences_total_max_classifiers:     limit_to_unique_attribute_number(settings,
-			corrects_max_ids, opts.all_attributes_flag)
+		correct_inferences_total_max_classifiers: limit_to_unique_attribute_number(settings, corrects_max_ids, opts.all_attributes_flag)
 	}
 	for value in balanced_accuracy_values {
 		matching_ids := settings.filter(it.balanced_accuracy == value).map(it.classifier_id)
 		result.best_balanced_accuracies_classifiers_all << matching_ids
-		result.best_balanced_accuracies_classifiers << limit_to_unique_attribute_number(settings,
-			matching_ids, opts.all_attributes_flag)
+		result.best_balanced_accuracies_classifiers << limit_to_unique_attribute_number(settings, matching_ids, opts.all_attributes_flag)
 	}
 	for i, _ in result.classes {
 		max_correct := array_max(settings.map(it.correct_counts[i]))
 		result.correct_inferences_by_class_max << max_correct
 		matching_ids := settings.filter(it.correct_counts[i] == max_correct).map(it.classifier_id)
 		result.correct_inferences_by_class_max_classifiers_all << matching_ids
-		result.correct_inferences_by_class_max_classifiers << limit_to_unique_attribute_number(settings,
-			matching_ids, opts.all_attributes_flag)
+		result.correct_inferences_by_class_max_classifiers << limit_to_unique_attribute_number(settings, matching_ids, opts.all_attributes_flag)
 	}
 
 	struct Counts {
@@ -132,13 +127,13 @@ pub fn optimals(path string, opts Options) OptimalsResult {
 		classifiers << '${setting.classifier_id}'
 	}
 	result.RocData = RocData{
-		coordinates:    coordinates
-		classifiers:    classifiers
+		coordinates: coordinates
+		classifiers: classifiers
 		classifier_ids: classifier_ids
-		trace_text:     'Single classifier<br>cross-validations'
+		trace_text: 'Single classifier<br>cross-validations'
 	}
 	result.RocFiles = RocFiles{
-		datafile:     result.datafile_path
+		datafile: result.datafile_path
 		settingsfile: path
 	}
 	// collect all the optimal classifiers
@@ -152,11 +147,9 @@ pub fn optimals(path string, opts Options) OptimalsResult {
 	all_optimals = uniques(all_optimals)
 	all_optimals.sort(a < b)
 	result.all_optimals = all_optimals
-	result.all_optimals_unique_attributes = limit_to_unique_attribute_number(settings,
-		all_optimals, opts.all_attributes_flag)
+	result.all_optimals_unique_attributes = limit_to_unique_attribute_number(settings, all_optimals, opts.all_attributes_flag)
 	if opts.generate_combinations_flag {
-		result.multi_classifier_combinations_for_auc = max_auc_combinations(settings,
-			result.all_optimals_unique_attributes, opts.DisplaySettings.CombinationSizeLimits)
+		result.multi_classifier_combinations_for_auc = max_auc_combinations(settings, result.all_optimals_unique_attributes, opts.DisplaySettings.CombinationSizeLimits)
 		// sort by auc in ascending order (makes it easier to see the important ones)
 		result.multi_classifier_combinations_for_auc.sort(a.auc > b.auc)
 	}
@@ -183,8 +176,7 @@ pub fn optimals(path string, opts Options) OptimalsResult {
 		}
 		println(c_u('Best Matthews Correlation Coefficient (MCC): ') + g('${result.mcc_max:7.3f}'))
 		show_multiple_classifier_settings_details(settings.filter(it.classifier_id in result.mcc_max_classifiers))
-		println(c_u('Highest value for total correct inferences: ') +
-			g('${result.correct_inferences_total_max} / ${array_sum(result.class_counts)}'))
+		println(c_u('Highest value for total correct inferences: ') + g('${result.correct_inferences_total_max} / ${array_sum(result.class_counts)}'))
 		show_multiple_classifier_settings_details(settings.filter(it.classifier_id in result.correct_inferences_total_max_classifiers))
 		println(c_u('Best correct inferences by class:'))
 		println(c_u('Settings for Receiver Operating Characteristic (ROC) curve:'))
@@ -193,8 +185,7 @@ pub fn optimals(path string, opts Options) OptimalsResult {
 
 	if opts.graph_flag && result.class_counts.len == 2 {
 		if opts.generate_combinations_flag {
-			plot_auc_combinations(result.multi_classifier_combinations_for_auc, result.RocFiles,
-				opts.limit_output)
+			plot_auc_combinations(result.multi_classifier_combinations_for_auc, result.RocFiles, opts.limit_output)
 		} else {
 			plot_mult_roc([result.RocData], result.RocFiles)
 		}
@@ -288,7 +279,7 @@ fn max_auc_combinations(settings_array []ClassifierSettings, classifier_ids []in
 	for i, points_arrays in array_of_points_arrays {
 		auc_classifiers << AucClassifiers{
 			classifier_ids: classifier_combos[i]
-			auc:            points_arrays.auc
+			auc: points_arrays.auc
 		}
 	}
 	return auc_classifiers

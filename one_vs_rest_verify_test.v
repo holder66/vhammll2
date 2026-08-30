@@ -1,8 +1,8 @@
 module vhammll2
 
 import os
-// import vtl
 
+// import vtl
 fn testsuite_begin() ? {
 	if os.is_dir('tempfolders/tempfolder_one_vs_rest_verify') {
 		os.rmdir_all('tempfolders/tempfolder_one_vs_rest_verify')!

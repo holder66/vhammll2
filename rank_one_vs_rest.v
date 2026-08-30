@@ -54,10 +54,9 @@ pub fn rank_one_vs_rest(opts Options) RankingResult {
 	ds := load_file(opts.datafile_path, opts.LoadOptions)
 	mut ranking_result := RankingResult{
 		LoadOptions: ds.LoadOptions
-		path:        ds.path
+		path: ds.path
 	}
-	perfect_rank_value := f32(get_rank_value_for_strings(ds.Class.class_values, ds.Class.class_values,
-		ds.Class.class_counts, opts))
+	perfect_rank_value := f32(get_rank_value_for_strings(ds.Class.class_values, ds.Class.class_values, ds.Class.class_counts, opts))
 	mut ranked_atts := []RankedAttribute{}
 	mut binning := Binning{}
 	if ds.useful_continuous_attributes.len != 0 {
@@ -90,6 +89,7 @@ pub fn rank_one_vs_rest(opts Options) RankingResult {
 		bin_number_for_maximum_rank_value = 0
 		min = array_min(attr_values.filter(!is_nan(it)))
 		max = array_max(attr_values)
+
 		// discretize each attribute by binning, over the bins given by lower
 		// and upper and using an interval given by interval; go from high to
 		// low, so that the maximum rank value used
@@ -110,8 +110,7 @@ pub fn rank_one_vs_rest(opts Options) RankingResult {
 		for bin_number in bin_numbers {
 			rank_value = i64(0)
 
-			binned_values = discretize_attribute_with_range_check(attr_values, min, max,
-				bin_number)
+			binned_values = discretize_attribute_with_range_check(attr_values, min, max, bin_number)
 			// loop through each possible value for bin in the bins bin_number + 1
 			for bin_value in 0 .. bin_number + 1 {
 				// a bin_value of 0 represents a missing value, so skip
@@ -150,23 +149,22 @@ pub fn rank_one_vs_rest(opts Options) RankingResult {
 		}
 		rank_value_array = rank_value_array.map(100.0 * f32(it) / perfect_rank_value)
 		ranked_atts << RankedAttribute{
-			attribute_index:  attr_index_for_maximum_rank_value
-			attribute_name:   ds.attribute_names[attr_index_for_maximum_rank_value]
-			attribute_type:   ds.attribute_types[attr_index_for_maximum_rank_value]
-			rank_value:       100.0 * f32(maximum_rank_value) / perfect_rank_value
+			attribute_index: attr_index_for_maximum_rank_value
+			attribute_name: ds.attribute_names[attr_index_for_maximum_rank_value]
+			attribute_type: ds.attribute_types[attr_index_for_maximum_rank_value]
+			rank_value: 100.0 * f32(maximum_rank_value) / perfect_rank_value
 			rank_value_array: rank_value_array
-			bins:             bin_number_for_maximum_rank_value
+			bins: bin_number_for_maximum_rank_value
 		}
 	}
 	// loop through discrete attributes
 	for attr_index, attr_values in ds.useful_discrete_attributes {
-		rank_value = get_rank_value_for_strings(attr_values, ds.class_values, ds.class_counts,
-			opts)
+		rank_value = get_rank_value_for_strings(attr_values, ds.class_values, ds.class_counts, opts)
 		ranked_atts << RankedAttribute{
 			attribute_index: attr_index
-			attribute_name:  ds.attribute_names[attr_index]
-			attribute_type:  ds.attribute_types[attr_index]
-			rank_value:      100.0 * f32(rank_value) / perfect_rank_value
+			attribute_name: ds.attribute_names[attr_index]
+			attribute_type: ds.attribute_types[attr_index]
+			rank_value: 100.0 * f32(rank_value) / perfect_rank_value
 		}
 	}
 	custom_sort_fn := fn (a &RankedAttribute, b &RankedAttribute) int {

@@ -30,9 +30,7 @@ fn test_show_append_perf() ? {
 
 	// now do it again but from the saved validate result,
 	// appending to the previously extended classifier
-	tcl = vhammll2.append_instances(vhammll2.load_classifier_file('tempfolders/tempfolder_show_perf/classifierfile')!,
-		vhammll2.load_instances_file('tempfolders/tempfolder_show_perf/instancesfile')!,
-		vhammll2.opts('-o tempfolders/tempfolder_show_perf/classifierfile datasets/soybean-large-train.tab'))
+	tcl = vhammll2.append_instances(vhammll2.load_classifier_file('tempfolders/tempfolder_show_perf/classifierfile')!, vhammll2.load_instances_file('tempfolders/tempfolder_show_perf/instancesfile')!, vhammll2.opts('-o tempfolders/tempfolder_show_perf/classifierfile datasets/soybean-large-train.tab'))
 }
 
 fn test_show_classifier_perf() {

@@ -1,6 +1,7 @@
 module vhammll2
 
 import math
+
 // import vsl.plot
 
 // RocPoint is a point on a Receiver Operating Characteristic curve,
@@ -93,8 +94,8 @@ pub mut:
 fn make_rocpoint(settings ClassifierSettings) RocPoint {
 	return RocPoint{
 		classifier_ids: [settings.classifier_id]
-		Point:          Point{
-			fpr:  1.0 - settings.spec
+		Point: Point{
+			fpr: 1.0 - settings.spec
 			sens: settings.sens
 		}
 	}
@@ -104,13 +105,13 @@ fn (mut r RocPoints) extend_rocpoints() RocPoints {
 	// tack on a [0,0] and a [1,1] point
 	r.roc_points.prepend(RocPoint{
 		Point: Point{
-			fpr:  0.0
+			fpr: 0.0
 			sens: 0.0
 		}
 	})
 	r.roc_points << RocPoint{
 		Point: Point{
-			fpr:  1.0
+			fpr: 1.0
 			sens: 1.0
 		}
 	}
@@ -138,8 +139,8 @@ pub fn roc_values(pairs [][]f64, classifier_ids [][]int) []RocPoint {
 	// Convert to FPR/sens and create points
 	for i, p in big_pairs {
 		roc_points << RocPoint{
-			fpr:            1 - p[1] // Convert specificity to FPR
-			sens:           p[0]     // Sensitivity = sens
+			fpr: 1 - p[1] // Convert specificity to FPR
+			sens: p[0] // Sensitivity = sens
 			classifier_ids: big_classifiers[i]
 		}
 	}

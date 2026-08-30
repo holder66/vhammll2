@@ -16,8 +16,8 @@ fn make_multi_classifiers(mut ds Dataset, settings_list []ClassifierSettings, cl
 			continue
 		}
 		opts := Options{
-			Parameters:    matching[0].Parameters
-			LoadOptions:   matching[0].LoadOptions
+			Parameters: matching[0].Parameters
+			LoadOptions: matching[0].LoadOptions
 			datafile_path: matching[0].datafile_path
 		}
 		cl := make_classifier_using_ds(mut ds, opts)

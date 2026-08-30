@@ -46,8 +46,7 @@ fn test_pairs() {
 	assert pairs(1) == []
 	assert pairs(2) == [[0, 1]]
 	assert pairs(3) == [[0, 1], [0, 2], [1, 2]]
-	assert pairs(4) == [[0, 1], [0, 2], [0, 3], [1, 2], [1, 3],
-		[2, 3]]
+	assert pairs(4) == [[0, 1], [0, 2], [0, 3], [1, 2], [1, 3], [2, 3]]
 }
 
 fn test_abs_diff() {

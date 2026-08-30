@@ -31,23 +31,23 @@ pub fn one_vs_rest_cross_validate(opts Options) CrossVerifyResult {
 		inferences_map[key] = 0
 	}
 	mut cross_result := CrossVerifyResult{
-		Parameters:                          opts.Parameters
-		LoadOptions:                         ds.LoadOptions
-		DisplaySettings:                     opts.DisplaySettings
-		MultipleOptions:                     opts.MultipleOptions
-		Class:                               ds.Class
-		datafile_path:                       ds.path
+		Parameters: opts.Parameters
+		LoadOptions: ds.LoadOptions
+		DisplaySettings: opts.DisplaySettings
+		MultipleOptions: opts.MultipleOptions
+		Class: ds.Class
+		datafile_path: ds.path
 		multiple_classify_options_file_path: cross_opts.multiple_classify_options_file_path
-		labeled_classes:                     ds.class_values
-		pos_neg_classes:                     get_pos_neg_classes(ds)
-		confusion_matrix_map:                confusion_matrix_map
-		correct_inferences:                  inferences_map.clone()
-		incorrect_inferences:                inferences_map.clone()
-		wrong_inferences:                    inferences_map.clone()
-		true_positives:                      inferences_map.clone()
-		true_negatives:                      inferences_map.clone()
-		false_positives:                     inferences_map.clone()
-		false_negatives:                     inferences_map.clone()
+		labeled_classes: ds.class_values
+		pos_neg_classes: get_pos_neg_classes(ds)
+		confusion_matrix_map: confusion_matrix_map
+		correct_inferences: inferences_map.clone()
+		incorrect_inferences: inferences_map.clone()
+		wrong_inferences: inferences_map.clone()
+		true_positives: inferences_map.clone()
+		true_negatives: inferences_map.clone()
+		false_positives: inferences_map.clone()
+		false_negatives: inferences_map.clone()
 	}
 	cross_result.binning = get_binning(cross_opts.bins)
 
@@ -89,8 +89,7 @@ pub fn one_vs_rest_cross_validate(opts Options) CrossVerifyResult {
 			if class in cross_opts.per_class_parameters {
 				class_opts.Parameters = cross_opts.per_class_parameters[class]
 			}
-			binary_cross_validate(bin_ds, mapping, class, class_opts, mut best_scores, mut
-				rep_inferred, mut cross_result)
+			binary_cross_validate(bin_ds, mapping, class, class_opts, mut best_scores, mut rep_inferred, mut cross_result)
 		}
 
 		// results in original dataset index order
@@ -154,8 +153,7 @@ fn binary_cross_validate(bin_ds Dataset, mapping []int, positive_class string, o
 		mut byte_values_array := [][]u8{}
 		for attr in classifier.attribute_ordering {
 			j := fold.attribute_names.index(attr)
-			byte_values_array << process_fold_data(classifier.trained_attributes[attr],
-				fold.data[j])
+			byte_values_array << process_fold_data(classifier.trained_attributes[attr], fold.data[j])
 		}
 		fold_cases := transpose(byte_values_array)
 

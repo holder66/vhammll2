@@ -25,20 +25,20 @@ pub fn one_vs_rest_verify(opts Options) CrossVerifyResult {
 	}
 	// instantiate a struct for the result
 	mut verify_result := CrossVerifyResult{
-		LoadOptions:                         opts.LoadOptions
-		Parameters:                          opts.Parameters
-		DisplaySettings:                     opts.DisplaySettings
-		MultipleOptions:                     opts.MultipleOptions
-		datafile_path:                       opts.datafile_path
-		testfile_path:                       opts.testfile_path
+		LoadOptions: opts.LoadOptions
+		Parameters: opts.Parameters
+		DisplaySettings: opts.DisplaySettings
+		MultipleOptions: opts.MultipleOptions
+		datafile_path: opts.datafile_path
+		testfile_path: opts.testfile_path
 		multiple_classify_options_file_path: opts.multiple_classify_options_file_path
-		multiple_classifier_settings:        opts.multiple_classifier_settings
-		labeled_classes:                     test_ds.class_values
-		actual_classes:                      test_ds.class_values
-		class_counts:                        test_ds.class_counts
-		classes:                             test_ds.classes
-		pos_neg_classes:                     get_pos_neg_classes(test_ds)
-		confusion_matrix_map:                confusion_matrix_map
+		multiple_classifier_settings: opts.multiple_classifier_settings
+		labeled_classes: test_ds.class_values
+		actual_classes: test_ds.class_values
+		class_counts: test_ds.class_counts
+		classes: test_ds.classes
+		pos_neg_classes: get_pos_neg_classes(test_ds)
+		confusion_matrix_map: confusion_matrix_map
 	}
 	verify_result.binning = get_binning(opts.bins)
 	mut ds := load_file(opts.datafile_path, opts.LoadOptions)

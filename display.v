@@ -1,7 +1,7 @@
 module vhammll2
 
 import os
-import json
+import json2
 
 const display_help = '
 Description:
@@ -46,7 +46,7 @@ pub fn display_file(path string, in_opts Options) {
 	s := os.read_file(path.trim_space()) or { panic('failed to open ${path}') }
 	match true {
 		s.contains('"struct_type":".ExploreResult"') {
-			mut saved_er := json.decode(ExploreResult, s) or { panic(err) }
+			mut saved_er := json2.decode[ExploreResult](s) or { panic(err) }
 			show_explore_header(saved_er, opts.DisplaySettings)
 			for mut result in saved_er.array_of_results {
 				show_explore_line(result, opts.DisplaySettings)
@@ -61,39 +61,40 @@ pub fn display_file(path string, in_opts Options) {
 			}
 		}
 		s.contains('"struct_type":".Classifier"') {
-			saved_cl := json.decode(Classifier, s) or { panic('Failed to parse json') }
+			saved_cl := json2.decode[Classifier](s) or { panic('Failed to parse json') }
 			show_classifier(saved_cl)
 		}
 		s.contains('"struct_type":".RankingResult"') {
-			saved_rr := json.decode(RankingResult, s) or { panic('Failed to parse json') }
+			saved_rr := json2.decode[RankingResult](s) or { panic('Failed to parse json') }
 			show_rank_attributes(saved_rr)
 			if opts.graph_flag {
 				plot_rank(saved_rr)
 			}
 		}
 		s.contains('"struct_type":".AnalyzeResult"') {
-			saved_ar := json.decode(AnalyzeResult, s) or { panic('Failed to parse json') }
+			saved_ar := json2.decode[AnalyzeResult](s) or { panic('Failed to parse json') }
 			show_analyze(saved_ar)
 		}
 		s.contains('"struct_type":".ValidateResult"') {
 			// dump(s)
-			saved_valr := json.decode(ValidateResult, s) or { panic('Failed to parse json') }
+			saved_valr := json2.decode[ValidateResult](s) or { panic('Failed to parse json') }
 			// dump(saved_valr)
 			show_validate(saved_valr)
 		}
 		s.contains('"struct_type":".CrossVerifyResult"') && s.contains('"command":"verify"') {
-			mut saved_vr := json.decode(CrossVerifyResult, s) or {
+			mut saved_vr := json2.decode[CrossVerifyResult](s) or {
 				panic('Failed to parse json as CrossVerifyResult')
 			}
 			show_verify(saved_vr, opts)
 		}
 		s.contains('"struct_type":".CrossVerifyResult"') && s.contains('"command":"cross"') {
-			saved_vr := json.decode(CrossVerifyResult, s) or { panic('Failed to parse json') }
+			saved_vr := json2.decode[CrossVerifyResult](s) or { panic('Failed to parse json') }
 			show_crossvalidation(saved_vr, opts)
 			// if opts.append_settings_flag {
 			// 	append_cross_verify_settings_to_file(saved_vr, opts)
 			// }
 		}
+
 		// test for a multiple classifier settings file
 		s.contains('"binning":{"lower":') {
 			mut multiple_classifier_settings := read_multiple_opts(path) or {
@@ -126,19 +127,22 @@ pub fn display_file(path string, in_opts Options) {
 					if opts.graph_flag {
 						plot_mult_roc([
 							RocData{
-								coordinates:    pairs_array
+								coordinates: pairs_array
 								classifier_ids: classifiers
-								trace_text:     'Individual classifiers'
+								trace_text: 'Individual classifiers'
 							},
 						], RocFiles{
-							datafile:     multiple_classifier_settings[0].datafile_path
+							datafile: multiple_classifier_settings[0].datafile_path
 							settingsfile: path
 						})
 					}
 				}
 				if opts.expanded_flag {
-					println(m_u('Multiple Classifier Settings: file: ${path}' +
-						if auc != 0.0 { '    AUC = ${auc:.3f}' } else { '' }))
+					println(m_u('Multiple Classifier Settings: file: ${path}' + if auc != 0.0 {
+						'    AUC = ${auc:.3f}'
+					} else {
+						''
+					}))
 					show_multiple_classifier_settings_details(multiple_classifier_settings)
 				} else {
 					println('auc = ${auc:.3f} for classifiers ${opts.classifiers} in settings file ${path}')
@@ -154,12 +158,10 @@ pub fn display_file(path string, in_opts Options) {
 					}) {
 						ds = balance_prevalences(mut ds, s0.balance_prevalences_threshold)
 					}
-					mut classifiers_array := make_multi_classifiers(mut ds, multiple_classifier_settings,
-						opts.classifiers)
+					mut classifiers_array := make_multi_classifiers(mut ds, multiple_classifier_settings, opts.classifiers)
 					for i, idx in classifiers_array {
 						println(g_b('Trained attributes for classifier ${opts.classifiers[i]} on dataset ${multiple_classifier_settings[0].datafile_path}'))
-						show_trained_attributes(idx.trained_attributes, idx.switches_flag
-							&& idx.class_counts.len == 2)
+						show_trained_attributes(idx.trained_attributes, idx.switches_flag && idx.class_counts.len == 2)
 					}
 				}
 			}

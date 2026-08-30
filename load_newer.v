@@ -9,9 +9,9 @@ fn load_orange_newer_file(path string, opts LoadOptions) Dataset {
 	attribute_words := extract_words(content[0])
 	types_attributes := attribute_words.map(extract_types(it))
 	mut ds := Dataset{
-		LoadOptions:         opts
-		path:                path
-		attribute_names:     types_attributes.map(it[1])
+		LoadOptions: opts
+		path: path
+		attribute_names: types_attributes.map(it[1])
 		raw_attribute_types: types_attributes.map(it[0])
 		// class_missing_purge_flag: opts.class_missing_purge_flag
 		// ox_spectra: content[1..].map(extract_words(it))
@@ -60,8 +60,8 @@ fn combine_raw_and_inferred_types(ds Dataset) []string {
 			t in ['w', 'S', 'T'] { 'i' }
 			t == '' && ds.inferred_attribute_types[i] != '' { ds.inferred_attribute_types[i] }
 			else { infer_type_from_data(ds.data[i], ds.LoadOptions) }
-			// else { panic('unrecognized attribute type "${t}" for aLttribute "${ds.attribute_names[i]}"') }
 		}
+		// else { panic('unrecognized attribute type "${t}" for aLttribute "${ds.attribute_names[i]}"') }
 	}
 	// println('ds.raw_attribute_types: ${ds.raw_attribute_types}')
 	// println('combined_types: $combined_types')
