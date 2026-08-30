@@ -50,7 +50,7 @@ fn get_next_classifier_index(settingsfile_path string) int {
 fn append_explore_settings_to_file(results ExploreResult, explore_analytics_values map[string]Analytics, opts Options) {
 	next_classifier_index := get_next_classifier_index(opts.settingsfile_path)
 	mut indices := opts.classifiers.clone()
-	if indices == [] {
+	if indices.len == 0 {
 		indices = []int{len: explore_analytics_values.len, init: index}
 	}
 	mut i := 0

@@ -18,15 +18,15 @@ fn show_explore_header(results ExploreResult, settings DisplaySettings) {
 	if results.pos_neg_classes[0] != '' {
 		binary = true
 	}
-	mut explore_type_string := ''
+	mut explore_type_str := ''
 	if results.testfile_path == '' {
-		explore_type_string = if results.folds == 0 { 'leave-one-out ' } else { '${results.folds}-fold ' } + 'cross-validation' + if results.repetitions > 0 { '\n (${results.repetitions} repetitions' + if results.random_pick { ', with random selection of instances)' } else { ')' }
+		explore_type_str = if results.folds == 0 { 'leave-one-out ' } else { '${results.folds}-fold ' } + 'cross-validation' + if results.repetitions > 0 { '\n (${results.repetitions} repetitions' + if results.random_pick { ', with random selection of instances)' } else { ')' }
 		 } else { ''
 		 }
 	} else {
-		explore_type_string = 'verification of "${results.testfile_path}"'
+		explore_type_str = 'verification of "${results.testfile_path}"'
 	}
-	println(m_u('\nExplore ${explore_type_string} using classifiers from "${results.path}"'))
+	println(m_u('\nExplore ${explore_type_str} using classifiers from "${results.path}"'))
 	mut parameters_for_show := ParametersForShow{
 		Parameters:  results.Parameters
 		LoadOptions: results.LoadOptions

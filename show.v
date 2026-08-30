@@ -280,11 +280,11 @@ fn show_multiple_classifier_settings_details(multiple_classifier_settings []Clas
 	mut col_width_array := []int{}
 	for par in multiple_classifier_settings {
 		a := par.Parameters
-		b := par.BinaryMetrics
-		c := par.Metrics
+		bb := par.BinaryMetrics
+		cc := par.Metrics
 		d := par.LoadOptions
-		corrects := c.correct_counts.map(it.str()).join(' ')
-		incorrects := c.incorrect_counts.map(it.str()).join(' ')
+		corrects := cc.correct_counts.map(it.str()).join(' ')
+		incorrects := cc.incorrect_counts.map(it.str()).join(' ')
 		mut col_width := array_max([corrects.len, incorrects.len]) + 2
 		if col_width < minimum_column_width {
 			col_width = minimum_column_width
@@ -306,19 +306,19 @@ fn show_multiple_classifier_settings_details(multiple_classifier_settings []Clas
 			row_data[9] += '${a.switches_threshold:-13}' + pad(col_width - 13)
 		}
 		row_data[10] += '${false:-13}' + pad(col_width - 13)
-		if c.class_counts_int.len > 2 {
+		if cc.class_counts_int.len > 2 {
 			row_data[11] += corrects + pad(col_width - corrects.len)
 			row_data[12] += incorrects + pad(col_width - incorrects.len)
-			row_data[13] += '${b.raw_acc:-6.2f}%      ' + pad(col_width - 13)
-			row_data[14] += '${c.balanced_accuracy:-6.2f}%      ' + pad(col_width - 13)
+			row_data[13] += '${bb.raw_acc:-6.2f}%      ' + pad(col_width - 13)
+			row_data[14] += '${cc.balanced_accuracy:-6.2f}%      ' + pad(col_width - 13)
 		} else {
-			row_data[11] += '${b.t_p:-6} ${b.t_n:-6}' + pad(col_width - 13)
-			row_data[12] += '${b.f_n:-6} ${b.f_p:-6}' + pad(col_width - 13)
-			row_data[13] += '${b.raw_acc:-6.2f}%      ' + pad(col_width - 13)
-			row_data[14] += '${b.bal_acc:-6.2f}%      ' + pad(col_width - 13)
-			row_data[15] += '${b.mcc:-4.3f}        ' + pad(col_width - 13)
-			row_data[16] += '${b.sens:-4.3f}        ' + pad(col_width - 13)
-			row_data[17] += '${b.spec:-4.3f}        ' + pad(col_width - 13)
+			row_data[11] += '${bb.t_p:-6} ${bb.t_n:-6}' + pad(col_width - 13)
+			row_data[12] += '${bb.f_n:-6} ${bb.f_p:-6}' + pad(col_width - 13)
+			row_data[13] += '${bb.raw_acc:-6.2f}%      ' + pad(col_width - 13)
+			row_data[14] += '${bb.bal_acc:-6.2f}%      ' + pad(col_width - 13)
+			row_data[15] += '${bb.mcc:-4.3f}        ' + pad(col_width - 13)
+			row_data[16] += '${bb.sens:-4.3f}        ' + pad(col_width - 13)
+			row_data[17] += '${bb.spec:-4.3f}        ' + pad(col_width - 13)
 		}
 		row_data[18] += '${a.maximum_hamming_distance:-13}' + pad(col_width - 13)
 	}
@@ -394,7 +394,7 @@ fn show_expanded_result(result CrossVerifyResult) {
 
 // get_show_bins
 fn get_show_bins(bins []int) string {
-	if bins == [] || 0 in bins {
+	if bins.len == 0 || 0 in bins {
 		return '       '
 	}
 	if bins.len == 1 || bins[0] == bins[1] {
@@ -405,7 +405,7 @@ fn get_show_bins(bins []int) string {
 
 // show_bins_for_trailer
 fn show_bins_for_trailer(bins []int) string {
-	if bins == [] || 0 in bins {
+	if bins.len == 0 || 0 in bins {
 		return ''
 	}
 	if bins.len == 1 || bins[0] == bins[1] {

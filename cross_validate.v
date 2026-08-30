@@ -267,31 +267,31 @@ fn summarize_results(repeats int, mut result CrossVerifyResult) CrossVerifyResul
 		result.wrong_count /= repeats
 		result.total_count /= repeats
 
-		for _, mut v in result.labeled_instances {
-			v /= f64(repeats)
+		for k, v in result.labeled_instances {
+			result.labeled_instances[k] = v / repeats
 		}
-		for _, mut v in result.correct_inferences {
-			v /= f64(repeats)
+		for k, v in result.correct_inferences {
+			result.correct_inferences[k] = v / repeats
 		}
-		for _, mut v in result.incorrect_inferences {
-			v /= f64(repeats)
+		for k, v in result.incorrect_inferences {
+			result.incorrect_inferences[k] = v / repeats
 		}
-		for _, mut v in result.wrong_inferences {
-			v /= f64(repeats)
+		for k, v in result.wrong_inferences {
+			result.wrong_inferences[k] = v / repeats
 		}
-		for _, mut v in result.true_positives {
-			v /= f64(repeats)
+		for k, v in result.true_positives {
+			result.true_positives[k] = v / repeats
 		}
-		for _, mut v in result.false_positives {
-			v /= f64(repeats)
+		for k, v in result.false_positives {
+			result.false_positives[k] = v / repeats
 		}
-		for _, mut v in result.false_negatives {
-			v /= f64(repeats)
+		for k, v in result.false_negatives {
+			result.false_negatives[k] = v / repeats
 		}
 
-		for _, mut m in result.confusion_matrix_map {
-			for _, mut v in m {
-				v /= f64(repeats)
+		for k1, m in result.confusion_matrix_map {
+			for k2, v in m {
+				result.confusion_matrix_map[k1][k2] = v / f64(repeats)
 			}
 		}
 	}
@@ -300,8 +300,8 @@ fn summarize_results(repeats int, mut result CrossVerifyResult) CrossVerifyResul
 
 // div_map
 fn div_map(n int, mut m map[string]int) map[string]int {
-	for _, mut a in m {
-		a /= n
+	for k, v in m {
+		m[k] = v / n
 	}
 	return m
 }
@@ -371,8 +371,8 @@ fn do_one_fold(pick_list []int, current_fold int, folds int, ds Dataset, cross_o
 		}
 		for i, case in transpose(mult_fold_cases) {
 			m_classify_result := if mult_opts.multi_strategy == 'totalnn' {
-				multiple_classifier_classify_totalnn(classifier_array, case, fold_result.labeled_classes,
-					mult_opts)
+				multiple_classifier_classify_totalnn(classifier_array, case,
+					fold_result.labeled_classes, mult_opts)
 			} else {
 				multiple_classifier_classify(classifier_array, case, fold_result.labeled_classes,
 					mult_opts)

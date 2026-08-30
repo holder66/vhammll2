@@ -114,19 +114,19 @@ pub fn display_file(path string, in_opts Options) {
 				// if binary classification, calculate auc
 				mut auc := 0.0
 				if multiple_classifier_settings[0].class_counts_int.len == 2 {
-					mut pairs := [][]f64{len: multiple_classifier_settings.len, init: []f64{len: 2}}
+					mut pairs_array := [][]f64{len: multiple_classifier_settings.len, init: []f64{len: 2}}
 					// mut classifiers := []string{len: multiple_classifier_settings.len}
 					mut classifiers := [][]int{len: multiple_classifier_settings.len}
 					for i, setting in multiple_classifier_settings {
-						pairs[i] = [setting.sens, setting.spec]
+						pairs_array[i] = [setting.sens, setting.spec]
 						classifiers[i] = [setting.classifier_id]
 					}
-					roc_points := roc_values(pairs, classifiers)
+					roc_points := roc_values(pairs_array, classifiers)
 					auc = auc_roc(roc_points)
 					if opts.graph_flag {
 						plot_mult_roc([
 							RocData{
-								coordinates:    pairs
+								coordinates:    pairs_array
 								classifier_ids: classifiers
 								trace_text:     'Individual classifiers'
 							},

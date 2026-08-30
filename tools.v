@@ -6,7 +6,7 @@ import math.unsigned
 import arrays
 
 fn combinations[T](arr []T, limits CombinationSizeLimits) [][]T {
-	if arr == [] {
+	if arr.len == 0 {
 		panic("can't make combinations from an empty array!")
 	}
 
@@ -180,9 +180,9 @@ fn gcd(a i64, b i64) i64 {
 	mut a1 := a
 	mut b1 := b
 	for a1 % b1 > 0 {
-		r := a1 % b1
+		remainder := a1 % b1
 		a1 = b1
-		b1 = r
+		b1 = remainder
 	}
 	return b1
 }
@@ -196,9 +196,9 @@ fn gcd_u128(a unsigned.Uint128, b unsigned.Uint128) unsigned.Uint128 {
 	mut a1 := a
 	mut b1 := b
 	for a1.mod(b1) > zero {
-		r := a1.mod(b1)
+		remainder := a1.mod(b1)
 		a1 = b1
-		b1 = r
+		b1 = remainder
 	}
 	return b1
 }
@@ -357,7 +357,7 @@ fn find[T](arr []T, b T) int {
 
 // idx_max
 fn idx_max[T](a []T) int {
-	if a == [] {
+	if a.len == 0 {
 		panic('idx_max was called on an empty array')
 	}
 	if a.len == 1 {
@@ -376,7 +376,7 @@ fn idx_max[T](a []T) int {
 
 // idxs_max returns an array of indices of the array's maximum values
 fn idxs_max[T](a []T) []int {
-	if a == [] {
+	if a.len == 0 {
 		panic('idxs_max was called on an empty array')
 	}
 	if a.len == 1 {
@@ -395,7 +395,7 @@ fn idxs_max[T](a []T) []int {
 // idxs_zero returns an array of indices pointing to all the elements
 // of the original array which are zero
 fn idxs_zero[T](a []T) []int {
-	if a == [] {
+	if a.len == 0 {
 		panic('idxs_zero was called on an empty array')
 	}
 	mut idxs := []int{cap: a.len}
@@ -408,7 +408,7 @@ fn idxs_zero[T](a []T) []int {
 }
 
 fn idxs_match[T](a []T, val T) []int {
-	if a == [] {
+	if a.len == 0 {
 		panic('idxs_zero was called on an empty array')
 	}
 	mut idxs := [int{
@@ -475,7 +475,7 @@ fn get_map_key_for_min_value(m map[string]int) string {
 // plurality_vote returns the string whose count is greater
 // than the count of any other string in arr
 fn plurality_vote(arr []string) string {
-	if arr == [] {
+	if arr.len == 0 {
 		return ''
 	}
 	ec := element_counts(arr)
@@ -491,7 +491,7 @@ fn plurality_vote(arr []string) string {
 // majority_vote returns the string whose count is more than half
 // the total of counts in arr
 fn majority_vote(arr []string) string {
-	if arr == [] {
+	if arr.len == 0 {
 		return ''
 	}
 	ec := element_counts(arr)
@@ -584,6 +584,7 @@ fn chlk(s string, style_code Styles) string {
 		}
 		else {}
 	}
+
 	return chalk.fg(chalk.bg(chalk.style(s, style_code.style), style_code.bg), style_code.fg)
 }
 

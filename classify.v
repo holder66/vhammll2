@@ -73,15 +73,15 @@ fn get_hamming_distance[T](left T, right T) int {
 
 // single_array_maximum returns true if a has only one maximum
 fn single_array_maximum[T](a []T) bool {
-	if a == [] {
+	if a.len == 0 {
 		panic('single_array_maximum was called on an empty array')
 	}
 	if a.len == 1 {
 		return true
 	}
-	mut b := a.clone()
-	b.sort(a > b)
-	if b[0] != b[1] {
+	mut a_clone := a.clone()
+	a_clone.sort(a > b)
+	if a_clone[0] != a_clone[1] {
 		return true
 	}
 	return false

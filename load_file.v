@@ -21,6 +21,7 @@ pub fn load_file(path string, opts LoadOptions) Dataset {
 		'csv' { load_csv_file(path) }
 		else { panic('unrecognized file type') }
 	}
+
 	ds.LoadOptions = opts
 	ds.pre_balance_prevalences_class_counts = ds.class_counts.clone()
 	return ds
@@ -38,12 +39,16 @@ pub fn load_file(path string, opts LoadOptions) Dataset {
 // ```
 pub fn file_type(path string) string {
 	header := os.read_lines(path.trim_space()) or { panic('Failed to open ${path} in file_type()') }
-	return match true {
-		os.file_ext(path) == '.arff' { 'arff' }
-		os.file_ext(path) == '.csv' { 'csv' }
-		header[2].split('\t').any(it == 'c' || it == 'class') { 'orange_older' }
-		else { 'orange_newer' }
+	if os.file_ext(path) == '.arff' {
+		return 'arff'
 	}
+	if os.file_ext(path) == '.csv' {
+		return 'csv'
+	}
+	if header[2].split('\t').any(it == 'c' || it == 'class') {
+		return 'orange_older'
+	}
+	return 'orange_newer'
 }
 
 fn extract_words(line string) []string {
@@ -59,7 +64,7 @@ fn extract_words(line string) []string {
 fn infer_type_from_data(values []string, lo LoadOptions) string {
 	no_missing_values := values.filter(it !in lo.missings)
 	// if no data, 'i'
-	if no_missing_values == [] {
+	if no_missing_values.len == 0 {
 		return 'i'
 	}
 	// if all the elements are identical, then the attribute is useless, so 'i'
