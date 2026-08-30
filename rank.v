@@ -389,7 +389,7 @@ fn sum_absolute_differences(pair_values [][]int, hits [][]int, weights []int, we
 fn sum_along_row_weighted(row []int, class_counts_array []int) i64 {
 	mut row_sum := 0
 	mut diff := 0
-	for i, count1 in row[..-1] {
+	for i, count1 in row[..row.len - 1] {
 		for j, count2 in row[i + 1..] {
 			diff = count1 * class_counts_array[i + j + 1] - count2 * class_counts_array[i]
 			if diff < 0 {

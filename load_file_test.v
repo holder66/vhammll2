@@ -34,8 +34,10 @@ fn test_infer_type_from_data() {
 	lo := LoadOptions{}
 	assert infer_type_from_data([], lo) == 'i' // ignore if no data
 	
+
 	assert infer_type_from_data(['1', '2', '3'], lo) == 'D' // all integers,
 	
+
 	assert infer_type_from_data(['3', '3', '3'], lo) == 'i'
 	assert infer_type_from_data(['', '', '', '?'], lo) == 'i'
 	assert infer_type_from_data(['', '?', '1', '2', '3'], lo) == 'D'

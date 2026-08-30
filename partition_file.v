@@ -19,7 +19,7 @@ fn partition_file(partition_sizes []int, in_file string, out_files []string, ran
 	mut partition_size := data_lines.len / arrays.sum(partition_sizes)!
 	// dump(partition_size)
 	mut partition_lengths := []int{}
-	for size in partition_sizes[..-1] {
+	for size in partition_sizes[..partition_sizes.len - 1] {
 		partition_lengths << size * partition_size
 	}
 	partition_lengths << data_lines.len - arrays.sum(partition_lengths)!
