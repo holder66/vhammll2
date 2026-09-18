@@ -289,8 +289,8 @@ fn get_options(args []string) Options {
 		limits := parse_range(option(args, ['-cl', '--combination-limits']))
 		opts.DisplaySettings.CombinationSizeLimits = CombinationSizeLimits{
 			generate_combinations_flag: true
-			min: limits.first()
-			max: limits.last()
+			min:                        limits.first()
+			max:                        limits.last()
 		}
 	}
 	if option(args, ['-f', '--folds']) != '' {

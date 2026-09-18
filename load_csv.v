@@ -13,10 +13,10 @@ fn load_csv_file(path string) Dataset {
 	raw_attr_types[0] = 'm'
 	raw_attr_types[raw_attr_types.len - 1] = 'c'
 	mut ds := Dataset{
-		path: path
-		data: transpose(content[1..])
-		attribute_names: attr_names
-		raw_attribute_types: raw_attr_types
+		path:                     path
+		data:                     transpose(content[1..])
+		attribute_names:          attr_names
+		raw_attribute_types:      raw_attr_types
 		inferred_attribute_types: []string{len: attr_names.len}
 	}
 	ds.attribute_types = combine_raw_and_inferred_types(ds)

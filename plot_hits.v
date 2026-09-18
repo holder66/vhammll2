@@ -54,30 +54,30 @@ fn plot_hits(datapath string, classes_info Class, attr RankedAttribute, weightin
 				x := if i == 0 { raw.map(-it) } else { raw }
 				cases := classes_info.class_counts[class]
 				plt.scatter(
-					x: x
-					y: []int{len: n_bins, init: index}
+					x:    x
+					y:    []int{len: n_bins, init: index}
 					mode: 'lines+markers'
 					fill: 'tozerox'
 					name: '${class} (${cases} cases) '
 				)
 			}
 			plt.layout(
-				title: hits_title_text0 + '${n_bins - 1}' + hits_title_text1
+				title:    hits_title_text0 + '${n_bins - 1}' + hits_title_text1
 				autosize: false
-				width: 800
-				height: 600
-				xaxis: plot.Axis{
+				width:    800
+				height:   600
+				xaxis:    plot.Axis{
 					title: plot.AxisTitle{
 						text: if weighting { 'Weighted and normalized n' } else { 'N' } + 'umber of Hits  (left: ${classes_info.classes[0]}  |  right: ${classes_info.classes[1]} )'
 					}
 					range: [-hit_max, hit_max]
 				}
-				yaxis: plot.Axis{
-					title: plot.AxisTitle{
+				yaxis:    plot.Axis{
+					title:    plot.AxisTitle{
 						text: 'Bin number (bin 0 is for missing values)'
 					}
 					tickmode: 'linear'
-					dtick: 1.0
+					dtick:    1.0
 				}
 			)
 		} else {
@@ -91,27 +91,27 @@ fn plot_hits(datapath string, classes_info Class, attr RankedAttribute, weightin
 				}
 				cases := classes_info.class_counts[class]
 				plt.scatter(
-					x: []int{len: n_bins, init: index}
-					y: y
+					x:    []int{len: n_bins, init: index}
+					y:    y
 					mode: 'lines+markers'
 					fill: 'tozeroy'
 					name: '${class} (${cases} cases)'
 				)
 			}
 			plt.layout(
-				title: hits_title_text0 + '${n_bins - 1}' + hits_title_text1
+				title:    hits_title_text0 + '${n_bins - 1}' + hits_title_text1
 				autosize: false
-				width: 800
-				height: 600
-				xaxis: plot.Axis{
-					title: plot.AxisTitle{
+				width:    800
+				height:   600
+				xaxis:    plot.Axis{
+					title:    plot.AxisTitle{
 						text: 'Bin number (bin 0 is for missing values)'
 					}
 					tickmode: 'linear'
 					// tick0: 0.0
-					dtick: 1.0
+					dtick:    1.0
 				}
-				yaxis: plot.Axis{
+				yaxis:    plot.Axis{
 					title: plot.AxisTitle{
 						text: if weighting { 'Weighted and normalized n' } else { 'N' } + 'umber of Hits'
 					}

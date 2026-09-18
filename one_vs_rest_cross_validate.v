@@ -31,23 +31,23 @@ pub fn one_vs_rest_cross_validate(opts Options) CrossVerifyResult {
 		inferences_map[key] = 0
 	}
 	mut cross_result := CrossVerifyResult{
-		Parameters: opts.Parameters
-		LoadOptions: ds.LoadOptions
-		DisplaySettings: opts.DisplaySettings
-		MultipleOptions: opts.MultipleOptions
-		Class: ds.Class
-		datafile_path: ds.path
+		Parameters:                          opts.Parameters
+		LoadOptions:                         ds.LoadOptions
+		DisplaySettings:                     opts.DisplaySettings
+		MultipleOptions:                     opts.MultipleOptions
+		Class:                               ds.Class
+		datafile_path:                       ds.path
 		multiple_classify_options_file_path: cross_opts.multiple_classify_options_file_path
-		labeled_classes: ds.class_values
-		pos_neg_classes: get_pos_neg_classes(ds)
-		confusion_matrix_map: confusion_matrix_map
-		correct_inferences: inferences_map.clone()
-		incorrect_inferences: inferences_map.clone()
-		wrong_inferences: inferences_map.clone()
-		true_positives: inferences_map.clone()
-		true_negatives: inferences_map.clone()
-		false_positives: inferences_map.clone()
-		false_negatives: inferences_map.clone()
+		labeled_classes:                     ds.class_values
+		pos_neg_classes:                     get_pos_neg_classes(ds)
+		confusion_matrix_map:                confusion_matrix_map
+		correct_inferences:                  inferences_map.clone()
+		incorrect_inferences:                inferences_map.clone()
+		wrong_inferences:                    inferences_map.clone()
+		true_positives:                      inferences_map.clone()
+		true_negatives:                      inferences_map.clone()
+		false_positives:                     inferences_map.clone()
+		false_negatives:                     inferences_map.clone()
 	}
 	cross_result.binning = get_binning(cross_opts.bins)
 

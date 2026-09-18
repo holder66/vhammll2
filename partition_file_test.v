@@ -31,11 +31,11 @@ fn test_partition_file() ! {
 	// verify that the generated files are usable
 	mut result := CrossVerifyResult{}
 	mut opts := Options{
-		datafile_path: 'tempfolders/tempfolder_partition_file/developer_bigtrain.tab'
-		testfile_path: 'tempfolders/tempfolder_partition_file/developer_bigtest.tab'
-		command: 'verify'
+		datafile_path:        'tempfolders/tempfolder_partition_file/developer_bigtrain.tab'
+		testfile_path:        'tempfolders/tempfolder_partition_file/developer_bigtest.tab'
+		command:              'verify'
 		show_attributes_flag: true
-		expanded_flag: true
+		expanded_flag:        true
 	}
 	result = verify(opts)
 	opts.datafile_path = 'tempfolders/tempfolder_partition_file/anneal_bigtrain.tab'

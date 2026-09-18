@@ -127,12 +127,12 @@ pub fn display_file(path string, in_opts Options) {
 					if opts.graph_flag {
 						plot_mult_roc([
 							RocData{
-								coordinates: pairs_array
+								coordinates:    pairs_array
 								classifier_ids: classifiers
-								trace_text: 'Individual classifiers'
+								trace_text:     'Individual classifiers'
 							},
 						], RocFiles{
-							datafile: multiple_classifier_settings[0].datafile_path
+							datafile:     multiple_classifier_settings[0].datafile_path
 							settingsfile: path
 						})
 					}

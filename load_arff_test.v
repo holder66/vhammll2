@@ -5,8 +5,8 @@ fn test_load_arff_files() {
 	ds = load_file('datasets/contact-lenses.arff')
 	assert ds.attribute_names == ['age', 'spectacle-prescrip', 'astigmatism', 'tear-prod-rate',
 		'contact-lenses']
-	assert ds.attribute_flags == ['young, pre-presbyopic, presbyopic', 'myope, hypermetrope',
-		'no, yes', 'reduced, normal', 'soft, hard, none']
+	assert ds.attribute_flags == ['young, pre-presbyopic, presbyopic', 'myope, hypermetrope', 'no, yes',
+		'reduced, normal', 'soft, hard, none']
 	assert ds.raw_attribute_types == ['string', 'string', 'string', 'string', 'string']
 	assert ds.attribute_types == ['D', 'D', 'D', 'D', 'c']
 	assert ds.useful_continuous_attributes == {}

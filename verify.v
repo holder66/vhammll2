@@ -95,28 +95,28 @@ fn run_verify(opts Options) CrossVerifyResult {
 		inferences_map[key] = 0
 	}
 	mut verify_result := CrossVerifyResult{
-		LoadOptions: opts.LoadOptions
-		Parameters: opts.Parameters
-		DisplaySettings: opts.DisplaySettings
-		MultipleOptions: opts.MultipleOptions
-		Class: ds.Class
-		datafile_path: opts.datafile_path
-		testfile_path: opts.testfile_path
+		LoadOptions:                         opts.LoadOptions
+		Parameters:                          opts.Parameters
+		DisplaySettings:                     opts.DisplaySettings
+		MultipleOptions:                     opts.MultipleOptions
+		Class:                               ds.Class
+		datafile_path:                       opts.datafile_path
+		testfile_path:                       opts.testfile_path
 		multiple_classify_options_file_path: opts.multiple_classify_options_file_path
-		multiple_classifier_settings: opts.multiple_classifier_settings
-		labeled_classes: test_ds.class_values
+		multiple_classifier_settings:        opts.multiple_classifier_settings
+		labeled_classes:                     test_ds.class_values
 		// class_counts:                         test_ds.class_counts
 		// pre_balance_prevalences_class_counts: ds.pre_balance_prevalences_class_counts
 		// classes:                              test_ds.classes
-		pos_neg_classes: get_pos_neg_classes(test_ds)
-		confusion_matrix_map: confusion_matrix_map
-		correct_inferences: inferences_map.clone()
-		incorrect_inferences: inferences_map.clone()
-		wrong_inferences: inferences_map.clone()
-		true_positives: inferences_map.clone()
-		true_negatives: inferences_map.clone()
-		false_positives: inferences_map.clone()
-		false_negatives: inferences_map.clone()
+		pos_neg_classes:                     get_pos_neg_classes(test_ds)
+		confusion_matrix_map:                confusion_matrix_map
+		correct_inferences:                  inferences_map.clone()
+		incorrect_inferences:                inferences_map.clone()
+		wrong_inferences:                    inferences_map.clone()
+		true_positives:                      inferences_map.clone()
+		true_negatives:                      inferences_map.clone()
+		false_positives:                     inferences_map.clone()
+		false_negatives:                     inferences_map.clone()
 	}
 	verify_result.binning = get_binning(opts.bins)
 	mut cl := Classifier{}

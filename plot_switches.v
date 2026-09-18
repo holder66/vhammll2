@@ -33,8 +33,8 @@ fn plot_switches(result RankingResult) {
 			break
 		}
 		plt.scatter(
-			x: x
-			y: attr.switches_array.map(f64(it))
+			x:    x
+			y:    attr.switches_array.map(f64(it))
 			text: ['${attr.attribute_name}'].repeat(x.len)
 			mode: 'lines+markers'
 			name: '#${attr.attribute_index:4} ${attr.attribute_name} ${array_max(attr.rank_value_array):5.2f} @ ${attr.bins} bins'
@@ -43,8 +43,8 @@ fn plot_switches(result RankingResult) {
 
 	// horizontal reference line at the threshold
 	plt.scatter(
-		x: [f64(result.binning.lower), f64(result.binning.upper)]
-		y: [f64(result.switches_threshold), f64(result.switches_threshold)]
+		x:    [f64(result.binning.lower), f64(result.binning.upper)]
+		y:    [f64(result.switches_threshold), f64(result.switches_threshold)]
 		mode: 'lines'
 		line: plot.Line{
 			dash: 'dashdot'
@@ -53,45 +53,45 @@ fn plot_switches(result RankingResult) {
 	)
 
 	annotation1 := plot.Annotation{
-		x: 0.3 * f64(result.binning.upper)
-		y: max_y - 0.5
-		showarrow: false
+		x:          0.3 * f64(result.binning.upper)
+		y:          max_y - 0.5
+		showarrow:  false
 		arrowcolor: 'white'
-		text: 'Hover your cursor<br>over a marker<br>to view attribute name'
-		align: 'center'
-		font: plot.Font{
+		text:       'Hover your cursor<br>over a marker<br>to view attribute name'
+		align:      'center'
+		font:       plot.Font{
 			color: 'blue'
-			size: 12.0
+			size:  12.0
 		}
 	}
 	annotation2 := plot.Annotation{
-		x: 0.3 * f64(result.binning.upper)
-		y: max_y - 1.5
-		showarrow: false
+		x:          0.3 * f64(result.binning.upper)
+		y:          max_y - 1.5
+		showarrow:  false
 		arrowcolor: 'white'
-		text: 'Missing Values<br>included'
-		align: 'center'
-		font: plot.Font{
+		text:       'Missing Values<br>included'
+		align:      'center'
+		font:       plot.Font{
 			color: 'blue'
-			size: 12.0
+			size:  12.0
 		}
 	}
 
 	plt.layout(
-		title: 'Switches per Continuous Attribute for "${result.path}"' + if result.limit_continuous > 0 {
+		title:       'Switches per Continuous Attribute for "${result.path}"' + if result.limit_continuous > 0 {
 			'<br>(${result.limit_continuous} highest-ranked continuous attributes shown)'
 		} else {
 			''
 		}
-		autosize: false
-		width: 800
-		height: 600
-		xaxis: plot.Axis{
+		autosize:    false
+		width:       800
+		height:      600
+		xaxis:       plot.Axis{
 			title: plot.AxisTitle{
 				text: 'Number of bins'
 			}
 		}
-		yaxis: plot.Axis{
+		yaxis:       plot.Axis{
 			title: plot.AxisTitle{
 				text: 'Number of switches'
 			}

@@ -26,8 +26,8 @@ fn make_roc_plot_traces(traces []ROCTrace, mut plt plot.Plot, hover_variable str
 		x := trace.x_coordinates.map(round_two_decimals(it))
 		y := trace.y_coordinates.map(round_two_decimals(it))
 		plt.scatter(
-			x: x
-			y: y
+			x:    x
+			y:    y
 			mode: 'lines+markers'
 			name: '${trace.curve_series_variable_values} (AUC=${trace.area_under_curve:3.2})'
 			text: trace.curve_variable_values
@@ -39,8 +39,8 @@ fn make_roc_plot_traces(traces []ROCTrace, mut plt plot.Plot, hover_variable str
 // make_roc_plot_layout
 fn make_roc_plot_layout(mut plt plot.Plot, curve_series string, path string, annotations []plot.Annotation) {
 	plt.scatter(
-		x: [0.0, 1.0]
-		y: [0.0, 1.0]
+		x:    [0.0, 1.0]
+		y:    [0.0, 1.0]
 		text: ['text when hovering']
 		mode: 'lines'
 		line: plot.Line{
@@ -49,22 +49,22 @@ fn make_roc_plot_layout(mut plt plot.Plot, curve_series string, path string, ann
 		name: 'random guess<br>(probability 0.5)'
 	)
 	plt.layout(
-		title: 'ROC Curves by ${curve_series}<br>for "${path}"'
-		width: 800
-		height: 600
-		xaxis: plot.Axis{
-			title: plot.AxisTitle{
+		title:       'ROC Curves by ${curve_series}<br>for "${path}"'
+		width:       800
+		height:      600
+		xaxis:       plot.Axis{
+			title:    plot.AxisTitle{
 				text: '1 - specificity'
 			}
 			tickmode: 'linear'
-			dtick: 0.1
+			dtick:    0.1
 		}
-		yaxis: plot.Axis{
-			title: plot.AxisTitle{
+		yaxis:       plot.Axis{
+			title:    plot.AxisTitle{
 				text: 'sensitivity'
 			}
 			tickmode: 'linear'
-			dtick: 0.1
+			dtick:    0.1
 		}
 		annotations: annotations
 	)

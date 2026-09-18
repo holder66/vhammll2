@@ -59,14 +59,14 @@ pub fn validate(cl Classifier, opts Options) !ValidateResult {
 	mut test_ds := load_file(opts.testfile_path)
 	// instantiate a struct for the result
 	mut validate_result := ValidateResult{
-		LoadOptions: cl.LoadOptions
-		struct_type: '.ValidateResult'
-		inferred_classes: []string{}
-		validate_file_path: opts.testfile_path
-		datafile_path: opts.datafile_path
-		number_of_attributes: opts.number_of_attributes
-		binning: cl.binning
-		classifier_instances_counts: [cl.history_events[0].instances_count]
+		LoadOptions:                     cl.LoadOptions
+		struct_type:                     '.ValidateResult'
+		inferred_classes:                []string{}
+		validate_file_path:              opts.testfile_path
+		datafile_path:                   opts.datafile_path
+		number_of_attributes:            opts.number_of_attributes
+		binning:                         cl.binning
+		classifier_instances_counts:     [cl.history_events[0].instances_count]
 		prepurge_instances_counts_array: [
 			cl.history_events[0].prepurge_instances_count,
 		]

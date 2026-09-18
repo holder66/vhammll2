@@ -62,10 +62,10 @@ fn infer_attribute_types_arff(ds Dataset) []string {
 			inferred = 'i'
 		} else if attr_type == 'class' {
 			inferred = 'c'
-		} else if 
+		}
 
 		// if the entry contains a list of items separated by commas
-		attr_type.contains(',') {
+		else if attr_type.contains(',') {
 			inferred = 'D'
 		} else {
 			panic('unrecognized attribute type "${attr_type}" for attribute "${ds.attribute_names[i]}"')

@@ -8,15 +8,15 @@ import vsl.plot
 // trace; the AUC is computed and shown in the plot title.
 pub fn plot_mult_roc(rocdata_array []RocData, files RocFiles) {
 	annotation1 := plot.Annotation{
-		x: 0.8
-		y: 0.2
-		text: 'Hover your cursor over<br>a marker to view sensitivity,<br>specificity, and classifier ID'
-		align: 'center'
-		showarrow: false
+		x:          0.8
+		y:          0.2
+		text:       'Hover your cursor over<br>a marker to view sensitivity,<br>specificity, and classifier ID'
+		align:      'center'
+		showarrow:  false
 		arrowcolor: 'white'
-		font: plot.Font{
+		font:       plot.Font{
 			color: 'red'
-			size: 12.0
+			size:  12.0
 		}
 	}
 	mut plt := plot.Plot.new()
@@ -31,19 +31,19 @@ pub fn plot_mult_roc(rocdata_array []RocData, files RocFiles) {
 		// 	hovertexts << 'classifier ${id}'
 		// }	
 		plt.scatter(
-			x: rocpoints.map(it.fpr)
-			y: rocpoints.map(it.sens)
-			text: classifiers_string
+			x:             rocpoints.map(it.fpr)
+			y:             rocpoints.map(it.sens)
+			text:          classifiers_string
 			hovertemplate: 'classifier: %{text}<br>sensitivity: %{y:.2f}<br>1-specificity: %{x:.3f}<extra></extra>'
 			// text: ['']
-			mode: 'lines+markers'
-			name: rocdata.trace_text + '<br>auc: ${auc:.3f}'
+			mode:          'lines+markers'
+			name:          rocdata.trace_text + '<br>auc: ${auc:.3f}'
 		)
 	}
 
 	plt.scatter(
-		x: [0.0, 1.0]
-		y: [0.0, 1.0]
+		x:    [0.0, 1.0]
+		y:    [0.0, 1.0]
 		text: ['text when hovering']
 		mode: 'lines'
 		line: plot.Line{
@@ -52,26 +52,26 @@ pub fn plot_mult_roc(rocdata_array []RocData, files RocFiles) {
 		name: 'random guess<br>(probability 0.5)'
 	)
 	plt.layout(
-		title: 'Receiver Operating Characteristic Curves For ' + if rocdata_array.len == 1 {
+		title:       'Receiver Operating Characteristic Curves For ' + if rocdata_array.len == 1 {
 			'Individual Classifiers<br>'
 		} else {
 			'Combos of ${rocdata_array.len} Classifiers<br>'
 		} + 'Training dataset: ${files.datafile}<br>Settings file: ${files.settingsfile} '
-		width: 800
-		height: 600
-		xaxis: plot.Axis{
-			title: plot.AxisTitle{
+		width:       800
+		height:      600
+		xaxis:       plot.Axis{
+			title:    plot.AxisTitle{
 				text: 'False Positive Rate (Specificity - 1)'
 			}
 			tickmode: 'linear'
-			dtick: 0.1
+			dtick:    0.1
 		}
-		yaxis: plot.Axis{
-			title: plot.AxisTitle{
+		yaxis:       plot.Axis{
+			title:    plot.AxisTitle{
 				text: 'True Positive Rate (Sensitivity)'
 			}
 			tickmode: 'linear'
-			dtick: 0.1
+			dtick:    0.1
 		}
 		annotations: [annotation1]
 	)

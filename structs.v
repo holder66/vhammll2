@@ -9,7 +9,7 @@ module vhammll2
 pub struct DefaultVals {
 pub mut:
 	missings                   []string = ['?', '', 'NA', ' ']
-	integer_range_for_discrete []int = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+	integer_range_for_discrete []int    = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
 }
 
 // Class holds all class-attribute metadata for a dataset:
@@ -255,7 +255,7 @@ pub mut:
 	positive_class                string
 	class_missing_purge_flag      bool
 	balance_prevalences_flag      bool = true
-	balance_prevalences_threshold f64 = 0.9
+	balance_prevalences_threshold f64  = 0.9
 }
 
 // Options is the main all-in-one options struct used throughout the
@@ -369,7 +369,7 @@ pub struct MultipleOptions {
 pub mut:
 	break_on_all_flag bool
 	multi_strategy    string // '', 'combined', or 'totalnn'
-	classifiers       []int // refers to an array of classsifier ID values
+	classifiers       []int  // refers to an array of classsifier ID values
 }
 
 struct RadiusResults {

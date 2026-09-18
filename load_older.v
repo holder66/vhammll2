@@ -6,12 +6,12 @@ import os
 fn load_orange_older_file(path string, opts LoadOptions) Dataset {
 	content := os.read_lines(path.trim_space()) or { panic('failed to open ${path}') }
 	mut ds := Dataset{
-		path: path
+		path:                     path
 		class_missing_purge_flag: opts.class_missing_purge_flag
-		attribute_names: extract_words(content[0])
-		raw_attribute_types: extract_words(content[1])
-		attribute_flags: extract_words(content[2])
-		data: transpose(content[3..].map(extract_words(it)))
+		attribute_names:          extract_words(content[0])
+		raw_attribute_types:      extract_words(content[1])
+		attribute_flags:          extract_words(content[2])
+		data:                     transpose(content[3..].map(extract_words(it)))
 	}
 	attr_count := ds.attribute_names.len
 	ds.raw_attribute_types = pad_string_array_to_length(mut ds.raw_attribute_types, attr_count)
@@ -64,10 +64,10 @@ fn get_specified_attribute_types_older(ds Dataset) []string {
 			specified = 'C'
 		} else if attr_type in ['string', 'basket'] || attr_flag in ['i', 'ignore'] {
 			specified = 'i'
-		} else if 
+		}
 
 		// if the entry contains a list of items separated by spaces
-		attr_type.contains(' ') {
+		else if attr_type.contains(' ') {
 			specified = 'D'
 		} else if attr_type == '' && attr_flag == '' {
 			// specified = ''

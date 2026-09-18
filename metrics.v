@@ -46,7 +46,7 @@ fn (mut m Metrics) avg_metrics() Metrics {
 fn get_metrics(result CrossVerifyResult) Metrics {
 	mut metrics := Metrics{
 		class_counts_int: result.class_counts.values()
-		correct_counts: result.correct_inferences.values()
+		correct_counts:   result.correct_inferences.values()
 		incorrect_counts: result.incorrect_inferences.values()
 	}
 	// assert metrics.correct_counts.len == metrics.incorrect_counts.len, '${result.correct_inferences} ${result.incorrect_inferences}'
@@ -107,10 +107,10 @@ fn get_binary_stats(result CrossVerifyResult) BinaryMetrics {
 	pos_class := result.pos_neg_classes[0]
 	neg_class := result.pos_neg_classes[1]
 	mut bm := BinaryMetrics{
-		t_p: result.correct_inferences[pos_class]
-		t_n: result.correct_inferences[neg_class]
-		f_n: result.incorrect_inferences[pos_class]
-		f_p: result.incorrect_inferences[neg_class]
+		t_p:     result.correct_inferences[pos_class]
+		t_n:     result.correct_inferences[neg_class]
+		f_n:     result.incorrect_inferences[pos_class]
+		f_p:     result.incorrect_inferences[neg_class]
 		raw_acc: result.correct_count * 100 / f64(result.total_count)
 	}
 	bm.sens = bm.t_p / f64(bm.t_p + bm.f_n)

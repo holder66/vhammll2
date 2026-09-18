@@ -62,9 +62,9 @@ fn test_append() ? {
 
 	result := cross_validate(opts('-a 9 ${datafile}'))
 	mut c_s := ClassifierSettings{
-		Parameters: result.Parameters
+		Parameters:    result.Parameters
 		BinaryMetrics: result.BinaryMetrics
-		Metrics: result.Metrics
+		Metrics:       result.Metrics
 		datafile_path: datafile
 	}
 	append_json_file(c_s, 'tempfolders/tempfolder_json/append_file.opts')
@@ -73,9 +73,9 @@ fn test_append() ? {
 
 	result2 := cross_validate(opts('-a 3 ${datafile}'))
 	mut c_s2 := ClassifierSettings{
-		Parameters: result2.Parameters
+		Parameters:    result2.Parameters
 		BinaryMetrics: result2.BinaryMetrics
-		Metrics: result2.Metrics
+		Metrics:       result2.Metrics
 		datafile_path: datafile
 	}
 	append_json_file(c_s2, 'tempfolders/tempfolder_json/append_file.opts')

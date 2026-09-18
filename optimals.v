@@ -67,20 +67,20 @@ pub fn optimals(path string, opts Options) OptimalsResult {
 	mcc_max_ids := settings.filter(it.mcc == mcc_max).map(it.classifier_id)
 	corrects_max_ids := settings.filter(array_sum(it.correct_counts) == corrects_max).map(it.classifier_id)
 	mut result := OptimalsResult{
-		all_attributes_flag: opts.all_attributes_flag
-		settingsfile_path: path
-		datafile_path: settings[0].datafile_path
-		settings_length: all_settings.len
-		settings_purged: all_settings.len - settings.len
-		class_counts: settings[0].class_counts_int
-		classes: []string{len: settings[0].class_counts_int.len, init: '${index}'}
-		best_balanced_accuracies: balanced_accuracy_values
-		mcc_max: mcc_max
-		mcc_max_classifiers_all: mcc_max_ids
-		mcc_max_classifiers: limit_to_unique_attribute_number(settings, mcc_max_ids, opts.all_attributes_flag)
-		correct_inferences_total_max: corrects_max
+		all_attributes_flag:                          opts.all_attributes_flag
+		settingsfile_path:                            path
+		datafile_path:                                settings[0].datafile_path
+		settings_length:                              all_settings.len
+		settings_purged:                              all_settings.len - settings.len
+		class_counts:                                 settings[0].class_counts_int
+		classes:                                      []string{len: settings[0].class_counts_int.len, init: '${index}'}
+		best_balanced_accuracies:                     balanced_accuracy_values
+		mcc_max:                                      mcc_max
+		mcc_max_classifiers_all:                      mcc_max_ids
+		mcc_max_classifiers:                          limit_to_unique_attribute_number(settings, mcc_max_ids, opts.all_attributes_flag)
+		correct_inferences_total_max:                 corrects_max
 		correct_inferences_total_max_classifiers_all: corrects_max_ids
-		correct_inferences_total_max_classifiers: limit_to_unique_attribute_number(settings, corrects_max_ids, opts.all_attributes_flag)
+		correct_inferences_total_max_classifiers:     limit_to_unique_attribute_number(settings, corrects_max_ids, opts.all_attributes_flag)
 	}
 	for value in balanced_accuracy_values {
 		matching_ids := settings.filter(it.balanced_accuracy == value).map(it.classifier_id)
@@ -127,13 +127,13 @@ pub fn optimals(path string, opts Options) OptimalsResult {
 		classifiers << '${setting.classifier_id}'
 	}
 	result.RocData = RocData{
-		coordinates: coordinates
-		classifiers: classifiers
+		coordinates:    coordinates
+		classifiers:    classifiers
 		classifier_ids: classifier_ids
-		trace_text: 'Single classifier<br>cross-validations'
+		trace_text:     'Single classifier<br>cross-validations'
 	}
 	result.RocFiles = RocFiles{
-		datafile: result.datafile_path
+		datafile:     result.datafile_path
 		settingsfile: path
 	}
 	// collect all the optimal classifiers
@@ -279,7 +279,7 @@ fn max_auc_combinations(settings_array []ClassifierSettings, classifier_ids []in
 	for i, points_arrays in array_of_points_arrays {
 		auc_classifiers << AucClassifiers{
 			classifier_ids: classifier_combos[i]
-			auc: points_arrays.auc
+			auc:            points_arrays.auc
 		}
 	}
 	return auc_classifiers

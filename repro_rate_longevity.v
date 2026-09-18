@@ -83,8 +83,8 @@ pub fn plot_repro_rate_longevity() {
 
 	mut plt := plot.Plot.new()
 	plt.scatter(
-		x: logx
-		y: logy
+		x:    logx
+		y:    logy
 		mode: 'markers'
 		name: 'Species'
 	)
@@ -97,8 +97,8 @@ pub fn plot_repro_rate_longevity() {
 		label_y << logy[i] + 0.02
 	}
 	plt.scatter(
-		x: label_x
-		y: label_y
+		x:    label_x
+		y:    label_y
 		mode: 'text'
 		text: labels
 		name: ''
@@ -129,8 +129,8 @@ pub fn plot_repro_rate_longevity() {
 		fit_y << math.log10(y)
 	}
 	plt.scatter(
-		x: fit_x
-		y: fit_y
+		x:    fit_x
+		y:    fit_y
 		mode: 'lines'
 		name: ''
 	)

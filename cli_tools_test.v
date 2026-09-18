@@ -94,7 +94,6 @@ fn test_get_options() {
 	// --- defaults (empty args) ---
 	mut o := get_options([])
 	assert o.help_flag // args.len <= 1 triggers help
-	
 
 	assert o.bins == [2, 16]
 	assert o.number_of_attributes == [0]
@@ -317,9 +316,8 @@ fn test_get_options() {
 
 	// --- combined multi-option invocation ---
 	o = get_options(['-g', '-u', '-s', '-mr', '-rand', '-a', '4', '-b', '2,8', '-f', '5', '-r',
-		'3', '-swt', '4', '-bpt', '0.6', '-pos', 'malignant', '-t',
-		'datasets/testdata/test_verify.tab', '-o', '/tmp/result.json', '-k', '/tmp/cl.json',
-		'datasets/iris.tab'])
+		'3', '-swt', '4', '-bpt', '0.6', '-pos', 'malignant', '-t', 'datasets/testdata/test_verify.tab',
+		'-o', '/tmp/result.json', '-k', '/tmp/cl.json', 'datasets/iris.tab'])
 	assert o.graph_flag
 	assert o.switches_flag
 	assert o.uniform_bins

@@ -126,12 +126,12 @@ pub fn rank_attributes(opts Options) RankingResult {
 // and make_classifier_using_ds (in-memory entry point for cross-validation).
 fn rank_dataset(ds Dataset, opts Options) RankingResult {
 	mut result := RankingResult{
-		Class: ds.Class
-		LoadOptions: ds.LoadOptions
-		DisplaySettings: opts.DisplaySettings
-		path: ds.path
-		switches_flag: opts.switches_flag
-		switches_threshold: opts.switches_threshold
+		Class:                      ds.Class
+		LoadOptions:                ds.LoadOptions
+		DisplaySettings:            opts.DisplaySettings
+		path:                       ds.path
+		switches_flag:              opts.switches_flag
+		switches_threshold:         opts.switches_threshold
 		array_of_ranked_attributes: []RankedAttribute{cap: ds.useful_discrete_attributes.len + ds.useful_continuous_attributes.len}
 	}
 	mut binning := Binning{}
@@ -178,7 +178,7 @@ fn rank_dataset(ds Dataset, opts Options) RankingResult {
 	}
 	mut rank_values_array := maps.to_array(rank_value_map, fn (k int, v i64) RankValue {
 		return RankValue{
-			attr_indx: k
+			attr_indx:  k
 			rank_value: v
 		}
 	})
@@ -214,15 +214,15 @@ fn rank_dataset(ds Dataset, opts Options) RankingResult {
 	rank_values_array.sort_with_compare(custom_sort_fn)
 	for attr in rank_values_array {
 		result.array_of_ranked_attributes << RankedAttribute{
-			attribute_index: attr.attr_indx
-			attribute_name: ds.attribute_names[attr.attr_indx]
-			attribute_type: ds.attribute_types[attr.attr_indx]
-			rank_value: f32(100.0 * f64(attr.rank_value) / highest_rank_value)
-			rank_value_array: rank_value_array_map[attr.attr_indx].map(f32(100.0 * f64(it) / highest_rank_value)).reverse()
-			bins: attr.bin_no
+			attribute_index:      attr.attr_indx
+			attribute_name:       ds.attribute_names[attr.attr_indx]
+			attribute_type:       ds.attribute_types[attr.attr_indx]
+			rank_value:           f32(100.0 * f64(attr.rank_value) / highest_rank_value)
+			rank_value_array:     rank_value_array_map[attr.attr_indx].map(f32(100.0 * f64(it) / highest_rank_value)).reverse()
+			bins:                 attr.bin_no
 			array_of_hits_arrays: hits_array_map[attr.attr_indx]
-			switches: attr.switches
-			switches_array: switches_array_map[attr.attr_indx]
+			switches:             attr.switches
+			switches_array:       switches_array_map[attr.attr_indx]
 		}
 	}
 	if (opts.show_flag || opts.expanded_flag) && opts.command == 'rank' {

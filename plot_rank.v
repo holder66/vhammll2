@@ -16,11 +16,11 @@ fn plot_rank(result RankingResult) {
 	}
 	for i, attr in ranked_atts.filter(it.attribute_type == 'C') {
 		traces << RankTrace{
-			label: '#${attr.attribute_index:4} ${attr.attribute_name} ${array_max(attr.rank_value_array):5.2f} @ ${attr.bins} bins'
-			rank_values: attr.rank_value_array.map(f64(it)).reverse()
+			label:              '#${attr.attribute_index:4} ${attr.attribute_name} ${array_max(attr.rank_value_array):5.2f} @ ${attr.bins} bins'
+			rank_values:        attr.rank_value_array.map(f64(it)).reverse()
 			maximum_rank_value: array_max(attr.rank_value_array)
 			// the tooltip for each point shows the attribute name
-			hover_text: ['#${attr.attribute_index}<br>${attr.attribute_name}']
+			hover_text:         ['#${attr.attribute_index}<br>${attr.attribute_name}']
 		}
 		if result.limit_continuous > 0 && i >= result.limit_continuous {
 			break
@@ -38,48 +38,48 @@ fn plot_rank(result RankingResult) {
 		attributes << value.hover_text
 		y := value.rank_values.map(round_two_decimals(it))
 		plt.scatter(
-			x: x
-			y: y
+			x:    x
+			y:    y
 			text: value.hover_text
 			mode: 'lines+markers'
 			name: value.label
 		)
 	}
 	annotation1 := plot.Annotation{
-		x: 0.8 * f64(result.binning.upper)
-		y: 1.0
+		x:          0.8 * f64(result.binning.upper)
+		y:          1.0
 		arrowcolor: 'white'
-		text: 'Hover your cursor<br>over a marker<br>to view details'
-		showarrow: false
-		align: 'center'
-		font: plot.Font{
+		text:       'Hover your cursor<br>over a marker<br>to view details'
+		showarrow:  false
+		align:      'center'
+		font:       plot.Font{
 			color: 'red'
-			size: 12.0
+			size:  12.0
 		}
 	}
 	annotation2 := plot.Annotation{
-		x: 0.3 * f64(result.binning.upper)
-		y: 1.0
+		x:          0.3 * f64(result.binning.upper)
+		y:          1.0
 		arrowcolor: 'white'
-		text: 'Missing Values<br>included'
-		showarrow: false
-		align: 'center'
-		font: plot.Font{
+		text:       'Missing Values<br>included'
+		showarrow:  false
+		align:      'center'
+		font:       plot.Font{
 			color: 'blue'
-			size: 12.0
+			size:  12.0
 		}
 	}
 	plt.layout(
 		// plt.set_layout(
-		title: 'Rank Values for Continuous Attributes for "${result.path}"'
-		autosize: false
-		width: 800
-		xaxis: plot.Axis{
+		title:       'Rank Values for Continuous Attributes for "${result.path}"'
+		autosize:    false
+		width:       800
+		xaxis:       plot.Axis{
 			title: plot.AxisTitle{
 				text: 'Number of bins'
 			}
 		}
-		yaxis: plot.Axis{
+		yaxis:       plot.Axis{
 			title: plot.AxisTitle{
 				text: 'Rank Value'
 			}

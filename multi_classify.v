@@ -33,10 +33,10 @@ import arrays
 fn multiple_classifier_classify(classifier_array []Classifier, case [][]u8, labeled_classes []string, opts Options) ClassifyResult {
 	mut final_cr := ClassifyResult{
 		multiple_flag: true
-		Class: classifier_array[0].Class
+		Class:         classifier_array[0].Class
 	}
 	mut mcr := MultipleClassifierResults{
-		MultipleOptions: opts.MultipleOptions
+		MultipleOptions:       opts.MultipleOptions
 		results_by_classifier: []IndividualClassifierResults{len: classifier_array.len}
 	}
 
@@ -96,8 +96,8 @@ fn multiple_classifier_classify(classifier_array []Classifier, case [][]u8, labe
 				// lcm_class_counts := classifier_array[i].lcm_class_counts
 				if mcr.results_by_classifier[i].inferred_class == '' {
 					mut rr := RadiusResults{
-						sphere_index: sphere_index
-						radius: radius
+						sphere_index:               sphere_index
+						radius:                     radius
 						nearest_neighbors_by_class: []int{len: classifier_array[i].class_counts.len}
 					}
 					// cycle through each class...
@@ -137,8 +137,8 @@ fn multiple_classifier_classify(classifier_array []Classifier, case [][]u8, labe
 				if mcr.results_by_classifier[i].inferred_class == '' && sphere_index < mcr.results_by_classifier[i].radii.len {
 					radius := mcr.results_by_classifier[i].radii[sphere_index]
 					mut rr := RadiusResults{
-						sphere_index: sphere_index
-						radius: radius
+						sphere_index:               sphere_index
+						radius:                     radius
 						nearest_neighbors_by_class: []int{len: classifier_array[i].class_counts.len}
 					}
 					// cycle through each class...

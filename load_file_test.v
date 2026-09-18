@@ -33,10 +33,8 @@ If no prefix, treat numbers as continuous, otherwise discrete
 fn test_infer_type_from_data() {
 	lo := LoadOptions{}
 	assert infer_type_from_data([], lo) == 'i' // ignore if no data
-	
 
 	assert infer_type_from_data(['1', '2', '3'], lo) == 'D' // all integers,
-	
 
 	assert infer_type_from_data(['3', '3', '3'], lo) == 'i'
 	assert infer_type_from_data(['', '', '', '?'], lo) == 'i'
@@ -54,12 +52,13 @@ fn test_load_file() {
 	mut ds := Dataset{}
 	ds = load_file('datasets/testdata/developer.tab')
 	assert ds.Class == Class{
-		class_name: 'gender'
-		class_index: 3
-		classes: ['m', 'f', 'X']
-		class_values: ['m', 'm', 'm', 'f', 'f', 'm', 'X', 'f', 'm', 'm', 'm', 'X', 'm']
-		missing_class_values: []
-		class_counts: {
+		class_name:                           'gender'
+		class_index:                          3
+		classes:                              ['m', 'f', 'X']
+		class_values:                         ['m', 'm', 'm', 'f', 'f', 'm', 'X', 'f', 'm', 'm',
+			'm', 'X', 'm']
+		missing_class_values:                 []
+		class_counts:                         {
 			'm': 8
 			'f': 3
 			'X': 2
@@ -69,10 +68,10 @@ fn test_load_file() {
 			'f': 3
 			'X': 2
 		}
-		lcm_class_counts: 0
-		prepurge_class_values_len: 13
-		postpurge_class_counts: {}
-		postpurge_lcm_class_counts: 0
+		lcm_class_counts:                     0
+		prepurge_class_values_len:            13
+		postpurge_class_counts:               {}
+		postpurge_lcm_class_counts:           0
 	}
 
 	assert ds.attribute_names == ['firstname', 'lastname', 'age', 'gender', 'height', 'weight',
@@ -91,12 +90,13 @@ fn test_load_file_with_purging() ! {
 	mut datafile := 'datasets/testdata/class_missing_developer.tab'
 	ds = load_file(datafile)
 	assert ds.Class == Class{
-		class_name: 'gender'
-		class_index: 3
-		classes: ['m', '', 'f', 'X', '?']
-		class_values: ['m', 'm', 'm', '', 'f', 'f', 'm', 'X', '?', 'f', 'm', 'm', 'm', 'X', 'm']
-		missing_class_values: []
-		class_counts: {
+		class_name:                           'gender'
+		class_index:                          3
+		classes:                              ['m', '', 'f', 'X', '?']
+		class_values:                         ['m', 'm', 'm', '', 'f', 'f', 'm', 'X', '?', 'f',
+			'm', 'm', 'm', 'X', 'm']
+		missing_class_values:                 []
+		class_counts:                         {
 			'm': 8
 			'':  1
 			'f': 3
@@ -110,21 +110,22 @@ fn test_load_file_with_purging() ! {
 			'X': 2
 			'?': 1
 		}
-		lcm_class_counts: 0
-		prepurge_class_values_len: 15
-		postpurge_class_counts: {}
-		postpurge_lcm_class_counts: 0
+		lcm_class_counts:                     0
+		prepurge_class_values_len:            15
+		postpurge_class_counts:               {}
+		postpurge_lcm_class_counts:           0
 	}
 
 	// repeat with purging of instances where the class value is missing
 	ds = load_file(datafile, class_missing_purge_flag: true)
 	assert ds.Class == Class{
-		class_name: 'gender'
-		class_index: 3
-		classes: ['m', 'f', 'X']
-		class_values: ['m', 'm', 'm', 'f', 'f', 'm', 'X', 'f', 'm', 'm', 'm', 'X', 'm']
-		missing_class_values: []
-		class_counts: {
+		class_name:                           'gender'
+		class_index:                          3
+		classes:                              ['m', 'f', 'X']
+		class_values:                         ['m', 'm', 'm', 'f', 'f', 'm', 'X', 'f', 'm', 'm',
+			'm', 'X', 'm']
+		missing_class_values:                 []
+		class_counts:                         {
 			'm': 8
 			'f': 3
 			'X': 2
@@ -134,9 +135,9 @@ fn test_load_file_with_purging() ! {
 			'f': 3
 			'X': 2
 		}
-		lcm_class_counts: 0
-		prepurge_class_values_len: 15
-		postpurge_class_counts: {}
-		postpurge_lcm_class_counts: 0
+		lcm_class_counts:                     0
+		prepurge_class_values_len:            15
+		postpurge_class_counts:               {}
+		postpurge_lcm_class_counts:           0
 	}
 }
