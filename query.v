@@ -79,7 +79,7 @@ pub fn query(cl Classifier, opts Options) ClassifyResult {
 	// to classify, get Hamming distances between the entered instance and
 	// all the instances in the classifier; return the class for the instance
 	// giving the lowest Hamming distance.
-	classify_result = classify_case(cl, byte_values, opts)
+	classify_result = classify_case(cl, byte_values)
 	println("For the classes ${classify_result.classes} the numbers of nearest neighbors are ${classify_result.nearest_neighbors_by_class}, so the inferred class is '${classify_result.inferred_class}'")
 	if opts.outputfile_path != '' {
 		validate_result.instances = [byte_values]

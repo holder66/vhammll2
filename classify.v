@@ -11,7 +11,7 @@ module vhammll2
 // classifier; for the minimum hamming distance, the class with the
 // most neighbors at that distance is the inferred class. In case of
 // ties, the algorithm moves on to the next minimum hamming distance.
-fn classify_case(cl Classifier, case []u8, opts Options) ClassifyResult {
+fn classify_case(cl Classifier, case []u8) ClassifyResult {
 	mut result := ClassifyResult{
 		classes: cl.classes
 	}

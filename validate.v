@@ -95,7 +95,7 @@ pub fn validate(cl Classifier, opts Options) !ValidateResult {
 	validate_result.Class = cl.Class
 	mut classify_result := ClassifyResult{}
 	for case in cases {
-		classify_result = classify_case(cl, case, opts)
+		classify_result = classify_case(cl, case)
 		validate_result.inferred_classes << classify_result.inferred_class
 		validate_result.counts << classify_result.nearest_neighbors_by_class
 	}

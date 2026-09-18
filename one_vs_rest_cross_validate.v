@@ -165,7 +165,7 @@ fn binary_cross_validate(bin_ds Dataset, mapping []int, positive_class string, o
 		for j, case in fold_cases {
 			// map balanced index back to original dataset index
 			original_idx := mapping[sorted_fold_indices[j]]
-			res := classify_case(classifier, case, opts)
+			res := classify_case(classifier, case)
 			total := array_sum(res.nearest_neighbors_by_class)
 			if total == 0 {
 				continue

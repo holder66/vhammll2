@@ -18,8 +18,8 @@ fn test_classify_case() {
 		'f': 15
 		'X': 16
 	}
-	assert classify_case(cl, cl.instances[0], opts).inferred_class == 'm'
-	assert classify_case(cl, cl.instances[0], opts).nearest_neighbors_by_class == [
+	assert classify_case(cl, cl.instances[0]).inferred_class == 'm'
+	assert classify_case(cl, cl.instances[0]).nearest_neighbors_by_class == [
 		2,
 		0,
 		0,

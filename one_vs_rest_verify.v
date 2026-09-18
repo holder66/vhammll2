@@ -80,7 +80,7 @@ pub fn one_vs_rest_verify(opts Options) CrossVerifyResult {
 	for ci, classifier in one_vs_rest_cl_array {
 		cases = generate_case_array(classifier, test_ds)
 		for j, case in cases {
-			res := classify_case(classifier, case, opts)
+			res := classify_case(classifier, case)
 			total := array_sum(res.nearest_neighbors_by_class)
 			if total == 0 {
 				continue

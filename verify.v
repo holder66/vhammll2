@@ -132,7 +132,7 @@ fn run_verify(opts Options) CrossVerifyResult {
 	// for the instances in the test data, perform classifications
 	mut classify_result := ClassifyResult{}
 	for i, test_instance in case_array {
-		classify_result = classify_case(cl, test_instance, opts)
+		classify_result = classify_case(cl, test_instance)
 		verify_result.inferred_classes << classify_result.inferred_class
 		verify_result.nearest_neighbors_by_class << classify_result.nearest_neighbors_by_class
 		verify_result.actual_classes << verify_result.labeled_classes[i]
