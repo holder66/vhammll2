@@ -119,7 +119,7 @@ struct CmdConfig {
 }
 
 fn (mut a Environment) cmd(c CmdConfig) string {
-	x := os.execute(c.command)
+	x := os.exec([c.command])
 	if x.exit_code < 0 {
 		return 'N/A'
 	}

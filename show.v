@@ -29,9 +29,9 @@ fn verbose_result(i int, cl Classifier, classify_result ClassifyResult) {
 pub fn show_analyze(result AnalyzeResult) {
 	// println('result in show_analyze: ${result}')
 	mut show := []string{}
-	show << m_u('\nAnalysis of Dataset:') + lg(' ${result.datafile_path} ') + m('(File Type: ${result.datafile_type})')
+	show << m_u('\nAnalysis of Dataset:') + lg(' ${result.datafile_path} ') + m_('(File Type: ${result.datafile_type})')
 	if result.class_missing_purge_flag {
-		show << r('Note: instances with missing class values were purged.')
+		show << r_('Note: instances with missing class values were purged.')
 	}
 	show << g_b('All Attributes:')
 	show << b_u(' Index  Name${' ':36}Count  Uniques  Missing      %  Type')
@@ -398,7 +398,7 @@ fn show_cross_or_verify_result(result CrossVerifyResult, disp DisplaySettings) {
 
 // show_expanded_result
 fn show_expanded_result(result CrossVerifyResult) {
-	println(g('    Class                     Instances    True Positives    Precision    Recall    F1 Score'))
+	println(g_('    Class                     Instances    True Positives    Precision    Recall    F1 Score'))
 	show_multiple_classes_stats(result)
 	if result.class_counts.len == 2 {
 		println('A correct classification to "${result.pos_neg_classes[0]}" is a True Positive (TP);\nA correct classification to "${result.pos_neg_classes[1]}" is a True Negative (TN).')
@@ -458,7 +458,7 @@ fn print_confusion_matrix(result CrossVerifyResult) {
 		display_confusion_matrix[i].prepend(class)
 	}
 	header_row.prepend('Predicted Classes (columns)')
-	display_confusion_matrix.prepend([r('Actual Classes (rows)')])
+	display_confusion_matrix.prepend([r_('Actual Classes (rows)')])
 	display_confusion_matrix.prepend(header_row)
 
 	// get the length of the longest class name
@@ -475,19 +475,19 @@ fn print_confusion_matrix(result CrossVerifyResult) {
 		for j, item in rows {
 			match true {
 				i == 0 && j == 0 { // print first item in first row, ie 'predicted classes (columns)'
-					print(r('${item}  '))
+					print(r_('${item}  '))
 				}
 				i == 0 { // print column headers, ie classes
 					padded_item = '${pad(l_max - item.len + 2)}' + item
-					print(c('${padded_item}'))
+					print(c_('${padded_item}'))
 				}
 				i == 1 && j == 0 { // print 'actual classes' header
 					padded_item = '${pad(6)}' + item
-					print(b('${padded_item}'))
+					print(b_('${padded_item}'))
 				}
 				j == 0 { // print first column (class names)
 					padded_item = '${pad(27 - item.len)}' + item + '  '
-					print(c('${padded_item}'))
+					print(c_('${padded_item}'))
 				}
 				else { // print numeric values for each cell
 					padded_item = '${pad(l_max - item.len + 2)}' + item

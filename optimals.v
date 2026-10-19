@@ -169,14 +169,14 @@ pub fn optimals(path string, opts Options) OptimalsResult {
 		println(m_u('Optimal classifiers in settings file: ${path}'))
 		println(lg('Total number of settings: ${all_settings.len}'))
 		print(c_u('Highest balanced accuracy values (%): '))
-		println(g(result.best_balanced_accuracies.map('${it:6.2f}').join(', ')))
+		println(g_(result.best_balanced_accuracies.map('${it:6.2f}').join(', ')))
 		for i, setting in result.best_balanced_accuracies_classifiers_all {
 			println(g_b('For balanced accuracy: ${result.best_balanced_accuracies[i]:6.2f}%'))
 			show_multiple_classifier_settings_details(settings.filter(it.classifier_id in setting))
 		}
-		println(c_u('Best Matthews Correlation Coefficient (MCC): ') + g('${result.mcc_max:7.3f}'))
+		println(c_u('Best Matthews Correlation Coefficient (MCC): ') + g_('${result.mcc_max:7.3f}'))
 		show_multiple_classifier_settings_details(settings.filter(it.classifier_id in result.mcc_max_classifiers))
-		println(c_u('Highest value for total correct inferences: ') + g('${result.correct_inferences_total_max} / ${array_sum(result.class_counts)}'))
+		println(c_u('Highest value for total correct inferences: ') + g_('${result.correct_inferences_total_max} / ${array_sum(result.class_counts)}'))
 		show_multiple_classifier_settings_details(settings.filter(it.classifier_id in result.correct_inferences_total_max_classifiers))
 		println(c_u('Best correct inferences by class:'))
 		println(c_u('Settings for Receiver Operating Characteristic (ROC) curve:'))

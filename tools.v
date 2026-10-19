@@ -590,7 +590,7 @@ fn c_r(s string) string {
 	return chlk(s, c_r)
 }
 
-fn c(s string) string {
+fn c_(s string) string {
 	return chlk(s, c_)
 }
 
@@ -602,7 +602,7 @@ fn lg(s string) string {
 	return chlk(s, lg)
 }
 
-fn m(s string) string {
+fn m_(s string) string {
 	return chlk(s, m_)
 }
 
@@ -622,7 +622,7 @@ fn c_u(s string) string {
 	return chlk(s, c_u)
 }
 
-fn r(s string) string {
+fn r_(s string) string {
 	return chlk(s, r_)
 }
 
@@ -634,15 +634,15 @@ fn rgb(s string) string {
 	return chlk(s, rgb)
 }
 
-fn b(s string) string {
+fn b_(s string) string {
 	return chlk(s, b_)
 }
 
-fn g(s string) string {
+fn g_(s string) string {
 	return chlk(s, g_)
 }
 
-fn y(s string) string {
+fn y_(s string) string {
 	return chlk(s, y_)
 }
 

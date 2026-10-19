@@ -26,7 +26,7 @@ fn run_example(before string, after string, cmd string) ! {
 	line := read_line('Press "return" to execute ("s" to skip)...')!
 	// test if an 's' was entered
 	if !line.contains_u8(115) {
-		println(os.execute_or_panic(cmd).output)
+		println(os.exec_or_panic([cmd]).output)
 	}
 	println('\n${after}\n\n')
 }

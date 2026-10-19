@@ -192,7 +192,7 @@ fn run_cross_validate(ds Dataset, opts Options) CrossVerifyResult {
 				pick_list << i
 			}
 		}
-		repetition_result = do_repetition(pick_list, rep, ds, cross_opts) or { panic(err) }
+		repetition_result = do_repetition(pick_list, rep, ds, cross_opts) or { panic('panic in do_repetition') }
 		cross_result.inferred_classes << repetition_result.inferred_classes
 		cross_result.actual_classes << repetition_result.actual_classes
 		cross_result.binning = repetition_result.binning

@@ -64,7 +64,7 @@ fn show_explore_trailer(results ExploreResult, analytics map[string]Analytics, o
 	} else {
 		println('Flags: u: ${results.uniform_bins} bp: ${results.balance_prevalences_flag}')
 	}
-	println(g('Maximum accuracies obtained:'))
+	println(g_('Maximum accuracies obtained:'))
 	label_column_width := array_max(analytics.keys().map(it.len)) + 5
 	for label, a in analytics {
 		print('${pad(label_column_width - label.len)}${label}: ')
