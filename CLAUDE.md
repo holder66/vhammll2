@@ -98,8 +98,8 @@ Datasets use Orange `.tab` format (older 3-header-line or newer flag-prefixed), 
 
 ### Test patterns
 
-Tests use `testsuite_begin()`/`testsuite_end()` to create/destroy temp directories under `tempfolders/`. The `opts(string)` helper in `cli.v` converts a space-separated arg string into an `Options` struct — use this in tests instead of constructing `Options{}` by hand:
+Tests use `testsuite_begin()`/`testsuite_end()` to create/destroy temp directories under `tempfolders/`. The `get_opts(string)` helper in `cli.v` converts a space-separated arg string into an `Options` struct — use this in tests instead of constructing `Options{}` by hand:
 
 ```v
-result := verify(opts('-a 2 -b 2,3 -t datasets/test_verify.tab datasets/test.tab'))
+result := verify(get_opts('-a 2 -b 2,3 -t datasets/test_verify.tab datasets/test.tab'))
 ```

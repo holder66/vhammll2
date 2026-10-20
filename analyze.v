@@ -19,7 +19,7 @@ Usage:
 
 Options:
 -h --help:   displays this message.
--o --output: followed by the path to a file in which the analyze 
+-o --output: followed by the path to a file in which the analyze
              result will be saved.
 -pmc --purge-missing-classes: remove instances whose class value is
              missing before analysis.
@@ -64,7 +64,7 @@ pub fn analyze_dataset(opts Options) AnalyzeResult {
 			name:          name
 			counts_map:    element_counts(ds.data[i])
 			count:         ds.data[i].len
-			uniques:       uniques_values(ds.data[i])
+			uniques:       get_uniques_values(ds.data[i])
 			missing:       missing_vals[i]
 			raw_type:      ds.raw_attribute_types[i]
 			att_type:      ds.attribute_types[i]
@@ -97,7 +97,7 @@ pub fn analyze_dataset(opts Options) AnalyzeResult {
 }
 
 // uniques_values
-fn uniques_values(attribute_values []string) int {
+fn get_uniques_values(attribute_values []string) int {
 	return element_counts(attribute_values).len
 }
 

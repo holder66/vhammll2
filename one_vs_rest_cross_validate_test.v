@@ -18,7 +18,7 @@ fn testsuite_end() ? {
 fn test_one_vs_rest_cross_validate_loo() {
 	datafile := 'datasets/testdata/onevsrest_train.tab'
 	ds := load_file(datafile, LoadOptions{})
-	result := one_vs_rest_cross_validate(opts('-a 0 -b 5,5 ${datafile}'))
+	result := one_vs_rest_cross_validate(get_opts('-a 0 -b 5,5 ${datafile}'))
 	assert result.inferred_classes.len == ds.class_values.len
 	// every inferred class must be one of the dataset's known classes
 	for inf in result.inferred_classes {
@@ -31,7 +31,7 @@ fn test_one_vs_rest_cross_validate_loo() {
 fn test_one_vs_rest_cross_validate_iris() {
 	datafile := 'datasets/iris.tab'
 	ds := load_file(datafile, LoadOptions{})
-	result := one_vs_rest_cross_validate(opts('-a 4 -b 4,4 -f 10 ${datafile}'))
+	result := one_vs_rest_cross_validate(get_opts('-a 4 -b 4,4 -f 10 ${datafile}'))
 	assert result.inferred_classes.len == ds.class_values.len
 	for inf in result.inferred_classes {
 		assert inf in ds.classes
@@ -45,7 +45,7 @@ fn test_one_vs_rest_cross_validate_iris() {
 fn test_cross_validate_dispatches_to_ovr() {
 	datafile := 'datasets/iris.tab'
 	ds := load_file(datafile, LoadOptions{})
-	result := cross_validate(opts('-a 4 -b 4,4 -f 10 ${datafile}'))
+	result := cross_validate(get_opts('-a 4 -b 4,4 -f 10 ${datafile}'))
 	assert result.inferred_classes.len == ds.class_values.len
 	for inf in result.inferred_classes {
 		assert inf in ds.classes
@@ -57,7 +57,7 @@ fn test_cross_validate_dispatches_to_ovr() {
 fn test_one_vs_rest_cross_validate_saves_output() ? {
 	outputfile := 'tempfolders/tempfolder_one_vs_rest_cross_validate/result.json'
 	datafile := 'datasets/testdata/onevsrest_train.tab'
-	one_vs_rest_cross_validate(opts('-a 0 -b 5,5 -o ${outputfile} ${datafile}'))
+	one_vs_rest_cross_validate(get_opts('-a 0 -b 5,5 -o ${outputfile} ${datafile}'))
 	assert os.is_file(outputfile)
 }
 
@@ -81,7 +81,7 @@ fn test_switches_applied_in_ovr() {
 	bin_ds.class_counts = element_counts(bin_ds.class_values)
 
 	// default: switches on — continuous attrs should have switches >= 0
-	rank_with_sw := rank_dataset(bin_ds, opts('-b 2,6 ${datafile}'))
+	rank_with_sw := rank_dataset(bin_ds, get_opts('-b 2,6 ${datafile}'))
 	for ra in rank_with_sw.array_of_ranked_attributes {
 		if ra.attribute_type == 'C' {
 			assert ra.switches >= 0, 'expected switches >= 0 for ${ra.attribute_name} with switches on'
@@ -89,7 +89,7 @@ fn test_switches_applied_in_ovr() {
 	}
 
 	// -nsw: switches off — all attrs should retain sentinel -1
-	rank_no_sw := rank_dataset(bin_ds, opts('-nsw -b 2,6 ${datafile}'))
+	rank_no_sw := rank_dataset(bin_ds, get_opts('-nsw -b 2,6 ${datafile}'))
 	for ra in rank_no_sw.array_of_ranked_attributes {
 		assert ra.switches == -1, 'expected switches == -1 for ${ra.attribute_name} with -nsw'
 	}
@@ -100,7 +100,7 @@ fn test_switches_applied_in_ovr() {
 fn test_ovr_explore_per_class() {
 	datafile := 'datasets/iris.tab'
 	ds := load_file(datafile, LoadOptions{})
-	ovr_opts := opts('-a 1,2 -b 2,4 -f 5 ${datafile}')
+	ovr_opts := get_opts('-a 1,2 -b 2,4 -f 5 ${datafile}')
 	ovr := run_ovr_explore(ds, ovr_opts)
 
 	// one entry per class
@@ -132,10 +132,10 @@ fn test_ovr_cross_validate_uses_per_class_params() {
 	ds := load_file(datafile, LoadOptions{})
 
 	// find per-class optimal settings via explore
-	ovr := run_ovr_explore(ds, opts('-a 1,4 -b 2,6 -f 5 ${datafile}'))
+	ovr := run_ovr_explore(ds, get_opts('-a 1,4 -b 2,6 -f 5 ${datafile}'))
 
 	// cross_validate with per-class optimal settings
-	mut per_class_opts := opts('-a 4 -b 4,4 -f 10 ${datafile}')
+	mut per_class_opts := get_opts('-a 4 -b 4,4 -f 10 ${datafile}')
 	per_class_opts.per_class_parameters = ovr.per_class_parameters.clone()
 	result_per_class := one_vs_rest_cross_validate(per_class_opts)
 

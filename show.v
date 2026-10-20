@@ -173,7 +173,7 @@ fn show_parameters(r ParametersForShow) {
 	println('${'Purging of instances with missing class values: ':55}${r.class_missing_purge_flag}')
 }
 
-fn show_balanced_prevalences(load_options LoadOptions) {}
+// fn show_balanced_prevalences(load_options LoadOptions) {}
 
 // show_validate prints to the console the results of a validate()
 // run: the classifier parameters, the number of instances validated,

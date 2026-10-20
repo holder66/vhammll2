@@ -16,5 +16,5 @@ fn testsuite_end() ! {
 
 fn test_one_vs_rest_verify_perf() ? {
 	settingsfile := 'tempfolders/tempfolder_one_vs_rest_verify_perf/onevsrest.opts'
-	vhammll2.one_vs_rest_verify(vhammll2.opts('-a 25 -b 1,16 -ms ${settingsfile} -t datasets/soybean-large-test.tab datasets/soybean-large-train.tab'))
+	vhammll2.one_vs_rest_verify(vhammll2.get_opts('-a 25 -b 1,16 -ms ${settingsfile} -t datasets/soybean-large-test.tab datasets/soybean-large-train.tab'))
 }

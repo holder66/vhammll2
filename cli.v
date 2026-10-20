@@ -237,8 +237,8 @@ pub fn cli(cli_options CliOptions) ! {
 
 // opts takes a string of command line arguments and returns an Options struct.
 // Use this in tests and programmatic callers to avoid constructing Options{} by hand:
-//   result := cross_validate(opts('-a 2 -b 3,6 path/to/data.tab'))
-pub fn opts(s string) Options {
+//   result := cross_validate(get_opts('-a 2 -b 3,6 path/to/data.tab'))
+pub fn get_opts(s string) Options {
 	return get_options(s.split(' '))
 }
 

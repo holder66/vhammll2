@@ -17,5 +17,5 @@ fn testsuite_end() ? {
 // test_one_vs_rest_verify
 fn test_one_vs_rest_verify() ? {
 	settingsfile := 'tempfolders/tempfolder_one_vs_rest_verify/onevsrest.opts'
-	one_vs_rest_verify(opts('-a 0 -b 5,5 -ms ${settingsfile} -t datasets/testdata/onevsrest_test.tab datasets/testdata/onevsrest_train.tab'))
+	one_vs_rest_verify(get_opts('-a 0 -b 5,5 -ms ${settingsfile} -t datasets/testdata/onevsrest_test.tab datasets/testdata/onevsrest_train.tab'))
 }

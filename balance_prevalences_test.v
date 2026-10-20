@@ -106,7 +106,7 @@ fn test_bpt_cli_flag() {
 	// class_counts; after balancing triggers, class_counts diverges from it.
 	//
 	// with threshold 0.9: ratio (0.407) < threshold, so balancing IS triggered
-	cl_balanced := make_classifier(opts('-bpt 0.9 -a 3 -b 4,4 datasets/leukemia38train.tab'))
+	cl_balanced := make_classifier(get_opts('-bpt 0.9 -a 3 -b 4,4 datasets/leukemia38train.tab'))
 	// original counts preserved in pre_balance_prevalences_class_counts
 	assert cl_balanced.pre_balance_prevalences_class_counts == {
 		'ALL': 27
@@ -118,7 +118,7 @@ fn test_bpt_cli_flag() {
 		'AML': 11
 	}
 	// with threshold 0.3: ratio (0.407) > threshold, so balancing is NOT triggered
-	cl_not_balanced := make_classifier(opts('-bpt 0.3 -a 3 -b 4,4 datasets/leukemia38train.tab'))
+	cl_not_balanced := make_classifier(get_opts('-bpt 0.3 -a 3 -b 4,4 datasets/leukemia38train.tab'))
 	// no balancing: class_counts unchanged and equal to pre_balance_prevalences_class_counts
 	assert cl_not_balanced.class_counts == {
 		'ALL': 27
@@ -126,6 +126,6 @@ fn test_bpt_cli_flag() {
 	}
 	assert cl_not_balanced.class_counts == cl_not_balanced.pre_balance_prevalences_class_counts
 	// omitting -bpt uses the default threshold of 0.9: result identical to explicit -bpt 0.9
-	cl_default := make_classifier(opts('-a 3 -b 4,4 datasets/leukemia38train.tab'))
+	cl_default := make_classifier(get_opts('-a 3 -b 4,4 datasets/leukemia38train.tab'))
 	assert cl_default.class_counts == cl_balanced.class_counts
 }

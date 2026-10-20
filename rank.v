@@ -157,10 +157,10 @@ fn rank_dataset(ds Dataset, opts Options) RankingResult {
 		match true {
 			i == ds.class_index {
 				// rank the class attribute and use it to normalize the other rank values
-				highest_rank_value = rank_discrete_attribute(i, ds, opts)
+				highest_rank_value = rank_discrete_attribute(i, ds)
 			}
 			i in ds.useful_continuous_attributes.keys() {
-				r_v, bin_number, rank_value_array, hits_array, sw, sw_arr := rank_continuous_attribute(i, ds, binning, false, false, opts.overfitting_flag, opts.switches_flag, opts.switches_threshold)
+				r_v, bin_number, rank_value_array, hits_array, sw, sw_arr := rank_continuous_attribute(i, ds, binning, false, false, opts.switches_flag, opts.switches_threshold)
 				rank_value_map[i] = r_v
 				binning_map[i] = bin_number
 				rank_value_array_map[i] = rank_value_array
@@ -170,7 +170,7 @@ fn rank_dataset(ds Dataset, opts Options) RankingResult {
 				array_of_hits_arrays << hits_array
 			}
 			i in ds.useful_discrete_attributes.keys() {
-				rank_value_map[i] = rank_discrete_attribute(i, ds, opts)
+				rank_value_map[i] = rank_discrete_attribute(i, ds)
 				switches_map[i] = -1 // switch count not applicable for discrete attributes
 			}
 			else {}
@@ -251,7 +251,7 @@ fn rank_dataset(ds Dataset, opts Options) RankingResult {
 }
 
 // get_rank_value_for_strings
-fn get_rank_value_for_strings(values []string, class_values []string, class_counts map[string]int, opts Options) i64 {
+fn get_rank_value_for_strings(values []string, class_values []string, class_counts map[string]int) i64 {
 	mut rank_val := i64(0)
 	mut count := 0
 	mut row := []int{}
@@ -275,7 +275,7 @@ fn get_rank_value_for_strings(values []string, class_values []string, class_coun
 }
 
 // rank_discrete_attribute returns a rank value for attribute i.
-fn rank_discrete_attribute(i int, ds Dataset, opts Options) int {
+fn rank_discrete_attribute(i int, ds Dataset) int {
 	mut weights := ds.class_counts.values()
 	mut class_indices_by_case := []int{len: ds.class_values.len, init: find(ds.classes, ds.class_values[index])}
 	case_values := if i == ds.class_index {
@@ -304,7 +304,7 @@ fn rank_discrete_attribute(i int, ds Dataset, opts Options) int {
 // corresponding bin count, rank values for all bin counts, the full hits
 // array, the switch count at the best bin count, and switch counts for all
 // bin counts.
-fn rank_continuous_attribute(i int, ds Dataset, binning_range Binning, exclude_flag bool, weight_ranking_flag bool, overfitting_flag bool, switches_flag bool, switches_threshold int) (int, int, []i64, [][][]int, int, []int) {
+fn rank_continuous_attribute(i int, ds Dataset, binning_range Binning, exclude_flag bool, weight_ranking_flag bool, switches_flag bool, switches_threshold int) (int, int, []i64, [][][]int, int, []int) {
 	mut result := 0
 	mut max_rank_value := 0
 	mut bins_for_max_rank_value := 0

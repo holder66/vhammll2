@@ -1,6 +1,6 @@
 module vhammll2
 
-import os
+// import os
 
 fn test_flag() {
 	// basic match — short form
@@ -339,12 +339,12 @@ fn test_get_options() {
 
 fn test_opts_function() {
 	// empty string produces a single-element args slice
-	assert opts('').args == ['']
+	assert get_opts('').args == ['']
 
 	mut result := Options{}
 
 	// flags and value-options together with a datafile
-	result = opts('-g -b 2,7 -pos malignant datasets/breast-cancer-wisconsin-disc.tab')
+	result = get_opts('-g -b 2,7 -pos malignant datasets/breast-cancer-wisconsin-disc.tab')
 	assert result.args == ['-g', '-b', '2,7', '-pos', 'malignant',
 		'datasets/breast-cancer-wisconsin-disc.tab']
 	assert result.graph_flag
@@ -354,7 +354,7 @@ fn test_opts_function() {
 	assert result.command == ''
 
 	// multiple-classifier options: -m path, -m# classifier ids
-	result = opts('-pos ALL -m datasets/testdata/multiples-train.tab -m# 0,20,40 datasets/leukemia38train.tab')
+	result = get_opts('-pos ALL -m datasets/testdata/multiples-train.tab -m# 0,20,40 datasets/leukemia38train.tab')
 	assert result.args == ['-pos', 'ALL', '-m', 'datasets/testdata/multiples-train.tab', '-m#',
 		'0,20,40', 'datasets/leukemia38train.tab']
 	assert result.command == ''
@@ -365,7 +365,7 @@ fn test_opts_function() {
 	assert result.datafile_path == 'datasets/leukemia38train.tab'
 
 	// attributes, bins, and test file — verify all parsed fields, not just args
-	result = opts('-pos ALL -a 4 -b 1,4 -t datasets/leukemia34test.tab datasets/leukemia38train.tab')
+	result = get_opts('-pos ALL -a 4 -b 1,4 -t datasets/leukemia34test.tab datasets/leukemia38train.tab')
 	assert result.args == ['-pos', 'ALL', '-a', '4', '-b', '1,4', '-t', 'datasets/leukemia34test.tab',
 		'datasets/leukemia38train.tab']
 	assert result.positive_class == 'ALL'
@@ -375,7 +375,7 @@ fn test_opts_function() {
 	assert result.datafile_path == 'datasets/leukemia38train.tab'
 
 	// multiple-classifier with test file
-	result = opts('-pos ALL -m datasets/testdata/multiples-train.tab -m# 0,10 -t datasets/leukemia34test.tab datasets/leukemia38train.tab')
+	result = get_opts('-pos ALL -m datasets/testdata/multiples-train.tab -m# 0,10 -t datasets/leukemia34test.tab datasets/leukemia38train.tab')
 	assert result.args == ['-pos', 'ALL', '-m', 'datasets/testdata/multiples-train.tab', '-m#',
 		'0,10', '-t', 'datasets/leukemia34test.tab', 'datasets/leukemia38train.tab']
 	assert result.positive_class == 'ALL'

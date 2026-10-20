@@ -30,7 +30,7 @@ import arrays
 //    each class, based on cases for that class set against all the other cases.
 
 // multiple_classifier_classify
-fn multiple_classifier_classify(classifier_array []Classifier, case [][]u8, labeled_classes []string, opts Options) ClassifyResult {
+fn multiple_classifier_classify(classifier_array []Classifier, case [][]u8, opts Options) ClassifyResult {
 	mut final_cr := ClassifyResult{
 		multiple_flag: true
 		Class:         classifier_array[0].Class
@@ -183,7 +183,7 @@ fn multiple_classifier_classify(classifier_array []Classifier, case [][]u8, labe
 	non_empty_inferred := inferred_classes_by_classifier.filter(it != '')
 	if non_empty_inferred.len > 0 {
 		if uniques(non_empty_inferred).len > 1 {
-			final_cr.inferred_class = resolve_conflict(mcr, opts)
+			final_cr.inferred_class = resolve_conflict(mcr)
 		} else {
 			final_cr.inferred_class = non_empty_inferred[0]
 		}
@@ -194,7 +194,7 @@ fn multiple_classifier_classify(classifier_array []Classifier, case [][]u8, labe
 }
 
 // resolve_conflict
-fn resolve_conflict(mcr MultipleClassifierResults, opts Options) string {
+fn resolve_conflict(mcr MultipleClassifierResults) string {
 	// println(mcr)
 	// at the smallest sphere radius, can we get a majority vote?
 	// note that there should only be one maximum value

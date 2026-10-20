@@ -24,7 +24,7 @@ Options:
 
 // partition splits a dataset into a fold set of instances, and the remainder
 // of the dataset (ie with the fold instances taken out).
-fn partition(pick_list []int, current_fold int, folds int, ds Dataset, opts Options) (Dataset, Fold) {
+fn partition(pick_list []int, current_fold int, folds int, ds Dataset) (Dataset, Fold) {
 	// fold will be the fold instance, part_ds will be the rest of the dataset.
 	mut part_ds := ds
 	mut total_instances := ds.Class.class_values.len

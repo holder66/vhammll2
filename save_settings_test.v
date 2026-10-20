@@ -17,7 +17,7 @@ fn test_append_make_settings_to_file() ? {
 	datafile := 'datasets/leukemia38train.tab'
 	settingsfile := 'tempfolders/tempfolder_save_settings/make_leuk.opts'
 	// first make call
-	mut mo := opts('-a 2 -b 3,3 -ms ${settingsfile} ${datafile}')
+	mut mo := get_opts('-a 2 -b 3,3 -ms ${settingsfile} ${datafile}')
 	mo.command = 'make'
 	make_classifier(mo)
 	assert os.is_file(settingsfile)
@@ -29,7 +29,7 @@ fn test_append_make_settings_to_file() ? {
 	assert r[0].correct_counts == []
 	assert r[0].t_p == 0
 	// second make call with different parameters: classifier_id increments
-	mut mo2 := opts('-a 4 -b 5,5 -ms ${settingsfile} ${datafile}')
+	mut mo2 := get_opts('-a 4 -b 5,5 -ms ${settingsfile} ${datafile}')
 	mo2.command = 'make'
 	make_classifier(mo2)
 	r = read_multiple_opts(settingsfile)!
@@ -41,13 +41,13 @@ fn test_append_make_settings_to_file() ? {
 fn test_append_cross_validate_settings_to_file() {
 	datafile := 'datasets/iris.tab'
 	settingsfile := 'tempfolders/tempfolder_save_settings/iris1.opts'
-	mut co := opts('-a 2 -b 2,2 -ms ${settingsfile} ${datafile}')
+	mut co := get_opts('-a 2 -b 2,2 -ms ${settingsfile} ${datafile}')
 	co.command = 'cross'
 	cross_validate(co)
 	assert os.is_file(settingsfile)
 	mut r := read_multiple_opts(settingsfile)!
 	// add another classifier
-	mut co2 := opts('-a 2 -b 3,3 -ms ${settingsfile} ${datafile}')
+	mut co2 := get_opts('-a 2 -b 3,3 -ms ${settingsfile} ${datafile}')
 	co2.command = 'cross'
 	cross_validate(co2)
 	r = read_multiple_opts(settingsfile)!
@@ -59,11 +59,11 @@ fn test_append_verify_settings_to_file() {
 	datafile := 'datasets/bcw350train'
 	testfile := 'datasets/bcw174test'
 	settingsfile := 'tempfolders/tempfolder_save_settings/bcw1.opts'
-	verify(opts('-ms ${settingsfile} -t ${testfile} ${datafile}'))
+	verify(get_opts('-ms ${settingsfile} -t ${testfile} ${datafile}'))
 	assert os.is_file(settingsfile)
 	mut r := read_multiple_opts(settingsfile)!
 	assert r.len == 1
-	verify(opts('-a 5 -ms ${settingsfile} -t ${testfile} ${datafile}'))
+	verify(get_opts('-a 5 -ms ${settingsfile} -t ${testfile} ${datafile}'))
 	r = read_multiple_opts(settingsfile)!
 	assert r.len == 2
 }

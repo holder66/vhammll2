@@ -192,7 +192,7 @@ fn run_cross_validate(ds Dataset, opts Options) CrossVerifyResult {
 				pick_list << i
 			}
 		}
-		repetition_result = do_repetition(pick_list, rep, ds, cross_opts) or { panic('panic in do_repetition') }
+		repetition_result = do_repetition(pick_list, ds, cross_opts) or { panic('panic in do_repetition') }
 		cross_result.inferred_classes << repetition_result.inferred_classes
 		cross_result.actual_classes << repetition_result.actual_classes
 		cross_result.binning = repetition_result.binning
@@ -219,7 +219,7 @@ fn run_cross_validate(ds Dataset, opts Options) CrossVerifyResult {
 }
 
 // do_repetition
-fn do_repetition(pick_list []int, rep int, ds Dataset, cross_opts Options) ?CrossVerifyResult {
+fn do_repetition(pick_list []int, ds Dataset, cross_opts Options) ?CrossVerifyResult {
 	mut fold_result := CrossVerifyResult{}
 	// instantiate a struct for the result
 	mut repetition_result := CrossVerifyResult{}
@@ -313,7 +313,7 @@ fn div_map(n int, mut m map[string]int) map[string]int {
 fn do_one_fold(pick_list []int, current_fold int, folds int, ds Dataset, cross_opts Options) CrossVerifyResult {
 	mut byte_values_array := [][]u8{}
 	// partition the dataset into a partial dataset and a fold
-	mut part_ds, fold := partition(pick_list, current_fold, folds, ds, cross_opts)
+	mut part_ds, fold := partition(pick_list, current_fold, folds, ds)
 	mut fold_result := CrossVerifyResult{
 		labeled_classes:  fold.class_values
 		instance_indices: fold.indices
@@ -373,9 +373,9 @@ fn do_one_fold(pick_list []int, current_fold int, folds int, ds Dataset, cross_o
 		}
 		for i, case in transpose(mult_fold_cases) {
 			m_classify_result := if mult_opts.multi_strategy == 'totalnn' {
-				multiple_classifier_classify_totalnn(classifier_array, case, fold_result.labeled_classes, mult_opts)
+				multiple_classifier_classify_totalnn(classifier_array, case, mult_opts)
 			} else {
-				multiple_classifier_classify(classifier_array, case, fold_result.labeled_classes, mult_opts)
+				multiple_classifier_classify(classifier_array, case, mult_opts)
 			}
 			fold_result.inferred_classes << m_classify_result.inferred_class
 			fold_result.actual_classes << fold_result.labeled_classes[i]

@@ -85,9 +85,9 @@ fn multi_verify(opts Options) CrossVerifyResult {
 
 	for i, case_array in array_of_case_arrays {
 		m_classify_result = if opts.multi_strategy == 'totalnn' {
-			multiple_classifier_classify_totalnn(classifier_array, case_array, test_ds.classes, mult_opts)
+			multiple_classifier_classify_totalnn(classifier_array, case_array, mult_opts)
 		} else {
-			multiple_classifier_classify(classifier_array, case_array, test_ds.classes, mult_opts)
+			multiple_classifier_classify(classifier_array, case_array, mult_opts)
 		}
 		verify_result.inferred_classes << m_classify_result.inferred_class
 		verify_result.actual_classes << verify_result.labeled_classes[i]

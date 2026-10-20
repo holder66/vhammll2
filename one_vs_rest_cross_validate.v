@@ -139,7 +139,7 @@ fn binary_cross_validate(bin_ds Dataset, mapping []int, positive_class string, o
 	}
 
 	for current_fold in 0 .. folds_count {
-		mut part_ds, fold := partition(pick_list, current_fold, folds_count, bin_ds, opts)
+		mut part_ds, fold := partition(pick_list, current_fold, folds_count, bin_ds)
 		// skip folds where the positive class has no training instances
 		if positive_class !in part_ds.class_counts {
 			continue

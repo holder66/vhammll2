@@ -56,7 +56,7 @@ pub fn rank_one_vs_rest(opts Options) RankingResult {
 		LoadOptions: ds.LoadOptions
 		path:        ds.path
 	}
-	perfect_rank_value := f32(get_rank_value_for_strings(ds.Class.class_values, ds.Class.class_values, ds.Class.class_counts, opts))
+	perfect_rank_value := f32(get_rank_value_for_strings(ds.Class.class_values, ds.Class.class_values, ds.Class.class_counts))
 	mut ranked_atts := []RankedAttribute{}
 	mut binning := Binning{}
 	if ds.useful_continuous_attributes.len != 0 {
@@ -159,7 +159,7 @@ pub fn rank_one_vs_rest(opts Options) RankingResult {
 	}
 	// loop through discrete attributes
 	for attr_index, attr_values in ds.useful_discrete_attributes {
-		rank_value = get_rank_value_for_strings(attr_values, ds.class_values, ds.class_counts, opts)
+		rank_value = get_rank_value_for_strings(attr_values, ds.class_values, ds.class_counts)
 		ranked_atts << RankedAttribute{
 			attribute_index: attr_index
 			attribute_name:  ds.attribute_names[attr_index]

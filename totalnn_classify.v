@@ -17,7 +17,7 @@ import arrays
 // is found, then no class is inferred.
 // case_array has an array for each classifier; these arrays contain bin numbers, one for each attribute
 // used in the classifier, which corresponds to the actual case value for that attribute (ie after binning)
-fn multiple_classifier_classify_totalnn(classifier_array []Classifier, case_array [][]u8, labeled_classes []string, opts Options) ClassifyResult {
+fn multiple_classifier_classify_totalnn(classifier_array []Classifier, case_array [][]u8, opts Options) ClassifyResult {
 	mut final_cr := ClassifyResult{
 		multiple_flag: true
 		Class:         classifier_array[0].Class

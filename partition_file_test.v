@@ -2,15 +2,15 @@ module vhammll2
 
 import os
 
-fn testsuite_begin() ? {
+fn testsuite_begin() {
 	if os.is_dir('tempfolders/tempfolder_partition_file') {
-		os.rmdir_all('tempfolders/tempfolder_partition_file')!
+		os.rmdir_all('tempfolders/tempfolder_partition_file') or { panic(err) }
 	}
-	os.mkdir_all('tempfolders/tempfolder_partition_file')!
+	os.mkdir_all('tempfolders/tempfolder_partition_file') or { panic(err) }
 }
 
-fn testsuite_end() ? {
-	os.rmdir_all('tempfolders/tempfolder_partition_file')!
+fn testsuite_end() {
+	os.rmdir_all('tempfolders/tempfolder_partition_file') or { panic(err) }
 }
 
 fn test_partition_file() ! {

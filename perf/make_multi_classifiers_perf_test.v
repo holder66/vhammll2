@@ -20,7 +20,7 @@ fn test_make_multi_classifiers() {
 	settingsfile := 'tempfolders/tempfolder_make_multi_classifiers/leuk.opts'
 
 	// populate a settings file, doing individual verifications
-	result0 := vhammll2.verify(vhammll2.opts('-a 1 -b 5,5 -ms ${settingsfile} -t ${testfile} ${datafile}'))
+	result0 := vhammll2.verify(vhammll2.get_opts('-a 1 -b 5,5 -ms ${settingsfile} -t ${testfile} ${datafile}'))
 	assert result0.confusion_matrix_map == {
 		'ALL': {
 			'ALL': 17.0
@@ -31,7 +31,7 @@ fn test_make_multi_classifiers() {
 			'AML': 14.0
 		}
 	}, 'test verify with 1 attribute and binning [5,5]'
-	result1 := vhammll2.verify(vhammll2.opts('-a 6 -b 1,10 -ms ${settingsfile} -t ${testfile} ${datafile}'))
+	result1 := vhammll2.verify(vhammll2.get_opts('-a 6 -b 1,10 -ms ${settingsfile} -t ${testfile} ${datafile}'))
 	assert result1.confusion_matrix_map == {
 		'ALL': {
 			'ALL': 19.0

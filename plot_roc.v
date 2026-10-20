@@ -31,7 +31,7 @@ fn make_roc_plot_traces(traces []ROCTrace, mut plt plot.Plot, hover_variable str
 			mode: 'lines+markers'
 			name: '${trace.curve_series_variable_values} (AUC=${trace.area_under_curve:3.2})'
 			text: trace.curve_variable_values
-			// hovertemplate: '${hover_variable}: ${trace.curve_variable_values}<br>sensitivity: ${y}<br>one minus specificity: ${x}'
+			hovertemplate: '${hover_variable}: ${trace.curve_variable_values}<br>sensitivity: ${y}<br>one minus specificity: ${x}'
 		)
 	}
 }

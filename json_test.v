@@ -18,7 +18,7 @@ fn test_load_classifier_file() ! {
 	mut cl := Classifier{}
 	mut tcl := Classifier{}
 
-	cl = make_classifier(opts('-a 4 -b 2,4 -o ${outputfile} datasets/testdata/developer.tab'))
+	cl = make_classifier(get_opts('-a 4 -b 2,4 -o ${outputfile} datasets/testdata/developer.tab'))
 	tcl = load_classifier_file(outputfile)!
 	assert cl.Parameters == tcl.Parameters
 	assert cl.Class == tcl.Class
@@ -26,7 +26,7 @@ fn test_load_classifier_file() ! {
 	assert cl.trained_attributes == tcl.trained_attributes
 	assert cl.history_events[0].event == tcl.history_events[0].event
 
-	cl = make_classifier(opts('-a 2 -b 3,6 -o ${outputfile} datasets/iris.tab'))
+	cl = make_classifier(get_opts('-a 2 -b 3,6 -o ${outputfile} datasets/iris.tab'))
 	tcl = load_classifier_file(outputfile)!
 	assert cl.Parameters == tcl.Parameters
 	assert cl.Class == tcl.Class
@@ -42,15 +42,15 @@ fn test_load_instances_file() ! {
 	mut vr := ValidateResult{}
 	mut tvr := ValidateResult{}
 
-	cl = make_classifier(opts('-o ${outputfile} -t datasets/testdata/test_validate.tab datasets/testdata/test.tab'))
-	vr = validate(cl, opts('-o ${outputfile} -t datasets/testdata/test_validate.tab datasets/testdata/test.tab'))!
+	cl = make_classifier(get_opts('-o ${outputfile} -t datasets/testdata/test_validate.tab datasets/testdata/test.tab'))
+	vr = validate(cl, get_opts('-o ${outputfile} -t datasets/testdata/test_validate.tab datasets/testdata/test.tab'))!
 	tvr = load_instances_file(outputfile)!
 	assert vr.Class == tvr.Class
 	assert vr.inferred_classes == tvr.inferred_classes
 	assert vr.counts == tvr.counts
 
-	cl = make_classifier(opts('-o ${outputfile} -t datasets/soybean-large-validate.tab datasets/soybean-large-train.tab'))
-	vr = validate(cl, opts('-o ${outputfile} -t datasets/soybean-large-validate.tab datasets/soybean-large-train.tab'))!
+	cl = make_classifier(get_opts('-o ${outputfile} -t datasets/soybean-large-validate.tab datasets/soybean-large-train.tab'))
+	vr = validate(cl, get_opts('-o ${outputfile} -t datasets/soybean-large-validate.tab datasets/soybean-large-train.tab'))!
 	tvr = load_instances_file(outputfile)!
 	assert vr.Class == tvr.Class
 	assert vr.inferred_classes == tvr.inferred_classes
@@ -60,7 +60,7 @@ fn test_load_instances_file() ! {
 fn test_append() ? {
 	datafile := 'datasets/breast-cancer-wisconsin-disc.tab'
 
-	result := cross_validate(opts('-a 9 ${datafile}'))
+	result := cross_validate(get_opts('-a 9 ${datafile}'))
 	mut c_s := ClassifierSettings{
 		Parameters:    result.Parameters
 		BinaryMetrics: result.BinaryMetrics
@@ -71,7 +71,7 @@ fn test_append() ? {
 	saved := read_multiple_opts('tempfolders/tempfolder_json/append_file.opts')!
 	assert saved[0].correct_counts == c_s.correct_counts
 
-	result2 := cross_validate(opts('-a 3 ${datafile}'))
+	result2 := cross_validate(get_opts('-a 3 ${datafile}'))
 	mut c_s2 := ClassifierSettings{
 		Parameters:    result2.Parameters
 		BinaryMetrics: result2.BinaryMetrics
