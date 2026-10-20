@@ -3,15 +3,15 @@ module vhammll2
 // import os
 import math
 
-// fn testsuite_begin() ! {
+// fn testsuite_begin() {
 // 	if os.is_dir('tempfolders/tempfolder_metrics') {
-// 		os.rmdir_all('tempfolders/tempfolder_metrics')!
+// 		os.rmdir_all('tempfolders/tempfolder_metrics') or { panic(err) }
 // 	}
 // 	os.mkdir_all('tempfolders/tempfolder_metrics')!
 // }
 
-// fn testsuite_end() ! {
-// 	os.rmdir_all('tempfolders/tempfolder_metrics')!
+// fn testsuite_end() {
+// 	os.rmdir_all('tempfolders/tempfolder_metrics') or { panic(err) }
 // }
 fn test_wt_avg() ? {
 	assert wt_avg([0.0], [1]) == 0.0

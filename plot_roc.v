@@ -26,11 +26,11 @@ fn make_roc_plot_traces(traces []ROCTrace, mut plt plot.Plot, hover_variable str
 		x := trace.x_coordinates.map(round_two_decimals(it))
 		y := trace.y_coordinates.map(round_two_decimals(it))
 		plt.scatter(
-			x:    x
-			y:    y
-			mode: 'lines+markers'
-			name: '${trace.curve_series_variable_values} (AUC=${trace.area_under_curve:3.2})'
-			text: trace.curve_variable_values
+			x:             x
+			y:             y
+			mode:          'lines+markers'
+			name:          '${trace.curve_series_variable_values} (AUC=${trace.area_under_curve:3.2})'
+			text:          trace.curve_variable_values
 			hovertemplate: '${hover_variable}: ${trace.curve_variable_values}<br>sensitivity: ${y}<br>one minus specificity: ${x}'
 		)
 	}

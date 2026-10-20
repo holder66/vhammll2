@@ -2,15 +2,15 @@ module vhammll2
 
 import os
 
-fn testsuite_begin() ? {
+fn testsuite_begin() {
 	if os.is_dir('tempfolders/tempfolder_json') {
-		os.rmdir_all('tempfolders/tempfolder_json')!
+		os.rmdir_all('tempfolders/tempfolder_json') or { panic(err) }
 	}
 	os.mkdir_all('tempfolders/tempfolder_json')!
 }
 
-fn testsuite_end() ? {
-	os.rmdir_all('tempfolders/tempfolder_json')!
+fn testsuite_end() {
+	os.rmdir_all('tempfolders/tempfolder_json') or { panic(err) }
 }
 
 fn test_load_classifier_file() ! {

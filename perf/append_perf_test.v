@@ -3,15 +3,15 @@ module perf
 import os
 import vhammll2
 
-fn testsuite_begin() ! {
+fn testsuite_begin() {
 	if os.is_dir('tempfolders/tempfolder_append_perf') {
-		os.rmdir_all('tempfolders/tempfolder_append_perf')!
+		os.rmdir_all('tempfolders/tempfolder_append_perf') or { panic(err) }
 	}
 	os.mkdir_all('tempfolders/tempfolder_append_perf')!
 }
 
-fn testsuite_end() ! {
-	os.rmdir_all('tempfolders/tempfolder_append_perf')!
+fn testsuite_end() {
+	os.rmdir_all('tempfolders/tempfolder_append_perf') or { panic(err) }
 }
 
 fn test_append_perf() ! {

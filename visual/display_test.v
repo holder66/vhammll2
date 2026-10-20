@@ -3,7 +3,7 @@ module visual
 import os
 import vhammll2
 
-fn testsuite_begin() ! {
+fn testsuite_begin() {
 	os.execute('open -a "Firefox" --new --args -setDefaultBrowser')
 	if os.is_dir('tempfolders/tempfolder_display') {
 		os.rmdir_all('tempfolders/tempfolder_display')!
@@ -11,8 +11,8 @@ fn testsuite_begin() ! {
 	os.mkdir_all('tempfolders/tempfolder_display')!
 }
 
-fn testsuite_end() ! {
-	os.rmdir_all('tempfolders/tempfolder_display')!
+fn testsuite_end() {
+	os.rmdir_all('tempfolders/tempfolder_display') or { panic(err) }
 }
 
 fn test_display_multiple_classifier_settings() ? {

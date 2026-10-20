@@ -2,15 +2,15 @@ module vhammll2
 
 import os
 
-fn testsuite_begin() ? {
+fn testsuite_begin() {
 	if os.is_dir('tempfolders/tempfolder_show_attr') {
-		os.rmdir_all('tempfolders/tempfolder_show_attr')!
+		os.rmdir_all('tempfolders/tempfolder_show_attr') or { panic(err) }
 	}
 	os.mkdir_all('tempfolders/tempfolder_show_attr')!
 }
 
-fn testsuite_end() ? {
-	os.rmdir_all('tempfolders/tempfolder_show_attr')!
+fn testsuite_end() {
+	os.rmdir_all('tempfolders/tempfolder_show_attr') or { panic(err) }
 }
 
 fn test_multiple_classifier_verify_totalnn() ? {

@@ -2,10 +2,10 @@ module visual
 
 import vhammll2
 
-fn testsuite_begin() ! {
+fn testsuite_begin() {
 }
 
-fn testsuite_end() ! {
+fn testsuite_end() {
 }
 
 fn test_show_attributes_in_verify_perf() {

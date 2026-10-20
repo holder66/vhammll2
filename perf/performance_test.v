@@ -21,7 +21,7 @@ fn datasets_path() string {
 	return os.abs_path(os.join_path(@FILE, '..', '..', 'datasets'))
 }
 
-fn testsuite_begin() ? {
+fn testsuite_begin() {
 	if !os.is_dir(datasets_path()) {
 		eprintln('datasets directory not found at ${datasets_path()}; skipping performance tests')
 	}
@@ -32,8 +32,8 @@ fn testsuite_begin() ? {
 	os.mkdir_all(tmp)!
 }
 
-fn testsuite_end() ? {
-	os.rmdir_all(os.join_path(os.temp_dir(), 'vhammll2_perf'))!
+fn testsuite_end() {
+	os.rmdir_all(os.join_path(os.temp_dir(), 'vhammll2_perf')) or { panic(err) }
 }
 
 fn tmp(filename string) string {

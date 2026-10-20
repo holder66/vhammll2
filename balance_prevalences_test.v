@@ -2,15 +2,15 @@ module vhammll2
 
 import os
 
-fn testsuite_begin() ! {
+fn testsuite_begin() {
 	if os.is_dir('tempfolders/tempfolder_balance_prevalences') {
-		os.rmdir_all('tempfolders/tempfolder_balance_prevalences')!
+		os.rmdir_all('tempfolders/tempfolder_balance_prevalences') or { panic(err) }
 	}
 	os.mkdir_all('tempfolders/tempfolder_balance_prevalences')!
 }
 
-fn testsuite_end() ! {
-	os.rmdir_all('tempfolders/tempfolder_balance_prevalences')!
+fn testsuite_end() {
+	os.rmdir_all('tempfolders/tempfolder_balance_prevalences') or { panic(err) }
 }
 
 fn test_evaluate_class_prevalence_imbalance() {

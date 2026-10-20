@@ -2,15 +2,15 @@ module vhammll2
 
 import os
 
-fn testsuite_begin() ! {
+fn testsuite_begin() {
 	if os.is_dir('tempfolders/tempfolder_append') {
-		os.rmdir_all('tempfolders/tempfolder_append')!
+		os.rmdir_all('tempfolders/tempfolder_append') or { panic(err) }
 	}
 	os.mkdir_all('tempfolders/tempfolder_append')!
 }
 
-fn testsuite_end() ! {
-	os.rmdir_all('tempfolders/tempfolder_append')!
+fn testsuite_end() {
+	os.rmdir_all('tempfolders/tempfolder_append') or { panic(err) }
 }
 
 fn test_append() ! {
@@ -50,5 +50,7 @@ fn test_append() ! {
 	// test if the appended classifier works as a classifier
 	opts.testfile_path = 'datasets/testdata/test_verify.tab'
 	opts.classifierfile_path = 'tempfolders/tempfolder_append/extclassifierfile'
-	verify(opts)
+	// opts.show_flag = true
+	// dump(opts)
+	assert verify(opts).correct_count == 10
 }

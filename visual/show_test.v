@@ -3,15 +3,15 @@ module visual
 import os
 import vhammll2
 
-fn testsuite_begin() ! {
+fn testsuite_begin() {
 	if os.is_dir('tempfolders/tempfolder_show') {
-		os.rmdir_all('tempfolders/tempfolder_show')!
+		os.rmdir_all('tempfolders/tempfolder_show') or { panic(err) }
 	}
 	os.mkdir_all('tempfolders/tempfolder_show')!
 }
 
-fn testsuite_end() ! {
-	os.rmdir_all('tempfolders/tempfolder_show')!
+fn testsuite_end() {
+	os.rmdir_all('tempfolders/tempfolder_show') or { panic(err) }
 }
 
 // test_show_analyze has no asserts; the console output needs

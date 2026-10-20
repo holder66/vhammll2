@@ -2,15 +2,15 @@ module vhammll2
 
 import os
 
-fn testsuite_begin() ? {
+fn testsuite_begin() {
 	if os.is_dir('tempfolders/tempfolder_explore') {
-		os.rmdir_all('tempfolders/tempfolder_explore')!
+		os.rmdir_all('tempfolders/tempfolder_explore') or { panic(err) }
 	}
 	os.mkdir_all('tempfolders/tempfolder_explore')!
 }
 
-fn testsuite_end() ? {
-	os.rmdir_all('tempfolders/tempfolder_explore')!
+fn testsuite_end() {
+	os.rmdir_all('tempfolders/tempfolder_explore') or { panic(err) }
 }
 
 // test_explore_cross tests cross-validation explore for binary and multiclass datasets.

@@ -2,15 +2,15 @@ module vhammll2
 
 import os
 
-fn testsuite_begin() ! {
+fn testsuite_begin() {
 	if os.is_dir('tempfolders/tempfolder_load_file') {
-		os.rmdir_all('tempfolders/tempfolder_load_file')!
+		os.rmdir_all('tempfolders/tempfolder_load_file') or { panic(err) }
 	}
 	os.mkdir_all('tempfolders/tempfolder_load_file')!
 }
 
-fn testsuite_end() ! {
-	os.rmdir_all('tempfolders/tempfolder_load_file')!
+fn testsuite_end() {
+	os.rmdir_all('tempfolders/tempfolder_load_file') or { panic(err) }
 }
 
 fn test_file_type() {

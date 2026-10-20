@@ -2,15 +2,15 @@ module vhammll2
 
 import os
 
-fn testsuite_begin() ? {
+fn testsuite_begin() {
 	if os.is_dir('tempfolders/tempfolder_make_classifier') {
-		os.rmdir_all('tempfolders/tempfolder_make_classifier')!
+		os.rmdir_all('tempfolders/tempfolder_make_classifier') or { panic(err) }
 	}
 	os.mkdir_all('tempfolders/tempfolder_make_classifier')!
 }
 
-fn testsuite_end() ? {
-	os.rmdir_all('tempfolders/tempfolder_make_classifier')!
+fn testsuite_end() {
+	os.rmdir_all('tempfolders/tempfolder_make_classifier') or { panic(err) }
 }
 
 fn test_max_ham_dist() {

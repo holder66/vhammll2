@@ -2,15 +2,15 @@ module vhammll2
 
 import os
 
-fn testsuite_begin() ? {
+fn testsuite_begin() {
 	if os.is_dir('tempfolders/tempfolder_one_vs_rest_cross_validate') {
-		os.rmdir_all('tempfolders/tempfolder_one_vs_rest_cross_validate')!
+		os.rmdir_all('tempfolders/tempfolder_one_vs_rest_cross_validate') or { panic(err) }
 	}
 	os.mkdir_all('tempfolders/tempfolder_one_vs_rest_cross_validate')!
 }
 
-fn testsuite_end() ? {
-	os.rmdir_all('tempfolders/tempfolder_one_vs_rest_cross_validate')!
+fn testsuite_end() {
+	os.rmdir_all('tempfolders/tempfolder_one_vs_rest_cross_validate') or { panic(err) }
 }
 
 // test_one_vs_rest_cross_validate_loo tests leave-one-out cross-validation

@@ -3,15 +3,15 @@ module perf
 import os
 import vhammll2
 
-fn testsuite_begin() ! {
+fn testsuite_begin() {
 	if os.is_dir('tempfolders/tempfolder_make_multi_classifiers') {
-		os.rmdir_all('tempfolders/tempfolder_make_multi_classifiers')!
+		os.rmdir_all('tempfolders/tempfolder_make_multi_classifiers') or { panic(err) }
 	}
 	os.mkdir_all('tempfolders/tempfolder_make_multi_classifiers')!
 }
 
-fn testsuite_end() ! {
-	os.rmdir_all('tempfolders/tempfolder_make_multi_classifiers')!
+fn testsuite_end() {
+	os.rmdir_all('tempfolders/tempfolder_make_multi_classifiers') or { panic(err) }
 }
 
 fn test_make_multi_classifiers() {

@@ -3,15 +3,15 @@ module vhammll2
 import os
 
 // import vtl
-fn testsuite_begin() ? {
+fn testsuite_begin() {
 	if os.is_dir('tempfolders/tempfolder_one_vs_rest_verify') {
-		os.rmdir_all('tempfolders/tempfolder_one_vs_rest_verify')!
+		os.rmdir_all('tempfolders/tempfolder_one_vs_rest_verify') or { panic(err) }
 	}
 	os.mkdir_all('tempfolders/tempfolder_one_vs_rest_verify')!
 }
 
-fn testsuite_end() ? {
-	os.rmdir_all('tempfolders/tempfolder_one_vs_rest_verify')!
+fn testsuite_end() {
+	os.rmdir_all('tempfolders/tempfolder_one_vs_rest_verify') or { panic(err) }
 }
 
 // test_one_vs_rest_verify
