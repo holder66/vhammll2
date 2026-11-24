@@ -42,35 +42,37 @@ fn testsuite_begin() {
 // cli(args: ['rank'])!
 // }
 fn test_help() {
-	mut r := os.exec_or_panic(['tempfolders/tempfolder_cli/./temp'])
+  temp := 'tempfolders/tempfolder_cli/./temp'
+	mut r := os.exec_or_panic([temp])
 	assert r.output.contains('help, -h, --help to display this usage information.')
-	assert os.exec_or_panic(['tempfolders/tempfolder_cli/./temp', '-h']) == r
-	assert os.exec_or_panic(['tempfolders/tempfolder_cli/./temp', '--help']) == r
+	assert os.exec_or_panic([temp, '-h']) == r
+	assert os.exec_or_panic([temp, '--help']) == r
 }
 
 fn test_cli_append() {
+  temp := 'tempfolders/tempfolder_cli/./temp'
 	// this test is incomplete, because append.v needs fixing to deal with prevalence balancing
-	mut r := os.exec_or_panic(['tempfolders/tempfolder_cli/./temp', 'append'])
+	mut r := os.exec_or_panic([temp, 'append'])
 	assert r.output.contains('"append" extends a classifier by adding one or more labeled cases.')
-	assert os.exec_or_panic(['tempfolders/tempfolder_cli/./temp', 'append', '-h']) == r
-	assert os.exec_or_panic(['tempfolders/tempfolder_cli/./temp', 'append', '--help']) == r
+	assert os.exec_or_panic([temp, 'append', '-h']) == r
+	assert os.exec_or_panic([temp, 'append', '--help']) == r
 	// make a classifier
 	datafile := 'datasets/testdata/test.tab'
 	cl_file := 'tempfolders/tempfolder_cli/test.cl'
 	val_file := 'datasets/testdata/test_validate.tab'
 	inst_file := 'tempfolders/tempfolder_cli/instances'
-	clr := os.exec_or_panic(['tempfolders/tempfolder_cli/./temp', 'make', '-o', '${cl_file}', '${datafile}'])
+	clr := os.exec_or_panic([temp, 'make', '-o', '${cl_file}', '${datafile}'])
 	assert clr.output.contains('Classifier from "datasets/testdata/test.tab"')
 	assert os.is_file(cl_file)
-	rv := os.exec_or_panic(['tempfolders/tempfolder_cli/./temp', 'validate', '-o', '${inst_file}', '-t', '${val_file}', '${datafile}'])
+	rv := os.exec_or_panic([temp, 'validate', '-o', '${inst_file}', '-t', '${val_file}', '${datafile}'])
 	assert rv.output.contains('Validation of "datasets/testdata/test_validate.tab" using a classifier from "datasets/testdata/test.tab"')
 	assert os.is_file(inst_file)
 
-	ap := os.exec_or_panic(['tempfolders/tempfolder_cli/./temp', 'append', '-k', '${cl_file}', '${inst_file}']))
+	ap := os.exec_or_panic([temp, 'append', '-k', '${cl_file}', '${inst_file}']))
 	assert ap.output.contains('append  datasets/testdata/test_validate.tab          ')
 }
 
-fn test_cli_cross() {}
+// fn test_cli_cross() {}
 
 fn test_cli_display() {}
 
@@ -109,9 +111,10 @@ fn test_cli_rank() {}
 fn test_cli_validate() {}
 
 fn test_cli_verify() {
-	mut r := os.exec_or_panic(['./temp verify -h'])
-	r = os.exec_or_panic(['./temp verify  -t datasets/bcw174test.txt datasets/bcw350train.txt'])
+  temp := 'tempfolders/tempfolder_cli/./temp'
+	mut r := os.exec_or_panic([temp, 'verify', '-h'])
+	r = os.exec_or_panic([temp, 'verify',  '-t', 'datasets/bcw174test.txt', 'datasets/bcw350train.txt'])
 	// save a classifier to a file
-	r = os.exec_or_panic(['./temp make -a 33 -b 2,16 -o tempfolders/tempfolder_cli/soybean.cl datasets/soybean-large-train.tab'])
-	r = os.exec_or_panic(['./temp verify  -s -k tempfolders/tempfolder_cli/soybean.cl -t datasets/soybean-large-test.tab'])
+	r = os.exec_or_panic('tempfolders/tempfolder_cli/./temp make -a 33 -b 2,16 -o tempfolders/tempfolder_cli/soybean.cl datasets/soybean-large-train.tab'.split(' '))
+	r = os.exec_or_panic('tempfolders/tempfolder_cli/./temp verify  -s -k tempfolders/tempfolder_cli/soybean.cl -t datasets/soybean-large-test.tab'.split(' '))
 }
