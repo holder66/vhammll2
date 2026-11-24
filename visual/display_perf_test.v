@@ -43,8 +43,8 @@ fn test_display_explore_result_verify_perf() ? {
 	vhammll2.display_file(outputfile, vhammll2.opts('-s ${datafile}'))
 
 	// repeat for a binary class dataset
-	datafile2 := 'datasets/bcw350train'
-	testfile2 := 'datasets/bcw174test'
+	datafile2 := 'datasets/bcw350train.txt'
+	testfile2 := 'datasets/bcw174test.txt'
 	vhammll2.explore(vhammll2.opts('-s -a 0 -b 2,6 -o ${outputfile} -t ${testfile2} ${datafile2}'))
 	vhammll2.display_file(outputfile, vhammll2.opts('-s ${datafile2}'))
 }

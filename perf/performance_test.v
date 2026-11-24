@@ -61,7 +61,7 @@ fn test_cross_bcw() {
 
 // test_verify_bcw checks verify accuracy using train/test split files.
 fn test_verify_bcw() {
-	result := vhammll2.verify(vhammll2.get_opts('-t ${ds('bcw174test')} ${ds('bcw350train')}'))
+	result := vhammll2.verify(vhammll2.get_opts('-t ${ds('bcw174test.txt')} ${ds('bcw350train.txt')}'))
 	assert result.balanced_accuracy > 95.0
 }
 

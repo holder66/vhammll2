@@ -36,11 +36,11 @@ fn test_verify() ? {
 	println(r_b('Done with leukemia38train.tab & leukemia34test.tab'))
 
 	// test verify with a binary classifier without continuous values
-	result = verify(opts('-a 4 -b 2,4 -t datasets/bcw174test datasets/bcw350train'))
-	println(r_b('Done with bcw350train for a non-saved classifier'))
+	result = verify(opts('-a 4 -b 2,4 -t datasets/bcw174test.txt datasets/bcw350train.txt'))
+	println(r_b('Done with bcw350train.txt for a non-saved classifier'))
 
 	// now with a saved classifier
-	cl = make_classifier(opts('-a 4 -b 2,4 -o tempfolders/tempfolder_verify/classifierfile datasets/bcw350train'))
-	assert result.BinaryMetrics == verify(opts('-a 4 -b 2,4 -k tempfolders/tempfolder_verify/classifierfile -t datasets/bcw174test datasets/bcw350train')).BinaryMetrics
-	println(r_b('Done with bcw350train using saved classifier'))
+	cl = make_classifier(opts('-a 4 -b 2,4 -o tempfolders/tempfolder_verify/classifierfile datasets/bcw350train.txt'))
+	assert result.BinaryMetrics == verify(opts('-a 4 -b 2,4 -k tempfolders/tempfolder_verify/classifierfile -t datasets/bcw174test.txt datasets/bcw350train.txt')).BinaryMetrics
+	println(r_b('Done with bcw350train.txt using saved classifier'))
 }

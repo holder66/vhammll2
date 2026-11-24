@@ -56,8 +56,8 @@ fn test_append_cross_validate_settings_to_file() {
 }
 
 fn test_append_verify_settings_to_file() {
-	datafile := 'datasets/bcw350train'
-	testfile := 'datasets/bcw174test'
+	datafile := 'datasets/bcw350train.txt'
+	testfile := 'datasets/bcw174test.txt'
 	settingsfile := 'tempfolders/tempfolder_save_settings/bcw1.opts'
 	verify(get_opts('-ms ${settingsfile} -t ${testfile} ${datafile}'))
 	assert os.is_file(settingsfile)
@@ -83,8 +83,8 @@ fn test_append_explore_cross_settings_to_file() {
 }
 
 fn test_append_explore_verify_settings_to_file() {
-	datafile := 'datasets/bcw350train'
-	testfile := 'datasets/bcw174test'
+	datafile := 'datasets/bcw350train.txt'
+	testfile := 'datasets/bcw174test.txt'
 	settingsfile := 'tempfolders/tempfolder_save_settings/bcw.opts'
 	explore(opts('-a 1,4 -ms ${settingsfile} -t ${testfile} ${datafile}'))
 	assert os.is_file(settingsfile)

@@ -1,7 +1,9 @@
 # Examples of Command Line usage
 
 ## Build the binary
+
 In your terminal, navigate to the vhammll2 directory:
+
 ```sh
 % cd <vhammll2 directory>
 % v -prod -o vhammll2 src/
@@ -10,9 +12,10 @@ In your terminal, navigate to the vhammll2 directory:
 Now you can run the app with command line entries starting with `% ./vhammll2`,
 as in `% ./vhammll2 analyze datasets/anneal.tab`.
 Sometimes, it may be more convenient to start with `% v run src/main.v`, as in
-`% v run src/main.v verify -t datasets/bcw174test datasets/bcw350train`.
+`% v run src/main.v verify -t datasets/bcw174test.txt datasets/bcw350train.txt`.
 
 ## Getting help
+
 `% v run src/main.v --help` or
 `% v run src/main.v -h` or simply,
 `% v run src/main.v`
@@ -26,9 +29,11 @@ For individual commands, use this pattern:
 `% v run src/main.v analyze`
 
 ## Analyzing a dataset
+
 `% ./vhammll2 analyze datasets/anneal.tab`
 
 ## Discovering which attributes are most useful
+
 `% ./vhammll2 rank --show --graph datasets/anneal.tab` or
 
 `% ./vhammll2 rank -s -g datasets/anneal.tab`
@@ -50,6 +55,7 @@ To exclude missing values from the rank value calculations:
 `% ./vhammll2 rank -s -g -e datasets/anneal.tab`
 
 ## Working with large datasets
+
 Doing a leave-one-out cross-validation on a large dataset can be time-consuming.
 Save time by doing fewer folds, eg 10-fold (`-f 10`).
 Repeat the exercise 5 times (`-r 5`); results are averaged over the 5 repetitions, since random selection of instances for folding means that results will be different from one repetition to another:
@@ -59,6 +65,7 @@ Repeat the exercise 5 times (`-r 5`); results are averaged over the 5 repetition
 `% ./vhammll2 cross -s -e -f 10 -r 5 -a 310 -b 2,2 datasets/mnist_test.tab`
 
 ## To explore how varying parameters affect classification accuracy
+
 `% ./vhammll2 explore --expand --graph --weight datasets/breast-cancer-wisconsin-disc.tab` or
 
 `% ./vhammll2 explore -e -g -w datasets/breast-cancer-wisconsin-disc.tab`

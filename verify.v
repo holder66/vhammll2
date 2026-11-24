@@ -11,7 +11,7 @@ attributes is copied from the classification dataset. Each instance in the
 verification dataset is classified, and the inferred classes are compared to
 the labeled classes to provide accuracy and other statistics.
 
-Usage: v run main.v verify -t datasets/bcw174test datasets/bcw350train
+Usage: v run main.v verify -t datasets/bcw174test.txt datasets/bcw350train.txt
 
 Required:
 -t --test: path to a test file to be verified.

@@ -22,7 +22,7 @@ fn testsuite_begin() {
 	f.write_string(main_text)!
 	f.close()
 
-	os.exec_or_panic(['v -keepc run temphelp.v'])
+	os.exec_or_panic(['v', '-keepc', 'run', 'temphelp.v'])
 	if os.is_dir('tempfolders/tempfolder_help_text') {
 		os.rmdir_all('tempfolders/tempfolder_help_text') or { panic(err) }
 	}
@@ -43,7 +43,7 @@ fn test_help() {
 	flags := ['', '--help', '-h']
 
 	for flag in flags {
-		result := os.exec_or_panic(['./temphelp ${flag}'])
+		result := os.exec_or_panic(['./temphelp', '${flag}'])
 		assert result.exit_code == 0
 		for term in output_search_terms {
 			assert result.output.contains(term)
@@ -57,7 +57,7 @@ fn test_command_help() {
 	flags := ['', '--help', '-h']
 	for command in commands {
 		for flag in flags {
-			result := os.exec_or_panic(['./temphelp ${command} ${flag}'])
+			result := os.exec_or_panic(['./temphelp', '${command}', '${flag}'])
 			assert result.exit_code == 0
 			for term in output_search_terms {
 				assert result.output.contains(term)

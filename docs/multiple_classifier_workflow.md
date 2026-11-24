@@ -28,7 +28,7 @@ are appended if it does.
 
 ```sh
 # Explore, saving the classifier settings used for each run to bcw.opts
-./vhammll2 explore -s -ms bcw.opts datasets/bcw350train
+./vhammll2 explore -s -ms bcw.opts datasets/bcw350train.txt
 ```
 
 Each row in the console output corresponds to one classifier. To save only specific
@@ -36,7 +36,7 @@ ones, note their classifier IDs and use `-m#`:
 
 ```sh
 # Append only classifiers 0, 2, and 5 to the settings file
-./vhammll2 explore -s -ms bcw.opts -m# 0,2,5 datasets/bcw350train
+./vhammll2 explore -s -ms bcw.opts -m# 0,2,5 datasets/bcw350train.txt
 ```
 
 ### Settings file format
@@ -54,18 +54,18 @@ Pass the settings file to `cross` or `verify` with the `-m` flag:
 
 ```sh
 # Cross-validate using all classifiers in bcw.opts
-./vhammll2 cross -s -m bcw.opts datasets/bcw350train
+./vhammll2 cross -s -m bcw.opts datasets/bcw350train.txt
 
 # Verify against a held-out test set
 ./vhammll2 verify -s -m bcw.opts \
-    -t datasets/bcw174test \
-    datasets/bcw350train
+    -t datasets/bcw174test.txt \
+    datasets/bcw350train.txt
 ```
 
 To use only a subset of the classifiers in the file, list their IDs with `-m#`:
 
 ```sh
-./vhammll2 cross -s -m bcw.opts -m# 0,3,7 datasets/bcw350train
+./vhammll2 cross -s -m bcw.opts -m# 0,3,7 datasets/bcw350train.txt
 ```
 
 ---
@@ -75,18 +75,18 @@ To use only a subset of the classifiers in the file, list their IDs with `-m#`:
 When classifiers disagree on a case, VHamMLL2 resolves the conflict using one of three
 strategies, selected with a flag:
 
-| Flag | Strategy | Description |
-|------|----------|-------------|
-| *(none)* | default | At each Hamming radius, use a plurality/majority vote across classifiers. Falls back to the classifier with the strongest signal (highest ratio between nearest-neighbor counts). |
-| `-ma` | break-on-all | Stop expanding the search radius as soon as **every** classifier has found at least one match, rather than stopping when **any** has. |
-| `-mc` | combined | Pool all Hamming distances from all classifiers into a single sorted list and iterate through them jointly. |
-| `-mt` | totalnn | Sum the nearest-neighbor counts across all classifiers (weighted by class prevalences) and infer the class from the totals. Takes precedence over `-mc` if both are given. |
+| Flag     | Strategy     | Description                                                                                                                                                                       |
+| -------- | ------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| _(none)_ | default      | At each Hamming radius, use a plurality/majority vote across classifiers. Falls back to the classifier with the strongest signal (highest ratio between nearest-neighbor counts). |
+| `-ma`    | break-on-all | Stop expanding the search radius as soon as **every** classifier has found at least one match, rather than stopping when **any** has.                                             |
+| `-mc`    | combined     | Pool all Hamming distances from all classifiers into a single sorted list and iterate through them jointly.                                                                       |
+| `-mt`    | totalnn      | Sum the nearest-neighbor counts across all classifiers (weighted by class prevalences) and infer the class from the totals. Takes precedence over `-mc` if both are given.        |
 
 Use `-af` (all-flags) to run all combinations automatically and compare them side by
 side:
 
 ```sh
-./vhammll2 cross -s -m bcw.opts -af datasets/bcw350train
+./vhammll2 cross -s -m bcw.opts -af datasets/bcw350train.txt
 ```
 
 This prints one result line per combination (3 strategies × 2 `-ma` settings = 6 rows),

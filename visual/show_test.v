@@ -103,15 +103,15 @@ fn test_show_rank_attributes() {
 }
 
 fn test_show_validate() ? {
-	println(vhammll2.r_b('\n\ntest_show_validate prints out results for validation of bcw350train with bcw174validate'))
-	cl := vhammll2.make_classifier(vhammll2.opts('-s -a 4 -t datasets/bcw174validate datasets/bcw350train'))
-	_ = vhammll2.validate(cl, vhammll2.opts('-s -a 4 -t datasets/bcw174validate datasets/bcw350train'))!
+	println(vhammll2.r_b('\n\ntest_show_validate prints out results for validation of bcw350train.txt with bcw174validate.txt'))
+	cl := vhammll2.make_classifier(vhammll2.opts('-s -a 4 -t datasets/bcw174validate.txt datasets/bcw350train.txt'))
+	_ = vhammll2.validate(cl, vhammll2.opts('-s -a 4 -t datasets/bcw174validate.txt datasets/bcw350train.txt'))!
 }
 
 fn test_show_verify() ? {
-	println(vhammll2.r_b('\n\ntest_show_verify prints out results for verification of bcw350train with bcw174test, and of soybean-large-train.tab with soybean-large-test.tab'))
+	println(vhammll2.r_b('\n\ntest_show_verify prints out results for verification of bcw350train.txt with bcw174test.txt, and of soybean-large-train.tab with soybean-large-test.tab'))
 	mut result := vhammll2.CrossVerifyResult{}
-	result = vhammll2.verify(vhammll2.opts('-s -a 4 -t datasets/bcw174test datasets/bcw350train'))
+	result = vhammll2.verify(vhammll2.opts('-s -a 4 -t datasets/bcw174test.txt datasets/bcw350train.txt'))
 	vhammll2.show_verify(result)
 }
 

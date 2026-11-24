@@ -36,8 +36,8 @@ fn test_explore_cross() ? {
 
 // test_explore_verify tests explore with a separate test file (binary, discrete dataset).
 fn test_explore_verify() ? {
-	datafile := 'datasets/bcw350train'
-	testfile := 'datasets/bcw174test'
+	datafile := 'datasets/bcw350train.txt'
+	testfile := 'datasets/bcw174test.txt'
 	// bcw is all-discrete: bins are bypassed; 4 attr values × 1 bin level = 4 results
 	result := explore(get_opts('-a 1,4 -t ${testfile} ${datafile}'))
 	assert result.array_of_results.len == 4

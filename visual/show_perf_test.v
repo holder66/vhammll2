@@ -39,10 +39,10 @@ fn test_show_classifier_perf() {
 }
 
 fn test_show_explore_verify_perf() ? {
-	println(vhammll2.r_b('\n\ntest_show_explore_verify_perf prints out explore results for verification of bcw350train with bcw174test'))
+	println(vhammll2.r_b('\n\ntest_show_explore_verify_perf prints out explore results for verification of bcw350train.txt with bcw174test.txt'))
 	mut results := vhammll2.ExploreResult{}
-	results = vhammll2.explore(vhammll2.opts('-s -a 2,6 -t datasets/bcw174test datasets/bcw350train'))
-	results = vhammll2.explore(vhammll2.opts('-s -a 0 -t datasets/bcw174test datasets/bcw350train'))
+	results = vhammll2.explore(vhammll2.opts('-s -a 2,6 -t datasets/bcw174test.txt datasets/bcw350train.txt'))
+	results = vhammll2.explore(vhammll2.opts('-s -a 0 -t datasets/bcw174test.txt datasets/bcw350train.txt'))
 }
 
 fn test_show_rank_attributes_perf() {

@@ -168,7 +168,7 @@ fn run_cross_validate(ds Dataset, opts Options) CrossVerifyResult {
 		cross_opts.classifiers = cross_opts.multiple_classifier_settings.map(it.classifier_id)
 	}
 	mut repetition_result := CrossVerifyResult{}
-	for rep in 0 .. repeats {
+	for _ in 0 .. repeats {
 		// generate a pick list of indices
 		// for folds > 1 (non-LOO), always use random selection
 		folds_for_check := if cross_opts.folds == 0 {

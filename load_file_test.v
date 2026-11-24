@@ -13,6 +13,11 @@ fn testsuite_end() {
 	os.rmdir_all('tempfolders/tempfolder_load_file') or { panic(err) }
 }
 
+fn test_file_name() {
+  assert os.exists('datasets/testdata/developer.tab')
+  assert os.exists('datasets/bcw350train.txt')
+  assert file_type('datasets/bcw350train.txt') == 'orange_older'
+}
 fn test_file_type() {
 	assert file_type('datasets/testdata/developer.tab') == 'orange_newer'
 	assert file_type('datasets/iris.tab') == 'orange_older'
