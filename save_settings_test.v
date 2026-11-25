@@ -71,13 +71,13 @@ fn test_append_verify_settings_to_file() {
 fn test_append_explore_cross_settings_to_file() {
 	datafile := 'datasets/iris.tab'
 	settingsfile := 'tempfolders/tempfolder_save_settings/iris2.opts'
-	explore(opts('-a 1,4 -b 2,7 -ms ${settingsfile} ${datafile}'))
+	explore(get_opts('-a 1,4 -b 2,7 -ms ${settingsfile} ${datafile}'))
 	assert os.is_file(settingsfile)
 	mut r := read_multiple_opts(settingsfile)!
 	// per-class OvR explore: 3 classes × 7 binary analytics entries = 21
 	assert r.len == 21
 	// now add another explore
-	explore(opts('-a 1,4 -b 2,7 -ms ${settingsfile} ${datafile}'))
+	explore(get_opts('-a 1,4 -b 2,7 -ms ${settingsfile} ${datafile}'))
 	r = read_multiple_opts(settingsfile)!
 	assert r.len == 42
 }
@@ -86,12 +86,12 @@ fn test_append_explore_verify_settings_to_file() {
 	datafile := 'datasets/bcw350train.txt'
 	testfile := 'datasets/bcw174test.txt'
 	settingsfile := 'tempfolders/tempfolder_save_settings/bcw.opts'
-	explore(opts('-a 1,4 -ms ${settingsfile} -t ${testfile} ${datafile}'))
+	explore(get_opts('-a 1,4 -ms ${settingsfile} -t ${testfile} ${datafile}'))
 	assert os.is_file(settingsfile)
 	mut r := read_multiple_opts(settingsfile)!
 	assert r.len == 11
 	// now add another explore
-	explore(opts('-a 2,4 -ms ${settingsfile} -t ${testfile} ${datafile}'))
+	explore(get_opts('-a 2,4 -ms ${settingsfile} -t ${testfile} ${datafile}'))
 	r = read_multiple_opts(settingsfile)!
 	assert r.len == 21
 }

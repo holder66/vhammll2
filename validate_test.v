@@ -24,8 +24,8 @@ fn test_kaggle() ! {
 	datafile := 'datasets/testdata/test.tab'
 	testfile := 'datasets/testdata/test_validate.tab'
 
-	cl := make_classifier(opts('-a 2 -b 2,3 -ka ${kagglefile} -t ${testfile} ${datafile}'))
-	result := validate(cl, opts('-a 2 -b 2,3 -ka ${kagglefile} -t ${testfile} ${datafile}'))!
+	cl := make_classifier(get_opts('-a 2 -b 2,3 -ka ${kagglefile} -t ${testfile} ${datafile}'))
+	result := validate(cl, get_opts('-a 2 -b 2,3 -ka ${kagglefile} -t ${testfile} ${datafile}'))!
 	content := os.read_lines(kagglefile) or { panic('failed to open ${kagglefile}') }
 	assert content.len > 0
 	assert content[0] == 'id,gender'

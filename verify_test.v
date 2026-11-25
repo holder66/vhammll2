@@ -18,11 +18,11 @@ fn test_verify() ? {
 	mut cl := Classifier{}
 
 	// test verify with a non-saved classifier
-	verify(opts('-a 2 -b 2,3 -t datasets/testdata/test_verify.tab datasets/testdata/test.tab'))
+	verify(get_opts('-a 2 -b 2,3 -t datasets/testdata/test_verify.tab datasets/testdata/test.tab'))
 	println(r_b('Done with test.tab'))
 
 	// now with a binary classifier with continuous values
-	result = verify(opts('-a 1 -b 5,5 -t datasets/leukemia34test.tab datasets/leukemia38train.tab'))
+	result = verify(get_opts('-a 1 -b 5,5 -t datasets/leukemia34test.tab datasets/leukemia38train.tab'))
 	assert result.confusion_matrix_map == {
 		'ALL': {
 			'ALL': 17.0
@@ -36,11 +36,11 @@ fn test_verify() ? {
 	println(r_b('Done with leukemia38train.tab & leukemia34test.tab'))
 
 	// test verify with a binary classifier without continuous values
-	result = verify(opts('-a 4 -b 2,4 -t datasets/bcw174test.txt datasets/bcw350train.txt'))
+	result = verify(get_opts('-a 4 -b 2,4 -t datasets/bcw174test.txt datasets/bcw350train.txt'))
 	println(r_b('Done with bcw350train.txt for a non-saved classifier'))
 
 	// now with a saved classifier
-	cl = make_classifier(opts('-a 4 -b 2,4 -o tempfolders/tempfolder_verify/classifierfile datasets/bcw350train.txt'))
-	assert result.BinaryMetrics == verify(opts('-a 4 -b 2,4 -k tempfolders/tempfolder_verify/classifierfile -t datasets/bcw174test.txt datasets/bcw350train.txt')).BinaryMetrics
+	cl = make_classifier(get_opts('-a 4 -b 2,4 -o tempfolders/tempfolder_verify/classifierfile datasets/bcw350train.txt'))
+	assert result.BinaryMetrics == verify(get_opts('-a 4 -b 2,4 -k tempfolders/tempfolder_verify/classifierfile -t datasets/bcw174test.txt datasets/bcw350train.txt')).BinaryMetrics
 	println(r_b('Done with bcw350train.txt using saved classifier'))
 }

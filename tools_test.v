@@ -357,7 +357,7 @@ fn test_close() {
 fn test_chlk1() {
 	println(g_b('This should show in bold green'))
 	println(dg('Printout in dark grey'))
-	println(m('Now for magenta!'))
+	println(m_('Now for magenta!'))
 	println(r_b('This should be bold red text.'))
 	println(rgb('Bold red text on green background'))
 }

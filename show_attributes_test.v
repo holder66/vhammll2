@@ -21,7 +21,7 @@ fn test_multiple_classifier_verify_totalnn() ? {
 
 	println(r_b('Do two verifications to populate a settings file:'))
 	// populate a settings file, doing individual verifications
-	result0 := verify(opts('-ma -a 1 -b 5,5 -ms ${settingsfile} -t ${testfile} ${datafile}'))
+	result0 := verify(get_opts('-ma -a 1 -b 5,5 -ms ${settingsfile} -t ${testfile} ${datafile}'))
 	assert result0.confusion_matrix_map == {
 		'ALL': {
 			'ALL': 17.0
@@ -32,7 +32,7 @@ fn test_multiple_classifier_verify_totalnn() ? {
 			'AML': 14.0
 		}
 	}, 'verify with 1 attribute and binning [5,5]'
-	result1 := verify(opts('-ma -a 6 -b 1,10 -ms ${settingsfile} -t ${testfile} ${datafile}'))
+	result1 := verify(get_opts('-ma -a 6 -b 1,10 -ms ${settingsfile} -t ${testfile} ${datafile}'))
 	assert result1.confusion_matrix_map == {
 		'ALL': {
 			'ALL': 19.0
@@ -48,14 +48,14 @@ fn test_multiple_classifier_verify_totalnn() ? {
 	assert os.is_file(settingsfile)
 	mut r := read_multiple_opts(settingsfile)!
 	assert r.len == 2
-	display_file(settingsfile, opts('-ea ${datafile}'))
+	display_file(settingsfile, get_opts('-ea ${datafile}'))
 
 	println(r_b('Do a multi-classifier verification with both saved classifiers:'))
-	result = verify(opts('-s -ea -m ${settingsfile} -t ${testfile} ${datafile}'))
+	result = verify(get_opts('-s -ea -m ${settingsfile} -t ${testfile} ${datafile}'))
 	println(r_b('Do a multi-classifier verification with saved classifier #0 only:'))
-	result = verify(opts('-s -ea -m ${settingsfile} -m# 0 -t ${testfile} ${datafile}'))
+	result = verify(get_opts('-s -ea -m ${settingsfile} -m# 0 -t ${testfile} ${datafile}'))
 	assert result.confusion_matrix_map == result0.confusion_matrix_map
 	println(r_b('Do a multi-classifier verification with saved classifier #1 only:'))
-	result = verify(opts('-s -ea -m ${settingsfile} -m# 1 -t ${testfile} ${datafile}'))
+	result = verify(get_opts('-s -ea -m ${settingsfile} -m# 1 -t ${testfile} ${datafile}'))
 	assert result.confusion_matrix_map == result1.confusion_matrix_map
 }
