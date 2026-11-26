@@ -38,11 +38,6 @@ pub fn load_file(path string, opts LoadOptions) Dataset {
 // assert file_type('datasets/iris.tab') == 'orange_older'
 // ```
 pub fn file_type(path string) string {
-  dump(path)
-  dump(os.norm_path('../datasets'))
-  dump(os.dir(''))
-  dump(os.executable())
-  dump(os.abs_path(''))
 	header := os.read_lines(path.trim_space()) or { panic('Failed to open ${path} in file_type()') }
 	// header := os.read_lines(path.trim_space())!
 	if os.file_ext(path) == '.arff' {

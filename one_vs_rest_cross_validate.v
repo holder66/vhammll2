@@ -101,7 +101,7 @@ pub fn one_vs_rest_cross_validate(opts Options) CrossVerifyResult {
 	if cross_result.pos_neg_classes.len == 2 {
 		cross_result.BinaryMetrics = get_binary_stats(cross_result)
 	}
-	if opts.command != 'explore' && opts.expanded_flag {
+	if opts.command != 'explore' && (opts.expanded_flag || opts.show_flag) {
 		show_crossvalidation(cross_result, cross_opts)
 	}
 	if opts.outputfile_path != '' {
